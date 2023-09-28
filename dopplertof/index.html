@@ -62,12 +62,12 @@
                   <span class="author-block">
                     <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Ioannis Gkioulekas</a><sup>2</sup>,</span>
                   <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Adithya Pediredla<sup>1</sup></a>
+                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Adithya Pediredla</a><sup>1</sup>
                   </span>
                   </div>
 
                   <div class="is-size-5 publication-authors">
-                    <span class="author-block"><sup>1</sup>Dartmouth College, <sup>2</sup>CMU <br>Conferance name and year</span>
+                    <span class="author-block"><sup>1</sup>Dartmouth College, <sup>2</sup>Carnegie Mellon University <br>SIGGRAPH Asia 2023</span>
                     <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
                   </div>
 
@@ -131,11 +131,11 @@
     <div class="hero-body">
       <video poster="" id="tree" autoplay controls muted loop height="100%">
         <!-- Your video here -->
-        <source src="static/videos/banner_video.mp4"
+        <source src="static/videos/domino/merged_video_text.mp4"
         type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+        We propose an unbiased and efficient rendering algorithm for Doppler time-of-flight cameras. Compared to naive sampling algorithms (left two columns), ours uses antithetic sampling with path correlation, and results in rendered images with orders of magnitude lower variance (top row). This makes it feasible to use rendering to evaluate radial velocity reconstruction algorithms (bottom row).
       </h2>
     </div>
   </div>
@@ -150,7 +150,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            We introduce Doppler time-of-flight (D-ToF) rendering, an extension of ToF rendering for dynamic scenes, with applications in simulating D-ToF cameras. D-ToF cameras use high-frequency modulation of illumination and exposure, and measure the Doppler frequency shift to compute the radial velocity of dynamic objects. The time-varying scene geometry and high-frequency modulation functions used in such cameras make it challenging to accurately and efficiently simulate their measurements with existing ToF rendering algorithms. We overcome these challenges in a twofold manner: To achieve accuracy, we derive path integral expressions for D-ToF measurements under global illumination and form unbiased Monte Carlo estimates of these integrals. To achieve efficiency, we develop a tailored time-path sampling technique that combines antithetic time sampling with correlated path sampling. We show experimentally that our sampling technique achieves up to two orders of magnitude lower variance compared to naive time-path sampling. We provide an open source simulator that serves as a digital twin for D-ToF imaging systems, allowing imaging researchers, for the first time, to investigate the impact of modulation functions, material properties, and global illumination on D-ToF imaging performance.
           </p>
         </div>
       </div>
@@ -167,60 +167,16 @@
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/doppler_rendering_overview_v1.9.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          First image description.
+          Overview of ToF imaging and rendering of a dynamic scene.
         </h2>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
-    </div>
   </div>
 </div>
 </div>
 </section>
 <!-- End image carousel -->
-
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- Youtube embed code here -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End youtube video -->
 
 
 <!-- Video carousel -->
@@ -232,21 +188,21 @@
         <div class="item item-video1">
           <video poster="" id="video1" autoplay controls muted loop height="100%">
             <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
+            <source src="static/videos/falling_box/merged_video.mp4"
             type="video/mp4">
           </video>
         </div>
         <div class="item item-video2">
           <video poster="" id="video2" autoplay controls muted loop height="100%">
             <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
+            <source src="static/videos/merrygoround/merged_video.mp4"
             type="video/mp4">
           </video>
         </div>
         <div class="item item-video3">
           <video poster="" id="video3" autoplay controls muted loop height="100%">\
             <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
+            <source src="static/videos/staircase2/merged_video.mp4"
             type="video/mp4">
           </video>
         </div>
@@ -256,24 +212,6 @@
 </section>
 <!-- End video carousel -->
 
-
-
-
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section>
-<!--End paper poster -->
 
 
 <!--BibTex citation -->
