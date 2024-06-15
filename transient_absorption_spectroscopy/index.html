@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="DESCRIPTION META TAG">
-  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
-  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
+  <meta name="description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy">
+  <meta property="og:title" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy"/>
+  <meta property="og:description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy"/>
   <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/transient_absorption_spectroscopy/"/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
   <meta property="og:image" content="static/image/your_banner_image.png" />
@@ -14,8 +14,8 @@
   <meta property="og:image:height" content="630"/>
 
 
-  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
-  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <meta name="twitter:title" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy">
+  <meta name="twitter:description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy (ICCP 2024)">
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
   <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -24,7 +24,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>Academic Project Page</title>
+  <title>Efficient Time Sampling Strategy for Transient Absorption Spectroscopy</title>
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
@@ -56,11 +56,13 @@
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
+                <a href="https://juhyeonkim.netlify.app/" target="_blank">Juhyeon Kim</a><sup>1</sup>,</span>
                 <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
+                  <a href="https://cs.dartmouth.edu/~wjarosz/" target="_blank">Wojciech Jarosz</a><sup>1</sup>,</span>
                   <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
+                    <a href="https://www.cs.cmu.edu/~igkioule/" target="_blank">Ioannis Gkioulekas</a><sup>2</sup>,</span>
+                  <span class="author-block">
+                    <a href="https://sites.google.com/view/adithyapediredla/" target="_blank">Adithya Pediredla</a><sup>1</sup>
                   </span>
                   </div>
 
@@ -148,7 +150,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            Transient absorption spectroscopy (TAS) is a field of study that investigates the dynamic process of chemical compounds. Thanks to the recent emergence of ultrafast pulsed lasers, TAS now extends its reach to studying photochemical reactions occurring within few femtosecond to nanosecond timescales. With ultrafast TAS, changes in sample absorbance or transmittance over time following excitation by pulsed light can be measured at a high temporal resolution -tens of femtoseconds. An application of ultrafast TAS is lifetime measurement for fluorescence decay. However, due to various noise sources (sensor noise, shot noise, unintended photochemical reactions, etc.) during measurement, obtaining a reliable lifetime value often necessitates extensive repetition resulting in experiments lasting several hours. In this paper, we introduce an effective time sampling strategy tailored for lifetime measurement from noisy transient signals. We start with a well-established non-linear curve fitting algorithm and demonstrate that sampling time shifts that maximize the signal derivative ($t=\tau$) will minimize the variance in lifetime estimation. Additionally, we reduce the number of parameters by normalization to ensures the correctness of our algorithm. We demonstrate using simulation that our proposed method outperforms conventional time sampling or normalization methods across various conditions. Especially, we found that proposed method gives same error with 5.5 x less samples compared to the common TAS measurement strategy that uses exponential time sampling with full parameter curve-fitting. Moreover, through real-world TAS measurements, we show that our technique results in 2-8 x less standard deviation compared to baseline methods. We expect that our algorithm will be valuable not only for researchers who use TAS but also for researchers across various fields who use time-gated transient cameras for lifetime analysis.
           </p>
         </div>
       </div>
