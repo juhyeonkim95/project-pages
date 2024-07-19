@@ -116,19 +116,16 @@
 
 
 <!-- Teaser video-->
-<!-- <section class="hero teaser">
+<section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <source src="static/videos/domino.mp4"
-        type="video/mp4">
-      </video>
+      <img src="static/images/teaser.png" alt="teaser"/>
       <h2 class="subtitle has-text-centered">
-        We propose an unbiased and efficient rendering algorithm for Doppler time-of-flight cameras. Compared to naive sampling algorithms (left two columns), ours uses antithetic sampling with path correlation, and results in rendered images with orders of magnitude lower variance (top row). This makes it feasible to use rendering to evaluate radial velocity reconstruction algorithms (bottom row).
+        Overview of transient absorption spectroscopy (TAS). Our goal is to find efficient time sampling strategy for lifetime estimation.
       </h2>
     </div>
   </div>
-</section> -->
+</section>
 <!-- End teaser video -->
 
 <!-- Paper abstract -->
@@ -156,14 +153,14 @@
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
-        <img src="static/images/result1.png" alt="result1" height="300"/>
+        <img src="static/images/result1.png" alt="result1"/>
         <h2 class="subtitle has-text-centered">
           (A) RMSE of relative error between τ and ground truth τgt using different sampling method and normalization strategy. Proposed method(sampling only near τ with normalization) shows the best performance compared to other configurations. (B) Averaged and sorted time samples over sample index for each strategy.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/result2.png" alt="result2" height="300"/>
+        <img src="static/images/result2.png" alt="result2" width="500"/>
         <h2 class="subtitle has-text-centered">
           RMSE of relative error between τ and ground truth τgt using different initial guess τs. It shows that our proposed method shows the lowest RMSE at τs = τgt and degrades as τs deviates from τgt. However, compared to other sampling methods, our method shows optimal property over a large range (±50%).
         </h2>
