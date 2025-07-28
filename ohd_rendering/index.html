@@ -108,23 +108,23 @@ Detection</h1>
 
 
                       <span class="link-block">
-                        <a href="static/pdfs/OHD_SIGGRAPH_2025_temp.pdf" target="_blank"
+                        <a href="static/pdfs/OHD_SIGGRAPH_2025.pdf" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
                         </span>
-                        <span>Paper</span>
+                        <span>Paper (3.1 MB)</span>
                       </a>
                     </span>
 
                     <!-- Supplementary PDF link -->
                     <span class="link-block">
-                      <a href="static/pdfs/OHD_SIGGRAPH_2025_supple_temp.pdf" target="_blank"
+                      <a href="static/pdfs/OHD_SIGGRAPH_2025_supple.pdf" target="_blank"
                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
                       </span>
-                      <span>Supplementary</span>
+                      <span>Supplementary (0.6 MB)</span>
                     </a>
                   </span>
 
@@ -140,12 +140,12 @@ Detection</h1>
 
                 <!-- Github link -->
                 <span class="link-block">
-                  <a href="" target="_blank"
+                  <a href="https://github.com/juhyeonkim95/MitsubaOHD" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
-                  <span>Code (TBD)</span>
+                  <span>Code</span>
                 </a>
               </span>
               </div>
@@ -259,7 +259,8 @@ Detection</h1>
         <!-- Your image here -->
         <img src="static/images/image0_1.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-                            <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+Optical heterodyne detection (OHD) is a widely used interferometric technique for measuring frequency modulations in light. OHD mixes a weak signal beam with a strong, coherent reference beam, often referred to as the local oscillator. The interference between these two optical fields generates a beat signal at a lower frequency, which encodes how the received signal is modulated relative to the reference. This often includes useful information such as the velocity or distance of objects in the scene.          
+                  <!-- <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
                   technique for measuring frequency modulations in light.
                   OHD mixes a weak signal beam with a strong, coherent reference
                   beam, often referred to as the <em>local oscillator</em>.
@@ -267,21 +268,23 @@ Detection</h1>
                   fields generates a <em>beat signal</em> at a lower frequency, encoding how the
                   received signal is modulated relative to the reference signal. This
                   often includes useful information such as the velocity or distance
-                  of various objects in the scene.
+                  of various objects in the scene. -->
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/image0_2.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
+          A single-frequency laser is only capable of detecting a Doppler shift. In contrast, a laser with a linearly increasing frequency produces a beat frequency that contains not only the Doppler shift, but also distance (or time-of-flight) information. FMCW lidar typically uses triangular chirps, allowing us to decompose each factor.
+          <!-- Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor. -->
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/image0_3.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          Simple single bounce model may work well if there is only a single object in the scene, but it fails if scene is composed of complex geometry with different velocities and lots of interreflections. This typically happens when we scan over glossy object, or dense particles such as red blood cells or aerosols. This necessiates more accurate Monte Carlo simulator.
+          A simple single-bounce model may work well if there is only a single object in the scene, but it fails when the scene contains complex geometry with different velocities and interreflections. This typically occurs when scanning over glossy objects or dense particles such as red blood cells or aerosols. These cases necessitate more accurate Monte Carlo simulations.
+          <!-- Simple single bounce model may work well if there is only a single object in the scene, but it fails if scene is composed of complex geometry with different velocities and lots of interreflections. This typically happens when we scan over glossy object, or dense particles such as red blood cells or aerosols. This necessiates more accurate Monte Carlo simulator. -->
         </h2>
       </div>
   </div>
@@ -302,21 +305,24 @@ Detection</h1>
         <!-- Your image here -->
         <img src="static/images/image1_1.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-            We propose a path integral formulation that considers all of the possible contribution to the OHD power spectrum \(S_\mathrm{AC}(\omega)\). It is important to note that we are using radiometric throughput, so that we can exploit rich BSDF libraries in existing path tracers.
+          We propose a path integral formulation that considers all possible contributions to the OHD power spectrum \(S_\mathrm {AC}(\omega )\). It is important to note that we use radiometric throughput, allowing us to leverage the rich BSDF libraries in existing path tracers.
+            <!-- We propose a path integral formulation that considers all of the possible contribution to the OHD power spectrum \(S_\mathrm{AC}(\omega)\). It is important to note that we are using radiometric throughput, so that we can exploit rich BSDF libraries in existing path tracers. -->
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/image1_2.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          For Monte Carlo simulation, we build \(S_\mathrm{AC}(\omega)\) by sampling each path \(\bar{\mathbf{x}}\) and adding its radiometric path throughput \(f(\bar{\mathbf{x}})\) to the corresponding frequency bin, \(\omega(\bar{\mathbf{x}})\). 
+          For Monte Carlo simulation, we construct \(S_\mathrm {AC}(\omega )\) by sampling each path \(\bar {\mathbf {x}}\) and adding its radiometric path throughput \(f(\bar {\mathbf {x}})\) to the corresponding frequency bin \(\omega (\bar {\mathbf {x}})\).
+          <!-- For Monte Carlo simulation, we build \(S_\mathrm{AC}(\omega)\) by sampling each path \(\bar{\mathbf{x}}\) and adding its radiometric path throughput \(f(\bar{\mathbf{x}})\) to the corresponding frequency bin, \(\omega(\bar{\mathbf{x}})\).  -->
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/image1_3.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          The path frequency term is composed of two terms, optical path length \(l(\bar{\mathbf{x}})\) and optical path velocity \(u(\bar{\mathbf{x}})\), which we proved, are in derivative relationship
+          The path frequency term consists of two components: the optical path length \(l(\bar {\mathbf {x}})\) and the optical path velocity \(u(\bar {\mathbf {x}})\), which we have shown are related by differentiation.
+          <!-- The path frequency term is composed of two terms, optical path length \(l(\bar{\mathbf{x}})\) and optical path velocity \(u(\bar{\mathbf{x}})\), which we proved, are in derivative relationship -->
         </h2>
       </div>
   </div>
@@ -333,17 +339,19 @@ Detection</h1>
         <!-- Your image here -->
         <img src="static/images/image2_1.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-            Since OHD uses coherent light source, its measurement is inherently affected by noisy speckle effect. 
+          Since OHD uses a coherent light source, its measurements are inherently affected by speckle noise. To reproduce this effect, we propose two methods. Alg1 samples from the previously calculated power spectrum using a known distribution (negative exponential), while Alg2 adds a random phase to each sampled path and directly evaluates the optical field. Both methods depend only on the macroscopic path space.
+            <!-- Since OHD uses coherent light source, its measurement is inherently affected by noisy speckle effect. 
 To reproduce such effect, we propose two methods. 
 Alg1 is sampling from previously calculated power spectrum using known distribution (negative-exponential), and Alg2 is adding random phase to sampled path and directly evaluating the optical field. 
-Both methods only depend on macroscopic path space.
+Both methods only depend on macroscopic path space. -->
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/image2_2.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          We demonstrate the validity on Cornell box scene, showing that both methods converges to the same PSD. However, we believe Alg1 should be a default choice, as Alg2 requires many iteration to converge. Meanwhile, green line shows single bounce model, which clearly fails.
+          We demonstrate the validity on a Cornell box scene, showing that both methods converge to the same PSD. However, we believe Alg1 should be the default choice, as Alg2 requires many iterations to converge. Meanwhile, the green line shows the single-bounce model, which clearly fails.
+          <!-- We demonstrate the validity on Cornell box scene, showing that both methods converges to the same PSD. However, we believe Alg1 should be a default choice, as Alg2 requires many iteration to converge. Meanwhile, green line shows single bounce model, which clearly fails. -->
         </h2>
       </div>
   </div>
@@ -362,10 +370,11 @@ Both methods only depend on macroscopic path space.
               <img src="static/images/image3_1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
             </p>
             <p class="subtitle has-text-centered">
-              We found that there is underlying difference in physics between Doppler effect in AMCW and OHD, which results in different measurement and simulation strategy.
+              We found that there is an underlying difference in the physics between the Doppler effect in AMCW and OHD, which results in different measurement and simulation strategies. The main reason for this difference is the large disparity in wavelength. AMCW has a much longer wavelength compared to the microgeometry; it observes the rough plane as a smooth plane and thus measures the macroscopic rate of distance change, known as spot velocity. However, for OHD, since the microgeometry has large deviations compared to the wavelength, all microscopic perturbations remain independent and we can detect the actual microscopic velocity, which is called target velocity.
+              <!-- We found that there is underlying difference in physics between Doppler effect in AMCW and OHD, which results in different measurement and simulation strategy.
               The main reason for the difference is the huge wavelength difference.
               AMCW has much longer wavelength compared to the microgeometry, it observes the rough plane as a smooth plane which thus measures macroscopic distance change rate, known as <em>spot velocity</em>.
-              However, for OHD, since microgeometry has large deviation compared to wavelength, all microscopic perturbation remains independently and we can detect actual microscopic velocity, which is called <em>target velocity</em>.
+              However, for OHD, since microgeometry has large deviation compared to wavelength, all microscopic perturbation remains independently and we can detect actual microscopic velocity, which is called <em>target velocity</em>. -->
             </p>
         </div>
       </div>
@@ -383,7 +392,7 @@ Both methods only depend on macroscopic path space.
               <img src="static/images/image_result_1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
             </p>
             <p class="subtitle has-text-centered">
-              We demonstrate our simulation algorithm for three different OHD applications.
+              We demonstrate our simulation algorithm for three different OHD applications. Please refer main paper for details.
             </p>
         </div>
       </div>
