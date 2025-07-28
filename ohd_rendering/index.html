@@ -49,6 +49,16 @@ Detection</title>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
 </head>
 <body>
 
@@ -170,26 +180,6 @@ Detection</h1>
 </section>
 <!-- End paper abstract -->
 
-
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/teaser.png" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Overview of ToF imaging and rendering of a dynamic scene.
-        </h2>
-      </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
-
-
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
@@ -209,6 +199,212 @@ Detection</h1>
     </div>
   </div>
 </section>
+
+
+<!-- Introduction to OHD -->
+<!-- <section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">Introduction</h2>
+          
+            <h2 class="title is-4">What is OHD?</h2>
+         <p>
+              <img src="static/images/image1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+                  <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+                  technique for measuring frequency modulations in light.
+                  OHD mixes a weak signal beam with a strong, coherent reference
+                  beam, often referred to as the <em>local oscillator</em>.
+                  The interference between these two optical
+                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
+                  received signal is modulated relative to the reference signal. This
+                  often includes useful information such as the velocity or distance
+                  of various objects in the scene.
+            </p>
+            <h2 class="title is-4">Lasers for OHD</h2>
+                     <p>
+              <img src="static/images/image2.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+              Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<!-- Introduction -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">What is OHD?</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_1.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+                            <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+                  technique for measuring frequency modulations in light.
+                  OHD mixes a weak signal beam with a strong, coherent reference
+                  beam, often referred to as the <em>local oscillator</em>.
+                  The interference between these two optical
+                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
+                  received signal is modulated relative to the reference signal. This
+                  often includes useful information such as the velocity or distance
+                  of various objects in the scene.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_3.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          Simple single bounce model may work well if there is only a single object in the scene, but it fails if scene is composed of complex geometry with different velocities and lots of interreflections. This typically happens when we scan over glossy object, or dense particles such as red blood cells or aerosols. This necessiates more accurate Monte Carlo simulator.
+        </h2>
+      </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End image carousel -->
+
+<!-- Section 1 -->
+ <!-- \(S_\mathrm{AC}(\omega)\). Our path integral uses radiometric path throughput, so that we can make use of existing Monte Carlo path tracers (e.g., Mitsuba Renderer).  -->
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">(1) Proposed OHD Path Integral</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image1_1.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+            We propose a path integral formulation that considers all of the possible contribution to the OHD power spectrum \(S_\mathrm{AC}(\omega)\). It is important to note that we are using radiometric throughput, so that we can exploit rich BSDF libraries in existing path tracers.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image1_2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          For Monte Carlo simulation, we build \(S_\mathrm{AC}(\omega)\) by sampling each path \(\bar{\mathbf{x}}\) and adding its radiometric path throughput \(f(\bar{\mathbf{x}})\) to the corresponding frequency bin, \(\omega(\bar{\mathbf{x}})\). 
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image1_3.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          The path frequency term is composed of two terms, optical path length \(l(\bar{\mathbf{x}})\) and optical path velocity \(u(\bar{\mathbf{x}})\), which we proved, are in derivative relationship
+        </h2>
+      </div>
+  </div>
+</div>
+</div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">(2) OHD Speckle Simulation</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image2_1.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+            Since OHD uses coherent light source, its measurement is inherently affected by noisy speckle effect. 
+To reproduce such effect, we propose two methods. 
+Alg1 is sampling from previously calculated power spectrum using known distribution (negative-exponential), and Alg2 is adding random phase to sampled path and directly evaluating the optical field. 
+Both methods only depend on macroscopic path space.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image2_2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          We demonstrate the validity on Cornell box scene, showing that both methods converges to the same PSD. However, we believe Alg1 should be a default choice, as Alg2 requires many iteration to converge. Meanwhile, green line shows single bounce model, which clearly fails.
+        </h2>
+      </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End image carousel -->
+
+<section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">(3) Comparison with AMCW Doppler</h2>
+         <p>
+              <img src="static/images/image3_1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p class="subtitle has-text-centered">
+              We found that there is underlying difference in physics between Doppler effect in AMCW and OHD, which results in different measurement and simulation strategy.
+              The main reason for the difference is the huge wavelength difference.
+              AMCW has much longer wavelength compared to the microgeometry, it observes the rough plane as a smooth plane which thus measures macroscopic distance change rate, known as <em>spot velocity</em>.
+              However, for OHD, since microgeometry has large deviation compared to wavelength, all microscopic perturbation remains independently and we can detect actual microscopic velocity, which is called <em>target velocity</em>.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">Applications</h2>
+         <p>
+              <img src="static/images/image_result_1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p class="subtitle has-text-centered">
+              We demonstrate our simulation algorithm for three different OHD applications.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="section hero is-small is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">(1) Proposed OHD Path Integral</h2>
+          <p style="font-size:40px;text-align: center">
+            \(S_\mathrm{AC}(\omega)=\int_\mathcal{P}f({\bar{\mathbf{x}}})\)
+            </p>
+         <p>
+              <img src="static/images/image4.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+                  We conduct 4 motivating experiments that illustrate the benefits of learning within Model Trees. In each experiment, we train a linear classifier to predict the classes a ViT model was fine-tuned on.
+              First, we show that <em>learning within Model Trees is significantly simpler (a)</em> by comparing a metanetwork trained on models from the same tree <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="7" style="font-size: 117.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D447 TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>T</mi></math></mjx-assistive-mml></mjx-container> with one trained on models from different trees <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="8" style="font-size: 117.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D439 TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>F</mi></math></mjx-assistive-mml></mjx-container>. Next, we demonstrate <em>positive transfer within the same tree (b)</em> by showing that adding more models from the same tree improves the performance.  Surprisingly, we observe <em>negative transfer between Model Trees (c)</em>, where adding samples from other trees degrades performance on a single tree. Finally, we find that <em>expert learning is preferable when learning from multiple trees (d)</em>, as a single shared metanetwork performs worse than an expert metanetwork per tree (MoE).
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
 
 
 <!--BibTex citation -->
