@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KakaoTalk – Feed‑First (Mock)</title>
+  <style>
+  :root{
+    --bg:#111217; --panel:#181a20; --panel-2:#1e2129; --text:#e9ecf1; --muted:#aab0bb;
+    --brand:#fee500; --accent:#5b8cff; --danger:#ff6363; --ad:#0f1117; --line:#2a2e38;
+    --tabs-h:44px; --composer-h:52px; --topbar-h:44px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--text);font:13px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  .app{max-width:420px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line);position:relative}
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:6px;padding:8px 10px;height:var(--topbar-h);
+          background:linear-gradient(180deg,var(--panel),var(--panel-2));border-bottom:1px solid var(--line)}
+  .title{font-weight:700;font-size:15px}
+  .spacer{flex:1}
+  .icon-btn{background:transparent;border:0;color:var(--text);padding:4px 6px;border-radius:8px}
+  .icon-btn:hover{background:#ffffff14}
+
+  /* Stories / summary */
+  .stories{display:flex;gap:8px;overflow-x:auto;padding:8px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .story{flex:0 0 auto;width:56px;text-align:center}
+  .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#444,#666);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;border:2px solid #00000033;font-size:11px}
+  .story small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+
+  /* Scroll areas get bottom padding so the fixed tabs/composer won't cover content */
+  .feed{flex:1;overflow:auto;background:var(--panel-2);padding-bottom:calc(var(--tabs-h) + 8px)}
+  #screen-friendlist .list,
+  #screen-chats .list{padding:8px; padding-bottom:calc(var(--tabs-h) + 8px)}
+  #screen-friendlist .friends-head{position:sticky;top:0;z-index:12}
+
+  /* Cards (feed) */
+  .card{background:var(--panel);margin:8px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .card-h{display:flex;gap:8px;align-items:center;padding:10px}
+  .card-h .avatar{width:34px;height:34px;font-size:10px}
+  .name{font-weight:600}
+  .meta{color:var(--muted);font-size:11px}
+  .img{height:136px;background:linear-gradient(135deg,#2b2f39,#3b4250);display:flex;align-items:center;justify-content:center;color:#c7cede;font-size:12px}
+  .actions{display:flex;gap:6px;padding:6px 8px;border-top:1px solid var(--line)}
+  .pill{padding:6px 8px;border-radius:9px;background:#ffffff12;color:#dfe5f2;border:1px solid #ffffff18;font-size:12px}
+  .pill:hover{background:#ffffff1d}
+
+  /* Lists */
+  .screen{display:none}
+  .screen.active{display:block}
+  .list{padding:8px}
+  .row{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--line)}
+  .row .avatar{width:32px;height:32px;border-radius:50%;font-size:10px}
+  .row .sub{color:var(--muted);font-size:11px}
+
+  /* Tabs: fixed to bottom of the viewport */
+  .tabs{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:0; width:100%; max-width:420px; height:var(--tabs-h);
+    display:flex; align-items:center; justify-content:space-around;
+    border-top:1px solid var(--line); background:var(--panel); z-index:30;
+  }
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--muted);text-decoration:none;font-size:12px}
+  .tab.active{color:var(--text)}
+  .tab.disabled{pointer-events:none;opacity:.45;cursor:not-allowed}
+
+  /* Friends/Chat headers */
+  .friends-head{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+  .friends-head .back{background:transparent;border:0;color:var(--text);font-size:16px;padding:4px 6px;border-radius:8px;cursor:pointer}
+  .friends-head .title{font-weight:700;font-size:14px}
+
+  /* Sort bar */
+  .sortbar{position:sticky;top:calc(var(--topbar-h));z-index:11;display:flex;gap:6px;align-items:center;padding:6px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+  .sortbtn{background:#ffffff12;border:1px solid #ffffff22;color:var(--text);padding:5px 8px;border-radius:8px;font-size:12px}
+  .sortbtn.active{background:#ffffff22}
+
+  /* Chat room: composer fixed above the tabs; log padded so it never hides */
+  .chatroom{display:flex;flex-direction:column;height:calc(100vh - var(--topbar-h));background:var(--panel-2)}
+  .chatlog{flex:1;overflow:auto;padding:10px; padding-bottom:calc(var(--composer-h) + var(--tabs-h) + 10px)}
+  .bubble{max-width:70%;margin:6px 0;padding:6px 9px;border-radius:12px;line-height:1.35;font-size:13px}
+  .me{margin-left:auto;background:#3a4b82;color:#fff}
+  .them{margin-right:auto;background:#2a2e38;color:#e8ecf3}
+  .composer{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:var(--tabs-h); width:100%; max-width:420px; height:var(--composer-h);
+    display:flex; gap:6px; align-items:center; padding:8px 8px;
+    border-top:1px solid var(--line); background:var(--panel); z-index:25;
+  }
+  .composer input{flex:1;padding:8px;border-radius:10px;border:1px solid var(--line);background:#0f1117;color:#e9ecf1;font-size:13px}
+  .composer button{padding:8px 12px;border:0;border-radius:10px;background:var(--brand);color:#111;font-weight:700;font-size:13px}
+
+  /* Ad card */
+  .ad{background:var(--ad)}
+  .ad .badge{font-size:10px;color:#111;background:#ffda79;padding:2px 6px;border-radius:999px;margin-left:auto}
+  .ad .img{background:linear-gradient(135deg,#1f2530,#2d3442)}
+
+  /* Splash */
+  .splash{position:fixed;inset:0;background:#fee500;display:flex;align-items:center;justify-content:center;z-index:9999}
+  .splash .bubbleLogo{background:#3b2b2b;color:#fee500;padding:16px 28px;border-radius:20px;font-weight:900;letter-spacing:.5px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:18px}
+
+  /* Utility */
+  .hidden{display:none !important}
+	/* Feed images scale by width, keep full height */
+	.img{position:relative; padding:0; background:none; height:auto; overflow:hidden;}
+	.img img{width:100%; height:auto; display:block; object-fit:contain;}
+</style>
+
+</head>
+<body>
+  <!-- Splash (1s) -->
+  <div id="splash" class="splash"><div class="bubbleLogo">TALK</div></div>
+
+  <div class="app">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="title" id="topTitle">Friends</div>
+      <div class="spacer"></div>
+      <button class="icon-btn" aria-label="Search">🔍</button>
+      <button class="icon-btn" aria-label="Settings">⚙️</button>
+    </div>
+
+    <!-- Friends summary + stories -->
+    <div class="friends-summary" style="display:flex;align-items:center;gap:8px;justify-content:space-between;padding:12px 14px;background:var(--panel);border-bottom:1px solid var(--line)">
+      <div id="friendsLink" role="button" tabindex="0" style="cursor:pointer;font-weight:700;letter-spacing:.2px">Friends &gt; <span id="friendCount">52</span></div>
+      <div class="meta" style="font-size:12px;color:var(--muted)">Recently updated</div>
+    </div>
+    <div class="stories" id="stories">
+      <div class="story"><div class="avatar">You</div><small>My Story</small></div>
+      <div class="story"><div class="avatar">AL</div><small>Alice</small></div>
+      <div class="story"><div class="avatar">LY</div><small>Layla</small></div>
+      <div class="story"><div class="avatar">CH</div><small>Choi</small></div>
+      <div class="story"><div class="avatar">DK</div><small>DK</small></div>
+      <div class="story"><div class="avatar">EM</div><small>Emma</small></div>
+      <div class="story"><div class="avatar">GY</div><small>Gyu</small></div>
+      <div class="story"><div class="avatar">HS</div><small>Hana</small></div>
+    </div>
+
+    <!-- FEED (current version) -->
+    <main class="feed screen active" id="screen-friends">
+	  <article class="card">
+        <header class="card-h">
+          <div class="avatar">LY</div>
+          <div>
+            <div class="name">Layla Young (Your company boss)</div>
+            <div class="meta">2h • Friends</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="icon-btn">⋯</button>
+        </header>
+        <div class="img">
+		  <img src="images/mountain.jpg" alt="mountain" loading="lazy">
+		</div>
+        <div class="actions">
+          <button class="pill">👍 Like</button>
+          <button class="pill">💬 Comment</button>
+          <button class="pill">↗ Share</button>
+        </div>
+      </article>
+
+      <article class="card ad">
+        <header class="card-h">
+          <div class="avatar">AD</div>
+          <div>
+            <div class="name">K-Shop Plus</div>
+            <div class="meta">Sponsored</div>
+          </div>
+          <div class="spacer"></div>
+          <span class="badge">Ad</span>
+        </header>
+        <div class="img">
+		  <img src="images/ad.jpg" alt="ad" loading="lazy">
+		</div>
+        <div class="card-body">Upgrade your workspace with ultra‑wide monitors. Limited-time 20% off.</div>
+        <div class="actions">
+          <button class="pill">Learn more</button>
+          <button class="pill">Hide ad</button>
+        </div>
+      </article>
+	
+		<article class="card">
+        <header class="card-h">
+          <div class="avatar">AL</div>
+          <div>
+            <div class="name">Alice Kim (Bussiness Client)</div>
+            <div class="meta">2h • Friends</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="icon-btn">⋯</button>
+        </header>
+        <div class="img">
+		  <img src="images/family2.jpg" alt="family" loading="lazy">
+		</div>
+        <div class="actions">
+          <button class="pill">👍 Like</button>
+          <button class="pill">💬 Comment</button>
+          <button class="pill">↗ Share</button>
+        </div>
+      </article>
+	  
+	  
+      <article class="card">
+        <header class="card-h">
+          <div class="avatar">OL</div>
+          <div>
+            <div class="name">Olivia Smith (close friend)</div>
+            <div class="meta">6h • Friends</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="icon-btn">⋯</button>
+        </header>
+        <div class="img">
+		  <img src="images/cat.jpg" alt="cat" loading="lazy">
+		</div>
+        <div class="actions">
+          <button class="pill">♡</button>
+          <button class="pill">💬</button>
+        </div>
+      </article>
+    </main>
+
+    <!-- CHATS LIST -->
+    <section class="screen" id="screen-chats">
+      <div class="list" id="chatList">
+        <!-- chat rows injected -->
+      </div>
+    </section>
+
+    <!-- FRIENDS (FULL LIST) -->
+    <section class="screen" id="screen-friendlist">
+      <div class="friends-head">
+        <button id="backToFeed" class="back" aria-label="Back to feed">◀</button>
+        <div class="title">Friends</div>
+      </div>
+      <div class="sortbar">
+        <strong style="margin-right:6px">Sort:</strong>
+        <button id="sortRecent" class="sortbtn active">Recent updates</button>
+        <button id="sortAZ" class="sortbtn">A–Z</button>
+      </div>
+      <div class="list" id="friendList"><!-- injected --></div>
+    </section>
+
+    <!-- CHAT ROOM (simple messaging UI) -->
+    <section class="screen" id="screen-chatroom">
+      <div class="friends-head">
+        <button id="backToChats" class="back" aria-label="Back to chats">◀</button>
+        <div class="title" id="chatWith">Chat</div>
+      </div>
+      <div class="chatroom">
+        <div id="chatLog" class="chatlog"></div>
+        <div class="composer">
+          <input id="chatInput" placeholder="Message…" />
+          <button id="sendBtn">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM TABS (Friends, Chats only) -->
+    <nav class="tabs" id="bottomTabs">
+      <a class="tab active" data-screen="friends" aria-label="Friends">Friends</a>
+      <a class="tab" data-screen="chats" aria-label="Chats">Chats</a>
+      <a class="tab disabled" aria-disabled="true">Now</a>
+      <a class="tab disabled" aria-disabled="true">Search</a>
+      <a class="tab disabled" aria-disabled="true">More</a>
+    </nav>
+  </div>
+
+  <script>
+    // --- Router ---
+    const screens = {
+      friends: document.getElementById('screen-friends'),
+      chats: document.getElementById('screen-chats'),
+      friendlist: document.getElementById('screen-friendlist'),
+      chatroom: document.getElementById('screen-chatroom'),
+    };
+    const tabs = document.querySelectorAll('#bottomTabs .tab');
+    const topTitle = document.getElementById('topTitle');
+
+    function setScreen(name){
+      Object.values(screens).forEach(el=> el.classList.remove('active'));
+      if (screens[name]) screens[name].classList.add('active');
+      tabs.forEach(t=> t.classList.toggle('active', t.dataset.screen===name));
+      topTitle.textContent = (name==='friendlist') ? 'Friends' : (name[0].toUpperCase()+name.slice(1));
+      document.getElementById('stories').style.display = (name==='friends') ? 'flex' : 'none';
+      if (screens[name]) screens[name].scrollTop = 0;
+    }
+    tabs.forEach(t=> t.addEventListener('click', (e)=>{ e.preventDefault(); setScreen(t.dataset.screen); }));
+
+    // Splash hide after 1s
+    setTimeout(()=>{ const s=document.getElementById('splash'); if(s) s.classList.add('hidden'); }, 1000);
+
+    // Friends > opens full list
+    document.getElementById('friendsLink').addEventListener('click', ()=> setScreen('friendlist'));
+    document.getElementById('backToFeed').addEventListener('click', ()=> setScreen('friends'));
+
+    // --- Data: names & recent timestamps ---
+    const names = [
+      "Olivia Smith","Liam Johnson","Emma Brown","Noah Davis","Ava Miller","Sophia Wilson","Isabella Moore","Mia Taylor","Charlotte Anderson","Amelia Thomas",
+      "Harper Jackson","Evelyn White","Abigail Harris","Emily Martin","Ella Thompson","Avery Garcia","Scarlett Martinez","Grace Robinson","Chloe Clark","Lily Rodriguez",
+      "Aria Lewis","Zoey Lee","Hannah Walker","Nora Hall","Riley Allen","Layla Young","Lillian Hernandez","Addison King","Eleanor Wright","Lucy Lopez",
+      "Paisley Hill","Violet Scott","Penelope Green","Aurora Adams","Savannah Baker","Stella Gonzalez","Hazel Nelson","Mila Carter","Nova Mitchell","Ellie Perez",
+      "James Turner","Benjamin Phillips","Elijah Campbell","Lucas Parker","Alexander Evans","Henry Edwards","Michael Collins","Daniel Stewart","Matthew Sanchez","Jackson Morris",
+      "Sebastian Rogers","Jack Reed"
+    ];
+
+    const friendData = names.map(n => ({
+      name:n,
+      updated: Date.now() - Math.floor(Math.random()*7*24*60)*60*1000
+    }));
+
+    // Chats state
+    const conversations = new Map(); // name -> {name, msgs:[{me:boolean,text}]} 
+
+    function humanize(ts){
+      const mins = Math.round((Date.now()-ts)/60000);
+      if(mins<60) return `${mins}m ago`;
+      const hrs = Math.round(mins/60); if(hrs<24) return `${hrs}h ago`;
+      const d = Math.round(hrs/24); return `${d}d ago`;
+    }
+
+    // Render friend list
+    const friendList = document.getElementById('friendList');
+    function renderFriendList(mode='recent'){
+      const list = [...friendData];
+      if(mode==='az') list.sort((a,b)=> a.name.localeCompare(b.name));
+      else list.sort((a,b)=> b.updated - a.updated);
+      friendList.innerHTML = list.map(x=>`
+        <div class="row friend-item" data-name="${x.name}">
+          <div class="avatar">${x.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+          <div>
+            <div class="name">${x.name}</div>
+            <div class="sub">Updated ${humanize(x.updated)}</div>
+          </div>
+        </div>`).join('');
+      // double-click to start chat
+      friendList.querySelectorAll('.friend-item').forEach(el=>{
+        el.addEventListener('dblclick', ()=> openChat(el.dataset.name));
+      });
+      // update count
+      document.getElementById('friendCount').textContent = String(list.length);
+    }
+
+    // Wire sort buttons
+    const sortAZ = document.getElementById('sortAZ');
+    const sortRecent = document.getElementById('sortRecent');
+    sortAZ.addEventListener('click', ()=>{ sortAZ.classList.add('active'); sortRecent.classList.remove('active'); renderFriendList('az'); });
+    sortRecent.addEventListener('click', ()=>{ sortRecent.classList.add('active'); sortAZ.classList.remove('active'); renderFriendList('recent'); });
+
+    // Chat list render
+    const chatList = document.getElementById('chatList');
+    function renderChats(){
+      const rows = Array.from(conversations.values()).map(c=>`
+        <div class="row chat-row" data-name="${c.name}">
+          <div class="avatar">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+          <div>
+            <div class="name">${c.name}</div>
+            <div class="sub">${(c.msgs[c.msgs.length-1]||{text:''}).text || 'New chat'}</div>
+          </div>
+        </div>`).join('');
+      chatList.innerHTML = rows || '<div class="row"><div class="sub">No chats yet. Double‑click a friend to start one.</div></div>';
+      chatList.querySelectorAll('.chat-row').forEach(el=> el.addEventListener('click', ()=> openChat(el.dataset.name)) );
+    }
+	
+	
+	// --- Seed some existing chats ---
+	const seeded = [
+	  {
+		name: "Alice Kim",
+		msgs: [
+		  { me: false, text: "Hey, are we still on for tomorrow?" },
+		  { me: true,  text: "Yep! 10am at the café." },
+		  { me: false, text: "Perfect. See you!" }
+		]
+	  },
+	  {
+		name: "Bob Lee",
+		msgs: [
+		  { me: true,  text: "Can you send the slides?" },
+		  { me: false, text: "Just emailed you 👍" }
+		]
+	  },
+	  {
+		name: "Team – YOLO Capital",
+		msgs: [
+		  { me: false, text: "Reminder: design sync moved to 2pm." }
+		]
+	  }
+	];
+
+	// Put seeds into the conversations map
+	seeded.forEach(c => conversations.set(c.name, c));
+
+	// Re-render the chat list so they appear
+	if (typeof renderChats === "function") renderChats();
+
+    // Open chat room with a friend
+    const chatLog = document.getElementById('chatLog');
+    const chatWith = document.getElementById('chatWith');
+    const chatInput = document.getElementById('chatInput');
+    function openChat(name){
+      if(!conversations.has(name)) conversations.set(name,{name, msgs:[]});
+      const convo = conversations.get(name);
+      chatWith.textContent = name;
+      renderChatLog(convo);
+      setScreen('chatroom');
+    }
+
+    function renderChatLog(convo){
+      chatLog.innerHTML = convo.msgs.map(m=>`<div class="bubble ${m.me?'me':'them'}">${m.text}</div>`).join('');
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    // Send message
+    document.getElementById('sendBtn').addEventListener('click', ()=> send());
+    chatInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); send(); }});
+    function send(){
+      const name = chatWith.textContent;
+      const text = chatInput.value.trim(); if(!text) return;
+      const convo = conversations.get(name); if(!convo) return;
+      convo.msgs.push({me:true,text});
+      chatInput.value='';
+      renderChatLog(convo);
+      renderChats(); // make sure last message shows in chats list
+      // after sending, also switch Chats tab active
+      document.querySelector('[data-screen="chats"]').classList.add('active');
+      document.querySelector('[data-screen="friends"]').classList.remove('active');
+    }
+
+    // Back from chat room
+    document.getElementById('backToChats').addEventListener('click', ()=>{ setScreen('chats'); });
+
+    // Initial renders
+    renderFriendList('recent');
+    renderChats();
+
+    // Start on feed
+    setScreen('friends');
+  </script>
+</body>
+</html>

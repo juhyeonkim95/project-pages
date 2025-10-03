@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="Template">
+  <meta property="og:title" content="Template"/>
+  <meta property="og:description" content="Template"/>
+  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/template/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/teaser.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="template">
+  <meta name="twitter:description" content="template">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/teaser.png">
+  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
+Detection</title>
+  <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
+
+
+</head>
+
+
+
+<body>
+
+<!-- ============================================
+     Monte Carlo text + figures + equations demo
+     ============================================ -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">4.2.2 Monte Carlo to the Rescue… Again</h2>
+
+    <!-- Lead paragraph -->
+    <div class="content has-text-justified">
+      <p>
+        We wish to turn the boundary–integral formulation of the Poisson problem into
+        a practical estimator. The boundary term is handled recursively by sampling a
+        point on the largest sphere about the current position \(x_k\). For the source term,
+        however, we draw samples uniformly inside the ball (disk) \(B(x_k)\) and form a Monte
+        Carlo estimate. Throughout, the Green’s function \(G\) and source \(f\) are known, so
+        we can evaluate the integrand directly without nested dependence on the unknown
+        solution \(u\).
+      </p>
+    </div>
+
+    <!-- Single figure with caption -->
+    <figure class="image" style="margin: 1.25rem auto; max-width: 560px;">
+      <img src="static/images/poisson_ball_sampling.png" alt="Uniform sampling in a disk around x_k">
+      <figcaption class="has-text-grey is-size-7" style="margin-top: .5rem;">
+        <em>Uniform sampling inside</em> \(B(x_k)\) <em>to estimate the source contribution.</em>
+      </figcaption>
+    </figure>
+
+    <!-- Display equation with a tag -->
+    <div class="content">
+      <p class="has-text-centered">
+        \[
+          \hat{S}(x_k)
+          \;=\;
+          \frac{1}{M}\sum_{i=1}^{M} G(x_k, y_i)\,f(y_i),
+          \qquad
+          y_i \sim \mathcal{U}\!\big(B(x_k)\big)
+          \tag{4.8}
+        \]
+      </p>
+    </div>
+
+    <!-- More text with inline math -->
+    <div class="content has-text-justified">
+      <p>
+        Unlike the boundary contribution—where \(u\) appears inside the integrand—the
+        source estimator uses only known quantities. Hence, variance can be reduced with
+        standard tools: <em>importance sampling</em>, <em>control variates</em>, or <em>stratification</em>.
+        For instance, if \(G(x_k,\cdot)\,f(\cdot)\) is radially concentrated, a radial
+        importance density \(\propto r\,G(x_k,y)f(y)\) inside the disk can substantially
+        reduce variance compared to the uniform law.
+      </p>
+    </div>
+
+    <!-- Two-column: derivation + figure -->
+    <div class="columns is-variable is-6">
+      <div class="column">
+        <div class="content has-text-justified">
+          <p>
+            Writing the disk integral in polar coordinates \(y = x_k + r\,(\cos\phi,\sin\phi)\)
+            with \(r\in[0,R]\), \(\phi\in[0,2\pi)\), we obtain
+          </p>
+
+          <p class="has-text-centered">
+            \[
+              \int_{B(x_k)} G(x_k,y)\,f(y)\,dy
+              \;=\;
+              \int_0^{2\pi}\!\!\int_0^{R}
+              G\!\big(x_k, x_k + r\,\mathbf{e}_\phi\big)\,
+              f\!\big(x_k + r\,\mathbf{e}_\phi\big)\, r\,dr\,d\phi,
+              \tag{4.9}
+            \]
+          </p>
+
+          <p>
+            A simple importance strategy chooses a separable density
+            \(p(r,\phi)=p_r(r)\,p_\phi(\phi)\) with \(p_\phi(\phi)=\tfrac{1}{2\pi}\)
+            and a radial law \(p_r(r)\propto r\,w(r)\). The corresponding estimator is
+          </p>
+
+          <p class="has-text-centered">
+            \[
+              \hat{S}_{\mathrm{IS}}(x_k)
+              \;=\;
+              \frac{1}{M}\sum_{i=1}^M
+              \frac{
+                G\big(x_k, x_k + r_i\,\mathbf{e}_{\phi_i}\big)\,
+                f\big(x_k + r_i\,\mathbf{e}_{\phi_i}\big)\, r_i
+              }{
+                p_r(r_i)\,p_\phi(\phi_i)
+              },
+              \qquad
+              r_i\sim p_r,\;\phi_i\sim p_\phi.
+              \tag{4.10}
+            \]
+          </p>
+        </div>
+      </div>
+
+      <div class="column">
+        <figure class="image" style="max-width: 520px; margin: 0 auto;">
+          <img src="static/images/disk_importance.png" alt="Radial importance sampling inside a disk">
+          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+            Radial importance sampling inside \(B(x_k)\): choose \(p_r(r)\propto r\,w(r)\) to
+            bias samples toward high-contribution radii.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Small remark box (optional) -->
+    <div class="box" style="background:#f7fafc;">
+      <p class="is-size-6">
+        <strong>Remark.</strong>
+        Since the walk will evaluate a source term at each step, a single sample (\(M=1\))
+        is often sufficient per step; variance is then controlled by the number of walk
+        steps and by the importance distribution.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     Example: Structured Text Section with Subsections
+     Uses Bulma + KaTeX already loaded on your page
+     Replace image paths with your own
+     ========================================================= -->
+<section class="section hero is-light" id="sec-1">
+  <div class="container is-max-desktop">
+
+    <!-- Title + mini TOC -->
+    <h2 class="title is-3">Section 1 — Foundations and Notation</h2>
+    <div class="box" style="margin-top:.75rem;">
+      <p class="is-size-6 has-text-weight-semibold" style="margin-bottom:.5rem;">Contents</p>
+      <ul class="is-size-6" style="margin-left:1rem;">
+        <li><a href="#sec-1-1">1.1  Problem Setup</a></li>
+        <li><a href="#sec-1-1-1">1.1.1  Geometry and Variables</a></li>
+        <li><a href="#sec-1-1-2">1.1.2  Monte Carlo Estimator</a></li>
+        <li><a href="#sec-1-2">1.2  Practical Considerations</a></li>
+        <li><a href="#sec-2">Section 2 — Algorithms</a></li>
+      </ul>
+    </div>
+
+    <!-- Intro paragraph -->
+    <div class="content has-text-justified">
+      <p>
+        We consider a scalar field \(u:\Omega\to\mathbb{R}\) on a bounded domain \(\Omega\subset\mathbb{R}^2\).
+        Throughout, bold letters denote vectors, e.g., \(\mathbf{x}=(x,y)\), and \(\nabla\) indicates
+        spatial differentiation. Our goal is to provide a compact template for <em>structured technical
+        exposition</em>—including figures, equations, and multi-level headings—matching this site’s style.
+      </p>
+    </div>
+
+    <!-- Single figure with caption -->
+    <figure class="image" style="max-width: 640px; margin: 1rem auto;">
+      <img src="static/images/placeholder_domain.png" alt="Domain schematic">
+      <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+        <em>Figure 1.</em> Example domain \(\Omega\) with boundary \(\partial\Omega\).
+      </figcaption>
+    </figure>
+
+    <!-- 1.1 -->
+    <h3 class="title is-4" id="sec-1-1">1.1  Problem Setup</h3>
+    <div class="content has-text-justified">
+      <p>
+        We adopt the classical Poisson model
+        \[
+          -\,\Delta u(\mathbf{x}) \;=\; f(\mathbf{x}) \quad \text{in } \Omega,
+          \qquad
+          u(\mathbf{x}) \;=\; g(\mathbf{x}) \quad \text{on } \partial\Omega,
+          \tag{1.1}
+        \]
+        where \(f\) is a given source term and \(g\) specifies Dirichlet boundary data.
+        For compactness we denote \(\langle a,b\rangle\) the Euclidean inner product.
+      </p>
+    </div>
+
+    <!-- 1.1.1 -->
+    <h4 class="title is-5" id="sec-1-1-1">1.1.1  Geometry and Variables</h4>
+    <div class="columns is-variable is-6">
+      <div class="column">
+        <div class="content has-text-justified">
+          <p>
+            Let \(B(\mathbf{x};R)\) be a disk of radius \(R\) centered at \(\mathbf{x}\). We will uniformly
+            sample points \(\mathbf{y}\in B(\mathbf{x};R)\) to estimate local contributions. We use the Green’s
+            function \(G(\mathbf{x},\mathbf{y})\) for \(-\Delta\) in \(\Omega\).
+          </p>
+          <p class="has-text-centered">
+            \[
+              \mathcal{S}(\mathbf{x})
+              \;=\;
+              \int_{B(\mathbf{x};R)} G(\mathbf{x},\mathbf{y})\,f(\mathbf{y})\,d\mathbf{y}.
+              \tag{1.2}
+            \]
+          </p>
+          <p>
+            In polar coordinates \(\mathbf{y}=\mathbf{x}+r\mathbf{e}_\phi\), the integral becomes
+            \[
+              \int_0^{2\pi}\!\!\int_0^{R}
+                G\!\big(\mathbf{x},\mathbf{x}+r\mathbf{e}_\phi\big)\,
+                f\!\big(\mathbf{x}+r\mathbf{e}_\phi\big)\, r\,dr\,d\phi.
+              \tag{1.3}
+            \]
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <figure class="image" style="max-width: 520px; margin: 0 auto;">
+          <img src="static/images/placeholder_disk.png" alt="Disk sampling">
+          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+            <em>Figure 2.</em> Uniform sampling in \(B(\mathbf{x};R)\).
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- 1.1.2 -->
+    <h4 class="title is-5" id="sec-1-1-2">1.1.2  Monte Carlo Estimator</h4>
+    <div class="content has-text-justified">
+      <p>
+        With i.i.d. samples \(\mathbf{y}_i\sim \mathcal{U}(B(\mathbf{x};R))\), we estimate \(\mathcal{S}\) by
+        \[
+          \widehat{\mathcal{S}}(\mathbf{x})
+          \;=\;
+          \frac{1}{M}\sum_{i=1}^{M} G(\mathbf{x},\mathbf{y}_i)\,f(\mathbf{y}_i),
+          \qquad
+          \mathbf{y}_i \sim \mathcal{U}\!\big(B(\mathbf{x};R)\big).
+          \tag{1.4}
+        \]
+        Variance can be reduced by importance sampling with density \(p(\mathbf{y})\):
+        \[
+          \widehat{\mathcal{S}}_{\mathrm{IS}}(\mathbf{x})
+          \;=\;
+          \frac{1}{M}\sum_{i=1}^M
+          \frac{ G(\mathbf{x},\mathbf{y}_i)\,f(\mathbf{y}_i) }{ p(\mathbf{y}_i) },
+          \qquad \mathbf{y}_i\sim p.
+          \tag{1.5}
+        \]
+      </p>
+      <div class="box" style="background:#f7fafc;">
+        <p class="is-size-6">
+          <strong>Remark 1.1.</strong>
+          If \(G(\mathbf{x},\cdot)\,f(\cdot)\) is radially concentrated, use a separable
+          \(p(r,\phi)=p_r(r)p_\phi(\phi)\) with \(p_\phi(\phi)=\tfrac{1}{2\pi}\) and \(p_r(r)\propto r\,w(r)\).
+        </p>
+      </div>
+    </div>
+
+    <!-- 1.2 -->
+    <h3 class="title is-4" id="sec-1-2">1.2  Practical Considerations</h3>
+    <div class="content has-text-justified">
+      <ul>
+        <li><strong>Sample count.</strong> A small \(M\) per step often suffices when many steps are taken.</li>
+        <li><strong>Control variates.</strong> Subtract a cheap surrogate and add back its integral.</li>
+        <li><strong>Stratification.</strong> Partition the disk by radius bands to reduce variance.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     Section 2: Algorithms (with numbered subsubsections)
+     ========================================================= -->
+<section class="section" id="sec-2">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Section 2 — Algorithms</h2>
+
+    <h3 class="title is-4" id="sec-2-1">2.1  Random Walk with Source Term</h3>
+    <div class="content has-text-justified">
+      <p>
+        We interleave boundary sampling with the source estimate from (1.4). Let \(\mathbf{x}_k\) be
+        the current point and \(R_k\) the largest admissible radius. A single step uses:
+      </p>
+      <ol>
+        <li>Draw \(\mathbf{y}\sim \mathcal{U}\!\big(B(\mathbf{x}_k; R_k)\big)\) and accumulate \(G(\mathbf{x}_k,\mathbf{y})f(\mathbf{y})\).</li>
+        <li>Sample the next boundary point on \(\partial B(\mathbf{x}_k; R_k)\) and recurse.</li>
+      </ol>
+    </div>
+
+    <h4 class="title is-5" id="sec-2-1-1">2.1.1  Pseudocode</h4>
+    <div class="box">
+      <pre style="white-space:pre-wrap;"><code>// RandomWalkWithSource(x0, steps, M)
+accum ← 0
+x ← x0
+for k = 1..steps:
+  R ← LargestAdmissibleRadius(x)
+  for i = 1..M:
+    y ← UniformDisk(x, R)
+    accum ← accum + G(x, y) * f(y)
+  x ← SampleOnCircle(x, R)  // boundary recursion
+return accum / M</code></pre>
+    </div>
+
+    <h4 class="title is-5" id="sec-2-1-2">2.1.2  Cost and Variance</h4>
+    <div class="content has-text-justified">
+      <p>
+        Per step cost is \(O(M)\). For fixed work \(W = M \times \text{steps}\), pick \(M\) to match the
+        integrand’s variability; stratification in \(r\) can reduce the effective variance constant.
+      </p>
+    </div>
+
+    <h3 class="title is-4" id="sec-2-2">2.2  Side-by-Side Illustration</h3>
+    <div class="columns is-variable is-6">
+      <div class="column">
+        <figure class="image">
+          <img src="static/images/placeholder_figure_left.png" alt="Left illustration">
+          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+            <em>Figure 3a.</em> Boundary sampling schematic.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="column">
+        <figure class="image">
+          <img src="static/images/placeholder_figure_right.png" alt="Right illustration">
+          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+            <em>Figure 3b.</em> Source sampling inside \(B(\mathbf{x})\).
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="box" style="background:#f7fafc;">
+      <p class="is-size-6">
+        <strong>Remark 2.1.</strong> Equations use KaTeX auto-render. Inline math like
+        \(e^{i\phi}\) and display math like
+        \[
+          \int_0^{2\pi}\!\!\int_0^R h(r,\phi)\,r\,dr\,d\phi
+        \]
+        will render automatically with your existing includes.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Global optics -->
+    <h2 class="title is-4">Global Optics (synced)</h2>
+    <div class="box">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <label class="label is-small">Wavelength λ (µm)</label>
+          <input id="gl-lambda" class="input is-small" type="number" min="0.2" max="10" step="0.01" value="1.5" style="width:100px;">
+        </div>
+        <div class="control">
+          <label class="label is-small">Incidence θᵢ (deg)</label>
+          <input id="gl-theta-i" class="input is-small" type="number" min="-89" max="89" step="0.1" value="20" style="width:90px;">
+        </div>
+        <div class="control">
+          <label class="label is-small">Outgoing θₒ (deg)</label>
+          <input id="gl-theta-o" class="input is-small" type="number" min="-89" max="89" step="0.1" value="20" style="width:90px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <h2 class="title is-4">Section 1 — Surface Visualization + Phasor (t = 0)</h2>
+    <div id="s1" class="box">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <label class="label is-small">RMS height σ (µm)</label>
+          <input id="s1-sigma" class="slider is-fullwidth" type="range" min="0" max="5.0" step="0.01" value="1.50">
+          <p class="help">σ: <span id="s1-tSigma">1.50</span> µm</p>
+        </div>
+        <div class="control">
+          <label class="label is-small">Correlation length ℓ (µm)</label>
+          <input id="s1-ell" class="slider is-fullwidth" type="range" min="0" max="50" step="0.1" value="8.0">
+          <p class="help">ℓ: <span id="s1-tEll">8.0</span> µm</p>
+        </div>
+        <div class="control" style="align-self:flex-end;">
+          <button id="s1-reseed" class="button is-small is-dark">Reseed</button>
+        </div>
+      </div>
+
+      <div class="columns is-mobile">
+        <div class="column">
+          <canvas id="s1-surface" width="720" height="260" style="width:100%; height:260px; border:1px solid #1a2027; border-radius:6px;"></canvas>
+          <p class="is-size-7 has-text-grey">
+            h(x) over L = 100 µm. Middle half (25–75 µm) is used for the phasor sum. Vertical axis fixed at ±10 µm. Gray fill = surface.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns is-mobile">
+        <div class="column is-narrow">
+          <canvas id="s1-argand" width="240" height="240" style="border:1px solid #1a2027; border-radius:6px; width:240px; height:240px;"></canvas>
+        </div>
+        <div class="column">
+          <div class="content" style="margin-left:0.5rem;">
+            <p class="is-size-6"><strong>Phasor Sum (middle half, t = 0)</strong></p>
+            <ul class="is-size-6">
+              <li>Window M = <span id="s1-M">—</span> samples</li>
+              <li>|S| = <span id="s1-mag">—</span> &nbsp; |S|/M = <span id="s1-magn">—</span></li>
+              <li>∠S (rad) = <span id="s1-ang">—</span></li>
+              <li>Re(S) = <span id="s1-re">—</span> · Im(S) = <span id="s1-im">—</span></li>
+            </ul>
+            <p class="is-size-7 has-text-grey">
+              \(z_k=\exp\{j[\Delta k_x x_k - (2\pi/\lambda)\,q\,h(x_k)]\}\), with
+              \(q=\cos\theta_i+\cos\theta_o\), \(\Delta k_x=(2\pi/\lambda)(\sin\theta_o-\sin\theta_i)\).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <h2 class="title is-4" style="margin-top:2rem;">Section 2 — Moving Window (visual) + Live Phasor + FFT of S(t)</h2>
+    <div id="s2" class="box">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <label class="label is-small">Velocity v (m/s)</label>
+          <input id="s2-vel" class="slider is-fullwidth" type="range" min="0" max="2" step="0.01" value="0.50">
+          <p class="help">v: <span id="s2-tVel">0.50</span> m/s (≡ <span id="s2-tVelMic">0.50</span> µm/µs)</p>
+        </div>
+        <div class="control" style="align-self:flex-end;">
+          <button id="s2-recompute" class="button is-small">Recompute FFT</button>
+        </div>
+      </div>
+
+      <!-- Animated surface (window moves visually only) -->
+      <div class="columns is-mobile">
+        <div class="column">
+          <canvas id="s2-surface" width="720" height="260" style="width:100%; height:260px; border:1px solid #1a2027; border-radius:6px;"></canvas>
+          <p class="is-size-7 has-text-grey">
+            The blue window moves right and wraps every 1 s (visualization).
+            FFT is computed from S(t) built with the fixed middle window and the shifted surface \(h(x-vt)\).
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Argand + FFT (no |S(t)| plot) -->
+      <div class="columns is-mobile">
+        <div class="column is-narrow">
+          <canvas id="s2-argand" width="240" height="240" style="border:1px solid #1a2027; border-radius:6px; width:240px; height:240px;"></canvas>
+        </div>
+        <div class="column">
+          <div class="content" style="margin-left:0.5rem;">
+            <p class="is-size-6"><strong>Live Phasor (uses S(t) at the current animation time)</strong></p>
+            <ul class="is-size-6">
+              <li>Window M = <span id="s2-M">—</span> samples</li>
+              <li>|S(t)| = <span id="s2-mag">—</span> &nbsp; |S|/M = <span id="s2-magn">—</span></li>
+              <li>∠S (rad) = <span id="s2-ang">—</span></li>
+              <li>Re(S) = <span id="s2-re">—</span> · Im(S) = <span id="s2-im">—</span></li>
+            </ul>
+            <p class="is-size-7 has-text-grey">
+              Live time mapping: one real-time second corresponds to a spatial shift of \(T\cdot v\) with \(T=10\,\mu s\).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-mobile">
+        <div class="column">
+          <canvas id="s2-spec" width="720" height="220" style="width:100%; height:220px; border:1px solid #1a2027; border-radius:6px;"></canvas>
+          <p class="is-size-7 has-text-grey">|FFT{S(t)}| (rectangular window), frequency in MHz, 0…Nyquist (M=128 over T=10 µs).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // ===== constants =====
+  const L_um = 100.0;              // spatial span
+  const N = 4096;                  // fixed spatial samples
+  const dx_um = L_um / N;
+  const T_us = 10.0;               // time span for S(t)
+  const M_ts = 128;                // time samples (FFT length)
+
+  // ===== DOM =====
+  const $ = id => document.getElementById(id);
+  // global
+  const glLam = $('gl-lambda'), glTi = $('gl-theta-i'), glTo = $('gl-theta-o');
+  // s1
+  const s1Sigma=$('s1-sigma'), s1Ell=$('s1-ell'), s1SeedBtn=$('s1-reseed');
+  const s1TSigma=$('s1-tSigma'), s1TEll=$('s1-tEll');
+  const s1Surf=$('s1-surface'), s1Arg=$('s1-argand');
+  const s1M=$('s1-M'), s1Mag=$('s1-mag'), s1Magn=$('s1-magn'), s1Ang=$('s1-ang'), s1Re=$('s1-re'), s1Im=$('s1-im');
+  // s2
+  const s2Vel=$('s2-vel'), s2TVel=$('s2-tVel'), s2TVelMic=$('s2-tVelMic'), s2Recomp=$('s2-recompute');
+  const s2Surf=$('s2-surface'), s2Spec=$('s2-spec'), s2Arg=$('s2-argand');
+  const s2M=$('s2-M'), s2Mag=$('s2-mag'), s2Magn=$('s2-magn'), s2Ang=$('s2-ang'), s2Re=$('s2-re'), s2Im=$('s2-im');
+
+  // ===== state =====
+  let sigma_um=parseFloat(s1Sigma.value);
+  let ell_um=parseFloat(s1Ell.value);
+  let lambda_um=parseFloat(glLam.value);
+  let theta_i_deg=parseFloat(glTi.value);
+  let theta_o_deg=parseFloat(glTo.value);
+  let v_mps=parseFloat(s2Vel.value); // 1 m/s == 1 µm/µs
+  let seed=(Math.random()*1e9)>>>0;
+
+  // arrays
+  const x_um=new Float64Array(N);
+  for (let i=0;i<N;i++) x_um[i]=i*dx_um;
+  let h_um=new Float64Array(N);
+
+  // ===== FFT =====
+  function bitReverse(n,b){ let r=0; for(let i=0;i<b;i++){ r=(r<<1)|(n&1); n>>=1; } return r; }
+  function fftComplex(re,im,inverse=false){
+    const NN=re.length, lev=Math.log2(NN)|0; if ((1<<lev)!==NN) throw new Error('FFT length must be power of 2');
+    for(let i=0;i<NN;i++){ const j=bitReverse(i,lev); if (j>i){ [re[i],re[j]]=[re[j],re[i]]; [im[i],im[j]]=[im[j],im[i]]; } }
+    for(let size=2; size<=NN; size<<=1){
+      const half=size>>1, theta=(inverse?-2:2)*Math.PI/size, wpr=Math.cos(theta), wpi=Math.sin(theta);
+      for(let i=0;i<NN;i+=size){
+        let wr=1, wi=0;
+        for(let j=0;j<half;j++){
+          const k=i+j, t=k+half;
+          const tr=wr*re[t]-wi*im[t], ti=wr*im[t]+wi*re[t];
+          re[t]=re[k]-tr; im[t]=im[k]-ti;
+          re[k]+=tr;      im[k]+=ti;
+          const wtmp=wr; wr=wtmp*wpr-wi*wpi; wi=wtmp*wpi+wi*wpr;
+        }
+      }
+    }
+    if (inverse){ for(let i=0;i<NN;i++){ re[i]/=NN; im[i]/=NN; } }
+  }
+  function ifftComplex(re,im){ fftComplex(re,im,true); }
+  function fftfreq(N, d){
+    const val=1/(N*d), out=new Float64Array(N);
+    const N2=Math.floor((N-1)/2)+1;
+    for(let i=0;i<N2;i++) out[i]=i*val;
+    for(let i=N2;i<N;i++) out[i]=(i-N)*val;
+    return out;
+  }
+  function RNG(s){ let x=(s|0)||123456789; return ()=>{ x^=x<<13; x^=x>>>17; x^=x<<5; return (x>>>0)/0xFFFFFFFF; }; }
+
+  // ===== surface generation (1D spectral, Gaussian PSD) =====
+  // PSD(f)=exp(-0.5 f^2 ell^2), f in cycles/µm
+  function generateSurface(){
+    const f=fftfreq(N, dx_um);
+    const sqrtPSD=new Float64Array(N);
+    const ell2=ell_um*ell_um;
+    for (let k=0;k<N;k++){ const fk=f[k]; sqrtPSD[k]=Math.exp(-0.25*fk*fk*ell2); }
+
+    const re=new Float64Array(N), im=new Float64Array(N);
+    const rng=RNG(seed);
+    re[0]=(rng()-0.5)*2*sqrtPSD[0]; im[0]=0;
+    const kmax=Math.floor(N/2);
+    for (let k=1;k<kmax;k++){
+      const u1=Math.max(rng(),1e-12), u2=rng();
+      const r=Math.sqrt(-2*Math.log(u1)), a=2*Math.PI*u2;
+      const zR=r*Math.cos(a), zI=r*Math.sin(a);
+      const s = sqrtPSD[k]/Math.SQRT2;
+      re[k]=zR*s; im[k]=zI*s;
+      re[N-k]= re[k]; im[N-k]= -im[k]; // Hermitian
+    }
+    if (N%2===0){ const kN=N/2; re[kN]=(rng()-0.5)*2*sqrtPSD[kN]; im[kN]=0; }
+
+    ifftComplex(re,im);
+    // zero-mean & scale to RMS sigma
+    let mean=0; for(let i=0;i<N;i++) mean+=re[i]; mean/=N;
+    let varr=0; for(let i=0;i<N;i++){ const v=re[i]-mean; varr+=v*v; } varr/=N;
+    const std=Math.sqrt(Math.max(varr,1e-20));
+    const sc=sigma_um/std;
+    for (let i=0;i<N;i++) h_um[i]=(re[i]-mean)*sc;
+  }
+
+  // periodic linear interpolation
+  function h_at(x){
+    let xx = x % L_um; if (xx<0) xx+=L_um;
+    const idx = xx/dx_um;
+    const i0 = Math.floor(idx);
+    const i1 = (i0+1) % N;
+    const t  = idx - i0;
+    return h_um[i0]*(1-t) + h_um[i1]*t;
+  }
+
+  // ===== phasor sum (fixed middle window), at time t_us with surface shift h(x - v t) =====
+  function phasorSumAtTime(t_us){
+    const ti=theta_i_deg*Math.PI/180, to=theta_o_deg*Math.PI/180;
+    const k = 2*Math.PI / lambda_um;                 // 1/µm
+    const q = Math.cos(ti)+Math.cos(to);
+    const dkx = k*(Math.sin(to)-Math.sin(ti));       // 1/µm
+    const v_um_per_us = v_mps;                       // 1 m/s == 1 µm/µs
+
+    const iStart = Math.floor(N/4), iEnd = Math.ceil(3*N/4)-1;
+    const M = iEnd - iStart + 1;
+
+    let Re=0, Im=0;
+    for (let i=iStart;i<=iEnd;i++){
+      const x = x_um[i];
+      const hx = h_at(x - v_um_per_us*t_us);
+      const phase = dkx*x - k*q*hx;
+      Re += Math.cos(phase);
+      Im += Math.sin(phase);
+    }
+    return {Re, Im, M};
+  }
+
+  // ===== compute S(t) and FFT =====
+  function computeFFT(){
+    const dt_us = T_us / M_ts;
+    const Fs_MHz = 1/dt_us;          // samples per µs
+    const fRes = Fs_MHz / M_ts;      // 1/T
+    const St_re=new Float64Array(M_ts), St_im=new Float64Array(M_ts);
+    for (let n=0;n<M_ts;n++){
+      const t_us = n*dt_us;
+      const {Re, Im} = phasorSumAtTime(t_us);
+      St_re[n]=Re; St_im[n]=Im;
+    }
+    const F_re=St_re.slice(0), F_im=St_im.slice(0);
+    fftComplex(F_re, F_im, false);
+    const half=Math.floor(M_ts/2);
+    const magSpec=new Float64Array(half+1);
+    for (let k=0;k<=half;k++) magSpec[k]=Math.hypot(F_re[k],F_im[k]);
+    return {magSpec, fMaxMHz: half*fRes};
+  }
+
+  // ===== drawing =====
+  function setCanvasSize(c){
+    const dpr=Math.min(2, window.devicePixelRatio||1);
+    const cssW=c.clientWidth||c.width, cssH=c.clientHeight||c.height;
+    const W=Math.floor(cssW*dpr), H=Math.floor(cssH*dpr);
+    if (c.width!==W||c.height!==H){ c.width=W; c.height=H; }
+    return {W,H,dpr};
+  }
+
+  function drawSurface(canvas, winShiftUm=0){
+    const {W,H,dpr}=setCanvasSize(canvas);
+    const ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
+
+    // axis
+    const y0=H/2; ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(0,y0+0.5*dpr); ctx.lineTo(W,y0+0.5*dpr); ctx.stroke();
+
+    const X = x => (x/L_um)*(W-1);
+
+    // shaded window [25,75] µm shifted by winShiftUm (wrap for Section 2 anim)
+    const base0=L_um/4, base1=3*L_um/4;
+    let a=(base0+winShiftUm)%L_um; if (a<0) a+=L_um;
+    let b=(base1+winShiftUm)%L_um; if (b<0) b+=L_um;
+    ctx.fillStyle='rgba(124,195,255,0.18)';
+    if (a<=b){
+      ctx.fillRect(X(a),0,X(b)-X(a),H);
+    } else {
+      ctx.fillRect(X(a),0,X(L_um)-X(a),H);
+      ctx.fillRect(X(0),0,X(b)-X(0),H);
+    }
+
+    // vertical scale ±10 µm
+    const Hspan=10.0;
+    const Y = h => H*(0.5 - h/(2*Hspan));
+
+    // fill under curve
+    ctx.beginPath();
+    for (let i=0;i<N;i++){
+      const xx=X(x_um[i]), yy=Y(h_um[i]);
+      if (i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
+    }
+    ctx.lineTo(X(x_um[N-1]), H); ctx.lineTo(X(x_um[0]), H); ctx.closePath();
+    ctx.fillStyle='#4a4a4a'; ctx.fill();
+
+    // stroke
+    ctx.strokeStyle='#e6eef7'; ctx.lineWidth=1.5*dpr;
+    ctx.beginPath();
+    for (let i=0;i<N;i++){
+      const xx=X(x_um[i]), yy=Y(h_um[i]);
+      if (i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
+    }
+    ctx.stroke();
+
+    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
+    ctx.textAlign='left'; ctx.textBaseline='bottom';
+    ctx.fillText('h (µm): ±10', 6*dpr, H-4*dpr);
+  }
+
+  function drawArgand(canvas, Re, Im, M){
+    const {W,H,dpr}=setCanvasSize(canvas);
+    const ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
+
+    const cx=W/2, cy=H/2;
+    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(0,cy+0.5*dpr); ctx.lineTo(W,cy+0.5*dpr); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+0.5*dpr,0); ctx.lineTo(cx+0.5*dpr,H); ctx.stroke();
+
+    const R=0.8*Math.min(W,H)/2;
+    ctx.strokeStyle='#33485e'; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+
+    const ren=Re/M, imn=Im/M;
+    ctx.strokeStyle='#7cc3ff'; ctx.fillStyle='#7cc3ff'; ctx.lineWidth=2*dpr;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+ren*R, cy-imn*R); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx+ren*R, cy-imn*R, 3*dpr, 0, Math.PI*2); ctx.fill();
+  }
+
+  function drawSpectrum(canvas, magSpec, fMaxMHz){
+    const {W,H,dpr}=setCanvasSize(canvas);
+    const ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
+
+    let maxv=1e-12; for (let i=0;i<magSpec.length;i++) if (magSpec[i]>maxv) maxv=magSpec[i];
+
+    const X = i => (i/(magSpec.length-1))*(W-1);
+    const Y = v => H - (v/maxv)*(H-16*dpr) - 8*dpr;
+
+    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(0,H-0.5*dpr); ctx.lineTo(W,H-0.5*dpr); ctx.stroke();
+
+    ctx.strokeStyle='#7cc3ff'; ctx.lineWidth=1.5*dpr;
+    ctx.beginPath();
+    for (let i=0;i<magSpec.length;i++){
+      const x=X(i), y=Y(magSpec[i]);
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
+    ctx.textAlign='left'; ctx.textBaseline='bottom';
+    ctx.fillText('f (MHz): 0', 6*dpr, H-4*dpr);
+    ctx.textAlign='right'; ctx.fillText(fMaxMHz.toFixed(2), W-6*dpr, H-4*dpr);
+  }
+
+  // ===== section logic =====
+  function updateSection1(){
+    sigma_um=parseFloat(s1Sigma.value);
+    ell_um=parseFloat(s1Ell.value);
+    lambda_um=parseFloat(glLam.value);
+    theta_i_deg=parseFloat(glTi.value);
+    theta_o_deg=parseFloat(glTo.value);
+
+    s1TSigma.textContent=sigma_um.toFixed(2);
+    s1TEll.textContent=ell_um.toFixed(1);
+
+    generateSurface();
+    drawSurface(s1Surf, 0);
+
+    // t = 0 phasor in middle window
+    const ti=theta_i_deg*Math.PI/180, to=theta_o_deg*Math.PI/180;
+    const k = 2*Math.PI / lambda_um, q=Math.cos(ti)+Math.cos(to);
+    const dkx = k*(Math.sin(to)-Math.sin(ti));
+    const iStart=Math.floor(N/4), iEnd=Math.ceil(3*N/4)-1; const M=iEnd-iStart+1;
+    let Re=0, Im=0;
+    for (let i=iStart;i<=iEnd;i++){
+      const x=x_um[i], h=h_um[i];
+      const phase=dkx*x - k*q*h;
+      Re+=Math.cos(phase); Im+=Math.sin(phase);
+    }
+    const mag=Math.hypot(Re,Im), magn=mag/M, ang=Math.atan2(Im,Re);
+    s1M.textContent=String(M);
+    s1Mag.textContent=mag.toFixed(6);
+    s1Magn.textContent=magn.toFixed(6);
+    s1Ang.textContent=ang.toFixed(6);
+    s1Re.textContent=Re.toFixed(6);
+    s1Im.textContent=Im.toFixed(6);
+    drawArgand(s1Arg, Re, Im, M);
+  }
+
+  function updateSection2(){
+    v_mps=parseFloat(s2Vel.value);
+    s2TVel.textContent=v_mps.toFixed(2);
+    s2TVelMic.textContent=v_mps.toFixed(2);
+
+    // recompute FFT of S(t) using fixed window & h(x - v t)
+    const {magSpec, fMaxMHz} = computeFFT();
+    drawSpectrum(s2Spec, magSpec, fMaxMHz);
+  }
+
+  // animated moving blue window (visual) + LIVE ARGAND using S(t_now)
+  let animRAF=null, animStartMs=performance.now();
+  function currentShiftUm(){
+    const maxShift = T_us * v_mps; // µm per 1s of real time
+    const phase = ((performance.now()-animStartMs)/1000) % 1.0;
+    return phase * maxShift;
+  }
+  function currentTimeUs(){
+    // phase * T_us (independent of v when v>0; if v=0, keep t=0)
+    if (v_mps<=1e-12) return 0;
+    const phase = ((performance.now()-animStartMs)/1000) % 1.0;
+    return phase * T_us;
+  }
+  function animateS2(){
+    // move window visually
+    drawSurface(s2Surf, currentShiftUm());
+
+    // live phasor sum at current animation time using the validated model
+    const t_us_live = currentTimeUs();
+    const {Re, Im, M} = phasorSumAtTime(t_us_live);
+    s2M.textContent=String(M);
+    s2Mag.textContent=Math.hypot(Re,Im).toFixed(6);
+    s2Magn.textContent=(Math.hypot(Re,Im)/M).toFixed(6);
+    s2Ang.textContent=Math.atan2(Im,Re).toFixed(6);
+    s2Re.textContent=Re.toFixed(6);
+    s2Im.textContent=Im.toFixed(6);
+    drawArgand(s2Arg, Re, Im, M);
+
+    animRAF=requestAnimationFrame(animateS2);
+  }
+  function restartAnim(){
+    animStartMs=performance.now();
+    if (animRAF) cancelAnimationFrame(animRAF);
+    animRAF=requestAnimationFrame(animateS2);
+  }
+
+  // ===== events =====
+  [glLam, glTi, glTo].forEach(el=> el.addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); }));
+  s1Sigma.addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
+  s1Ell  .addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
+  s1SeedBtn.addEventListener('click', ()=>{ seed=(Math.random()*1e9)>>>0; updateSection1(); updateSection2(); restartAnim(); });
+
+  s2Vel.addEventListener('input', ()=>{ updateSection2(); restartAnim(); });
+  s2Recomp.addEventListener('click', ()=>{ updateSection2(); restartAnim(); });
+
+  window.addEventListener('resize', ()=>{ drawSurface(s1Surf,0); /* s2 anim refreshes itself */ });
+
+  // ===== first render =====
+  updateSection1();
+  updateSection2();
+  restartAnim();
+})();
+</script>
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+  </body>
+  </html>
