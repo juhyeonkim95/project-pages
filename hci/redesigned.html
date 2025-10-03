@@ -105,6 +105,26 @@
   .splash .bubbleLogo{background:#3b2b2b;color:#fee500;padding:16px 28px;border-radius:20px;font-weight:900;letter-spacing:.5px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:18px}
 
   .hidden{display:none !important}
+  /* ---- floating switcher ---- */
+.switcher { position: fixed; right: 14px; bottom: 64px; z-index: 9999; }
+.switcher .fab {
+  background: #fee500; color:#111; border:0; border-radius:999px;
+  padding:10px 14px; font-weight:800; box-shadow:0 8px 24px rgba(0,0,0,.28);
+  cursor:pointer;
+}
+.switcher .menu {
+  position:absolute; right:0; bottom:48px; min-width:220px;
+  background:#181a20; color:#e9ecf1; border:1px solid #2a2e38; border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden; display:none;
+}
+.switcher .menu a {
+  display:block; padding:10px 12px; text-decoration:none; color:#e9ecf1;
+  border-bottom:1px solid #232733; font-size:14px;
+}
+.switcher .menu a:last-child { border-bottom:none; }
+.switcher .menu a:hover { background:#20242e; }
+.switcher .menu .label { display:block; padding:8px 12px; font-size:12px; color:#aab0bb; }
+.switcher.open .menu { display:block; }
   </style>
 </head>
 <body>
@@ -417,5 +437,36 @@
     // Start on CHATS after splash
     setScreen('chats');
   </script>
+  <!-- Floating page switcher -->
+<div class="switcher" id="pageSwitcher" aria-label="Switch version">
+  <button class="fab" id="switcherBtn">↔ Switch</button>
+  <div class="menu" id="switcherMenu" role="menu">
+    <span class="label">Open another view</span>
+    <!-- TODO: update the hrefs to your real filenames -->
+    <a href="original.html">Original (feed-first)</a>
+    <a href="redesigned.html">Redesigned (chats-first)</a>
+  </div>
+</div>
+<script>
+(function(){
+  const sw = document.getElementById('pageSwitcher');
+  const btn = document.getElementById('switcherBtn');
+  const menu = document.getElementById('switcherMenu');
+
+  function toggle(open){
+    sw.classList.toggle('open', open !== undefined ? open : !sw.classList.contains('open'));
+  }
+  btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+  document.addEventListener('click', e => {
+    if (!sw.contains(e.target)) toggle(false);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') toggle(false);
+    if (e.key.toLowerCase() === 's' && (e.ctrlKey || e.metaKey)) { // Ctrl/Cmd+S opens menu
+      e.preventDefault(); toggle(true);
+    }
+  });
+})();
+</script>
 </body>
 </html>
