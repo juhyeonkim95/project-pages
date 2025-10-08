@@ -24,8 +24,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
-Detection</title>
+  <title>Doppler Rendering in One Weekend</title>
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
@@ -62,344 +61,716 @@ Detection</title>
 
 <body>
 
-<!-- ============================================
-     Monte Carlo text + figures + equations demo
-     ============================================ -->
-<section class="section hero is-light">
+<!-- =========================
+     Title • Authors • TOC
+     ========================= -->
+<section class="section hero is-light" id="doc-top">
   <div class="container is-max-desktop">
-    <h2 class="title is-3">4.2.2 Monte Carlo to the Rescue… Again</h2>
-
-    <!-- Lead paragraph -->
-    <div class="content has-text-justified">
+    <h1 class="title is-1 has-text-centered">Doppler Rendering in One Weekend</h1>
+    <p class="is-size-5 has-text-centered author-line" style="margin-bottom:1rem;">
+     <a href="https://juhyeonkim.netlify.app/" target="_blank" rel="noopener">Juhyeon Kim</a>
+    </p>
+      <div class="content has-text-justified">
       <p>
-        We wish to turn the boundary–integral formulation of the Poisson problem into
-        a practical estimator. The boundary term is handled recursively by sampling a
-        point on the largest sphere about the current position \(x_k\). For the source term,
-        however, we draw samples uniformly inside the ball (disk) \(B(x_k)\) and form a Monte
-        Carlo estimate. Throughout, the Green’s function \(G\) and source \(f\) are known, so
-        we can evaluate the integrand directly without nested dependence on the unknown
-        solution \(u\).
+        Welcome to <em>Doppler Rendering in One Weekend</em>. 
+        The <a href="https://en.wikipedia.org/wiki/Doppler_effect">Doppler effect</a> is a physical phenomenon that frequency changes due to moving objects or observers.
+        Doppler rendering is about simulating such Doppler effect on complex scene, using existing Monte Carlo path tracers.
+        In this tutorial, you will learn the basics of Doppler effect, and understand how Doppler effect is fundamentally different 
+        for AMCW (intensity Doppler) and coherent detections (field amplitude Doppler), and also understand its implication on each detections'
+        simulation strategies.
       </p>
     </div>
 
-    <!-- Single figure with caption -->
-    <figure class="image" style="margin: 1.25rem auto; max-width: 560px;">
-      <img src="static/images/poisson_ball_sampling.png" alt="Uniform sampling in a disk around x_k">
-      <figcaption class="has-text-grey is-size-7" style="margin-top: .5rem;">
-        <em>Uniform sampling inside</em> \(B(x_k)\) <em>to estimate the source contribution.</em>
-      </figcaption>
-    </figure>
+    <!-- Contents -->
+    <div class="box">
+      <h2 class="title is-4" style="margin-bottom:.25rem;">Contents</h2>
+      <ul class="is-size-6" style="margin-left:1rem; line-height:1.6;">
+        <li><a href="#ch1"><strong>1.</strong> Overview</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch1-1"><strong>1.1</strong> What is the Doppler Effect?</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch1-2"><strong>1.2</strong> Applications of the Doppler Effect</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch1-3"><strong>1.3</strong> Why we need Doppler Rendering?</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch1-4"><strong>1.4</strong> Intensity vs. Field Doppler</a></li>
+        
+        <li style="margin-top:.5rem;"><a href="#ch2"><strong>2.</strong> Doppler Effect for Simple Case</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch2-1"><strong>2.1</strong> Monostatic Doppler Effect</a></li>
 
-    <!-- Display equation with a tag -->
-    <div class="content">
-      <p class="has-text-centered">
-        \[
-          \hat{S}(x_k)
-          \;=\;
-          \frac{1}{M}\sum_{i=1}^{M} G(x_k, y_i)\,f(y_i),
-          \qquad
-          y_i \sim \mathcal{U}\!\big(B(x_k)\big)
-          \tag{4.8}
-        \]
-      </p>
-    </div>
-
-    <!-- More text with inline math -->
-    <div class="content has-text-justified">
-      <p>
-        Unlike the boundary contribution—where \(u\) appears inside the integrand—the
-        source estimator uses only known quantities. Hence, variance can be reduced with
-        standard tools: <em>importance sampling</em>, <em>control variates</em>, or <em>stratification</em>.
-        For instance, if \(G(x_k,\cdot)\,f(\cdot)\) is radially concentrated, a radial
-        importance density \(\propto r\,G(x_k,y)f(y)\) inside the disk can substantially
-        reduce variance compared to the uniform law.
-      </p>
-    </div>
-
-    <!-- Two-column: derivation + figure -->
-    <div class="columns is-variable is-6">
-      <div class="column">
-        <div class="content has-text-justified">
-          <p>
-            Writing the disk integral in polar coordinates \(y = x_k + r\,(\cos\phi,\sin\phi)\)
-            with \(r\in[0,R]\), \(\phi\in[0,2\pi)\), we obtain
-          </p>
-
-          <p class="has-text-centered">
-            \[
-              \int_{B(x_k)} G(x_k,y)\,f(y)\,dy
-              \;=\;
-              \int_0^{2\pi}\!\!\int_0^{R}
-              G\!\big(x_k, x_k + r\,\mathbf{e}_\phi\big)\,
-              f\!\big(x_k + r\,\mathbf{e}_\phi\big)\, r\,dr\,d\phi,
-              \tag{4.9}
-            \]
-          </p>
-
-          <p>
-            A simple importance strategy chooses a separable density
-            \(p(r,\phi)=p_r(r)\,p_\phi(\phi)\) with \(p_\phi(\phi)=\tfrac{1}{2\pi}\)
-            and a radial law \(p_r(r)\propto r\,w(r)\). The corresponding estimator is
-          </p>
-
-          <p class="has-text-centered">
-            \[
-              \hat{S}_{\mathrm{IS}}(x_k)
-              \;=\;
-              \frac{1}{M}\sum_{i=1}^M
-              \frac{
-                G\big(x_k, x_k + r_i\,\mathbf{e}_{\phi_i}\big)\,
-                f\big(x_k + r_i\,\mathbf{e}_{\phi_i}\big)\, r_i
-              }{
-                p_r(r_i)\,p_\phi(\phi_i)
-              },
-              \qquad
-              r_i\sim p_r,\;\phi_i\sim p_\phi.
-              \tag{4.10}
-            \]
-          </p>
-        </div>
-      </div>
-
-      <div class="column">
-        <figure class="image" style="max-width: 520px; margin: 0 auto;">
-          <img src="static/images/disk_importance.png" alt="Radial importance sampling inside a disk">
-          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-            Radial importance sampling inside \(B(x_k)\): choose \(p_r(r)\propto r\,w(r)\) to
-            bias samples toward high-contribution radii.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <!-- Small remark box (optional) -->
-    <div class="box" style="background:#f7fafc;">
-      <p class="is-size-6">
-        <strong>Remark.</strong>
-        Since the walk will evaluate a source term at each step, a single sample (\(M=1\))
-        is often sufficient per step; variance is then controlled by the number of walk
-        steps and by the importance distribution.
-      </p>
+        <li style="margin-top:.5rem;"><a href="#ch3"><strong>3.</strong> Doppler Effect for Rough Surface</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch3-1"><strong>3.1</strong> Phasor sum on Static Rough Surface</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch3-2"><strong>3.2</strong> Phasor sum on Dynamic Rough Surface</a></li>
+        
+        <!-- <li style="margin-top:.5rem;"><a href="#ch4"><strong>4.</strong> Doppler Rendering</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch4-1"><strong>4.1</strong> Intensity Doppler Rendering</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch4-2"><strong>4.2</strong> Field Amplitude Doppler Rendering</a></li>
+         -->
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- =========================================================
-     Example: Structured Text Section with Subsections
-     Uses Bulma + KaTeX already loaded on your page
-     Replace image paths with your own
-     ========================================================= -->
-<section class="section hero is-light" id="sec-1">
+<!-- =========================
+     1. Overview
+     ========================= -->
+<section class="section" id="ch1">
   <div class="container is-max-desktop">
+    <h2 class="title is-3"><span class="has-text-weight-bold">1.</span> Overview</h2>
 
-    <!-- Title + mini TOC -->
-    <h2 class="title is-3">Section 1 — Foundations and Notation</h2>
-    <div class="box" style="margin-top:.75rem;">
-      <p class="is-size-6 has-text-weight-semibold" style="margin-bottom:.5rem;">Contents</p>
-      <ul class="is-size-6" style="margin-left:1rem;">
-        <li><a href="#sec-1-1">1.1  Problem Setup</a></li>
-        <li><a href="#sec-1-1-1">1.1.1  Geometry and Variables</a></li>
-        <li><a href="#sec-1-1-2">1.1.2  Monte Carlo Estimator</a></li>
-        <li><a href="#sec-1-2">1.2  Practical Considerations</a></li>
-        <li><a href="#sec-2">Section 2 — Algorithms</a></li>
-      </ul>
-    </div>
-
-    <!-- Intro paragraph -->
     <div class="content has-text-justified">
       <p>
-        We consider a scalar field \(u:\Omega\to\mathbb{R}\) on a bounded domain \(\Omega\subset\mathbb{R}^2\).
-        Throughout, bold letters denote vectors, e.g., \(\mathbf{x}=(x,y)\), and \(\nabla\) indicates
-        spatial differentiation. Our goal is to provide a compact template for <em>structured technical
-        exposition</em>—including figures, equations, and multi-level headings—matching this site’s style.
+        Let's first review the basic concepts of the Doppler effect, that you have learned in high-school physics.
       </p>
     </div>
 
-    <!-- Single figure with caption -->
-    <figure class="image" style="max-width: 640px; margin: 1rem auto;">
-      <img src="static/images/placeholder_domain.png" alt="Domain schematic">
-      <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-        <em>Figure 1.</em> Example domain \(\Omega\) with boundary \(\partial\Omega\).
-      </figcaption>
-    </figure>
+<!-- =========================
+     1.1  Doppler Effect
+     ========================= -->
+<h3 class="title is-4" id="ch1-1"><span class="has-text-weight-bold">1.1</span> What is the Doppler Effect?</h3>
+<div class="content has-text-justified">
+  <p>
+    The <em>Doppler effect</em> describes the apparent change in frequency of a wave
+    when there is relative motion between the source and the observer. 
+    For a wave with frequency \(f\) and wavelength \(\lambda\), if the source
+    moves with velocity \(v_s\) and the observer with velocity \(v_o\) along the
+    line of sight (positive when approaching), the observed frequency is
+  </p>
 
-    <!-- 1.1 -->
-    <h3 class="title is-4" id="sec-1-1">1.1  Problem Setup</h3>
+  <p class="has-text-centered">
+    \[
+      f' \;=\; f \,\frac{c + v_o}{c - v_s},
+    \]
+  </p>
+
+  <p>
+    where \(c\) is the wave propagation speed (e.g., \(c \approx 3\times10^8\ \text{m/s}\) for light in vacuum and \(c \approx 3.4\times10^2\ \text{m/s}\) for sound in air).
+  </p>
+
+  <p>
+    In the limit where both velocities are much smaller than \(c\),
+    the frequency shift \(\Delta f = f' - f\) simplifies to
+  </p>
+
+  <p class="has-text-centered">
+    \[
+      \Delta f \;\approx\; f \,\frac{v_r}{c},
+    \]
+  </p>
+
+  <p>
+    with \(v_r = v_o - v_s\) denoting the <strong>relative radial velocity</strong>.
+    This linearized form is especially common in radar, lidar, and optical
+    heterodyne detection, where shifts of only a few kilohertz or megahertz
+    are measured against optical carriers in the terahertz range.
+  </p>
+</div>
+
+
+<!-- =========================
+     1.2 Applications of the Doppler Effect
+     ========================= -->
+<h2 class="title is-4" id="ch1-2">1.2 Applications of the Doppler Effect</h2>
+
+<div class="content has-text-justified">
+  <p>
+    The Doppler effect finds use in many areas of science and technology. By interpreting
+    frequency shifts as evidence of motion, it enables accurate measurements in diverse fields.
+  </p>
+
+  <p>
+    <em> (A) Transportation and Safety: </em> Radar guns measure vehicle speeds using microwave Doppler shifts. 
+    Modern automotive radar and lidar systems also exploit the Doppler effect to distinguish moving from 
+    stationary objects, improving driver-assistance and self-driving capabilities.
+  </p>
+
+  <p>
+    <em> (B) Weather and Environmental Sensing: </em> Doppler weather radar maps wind fields and storm rotation 
+    by detecting shifts from raindrops and snow. Coherent Doppler lidar, using infrared lasers, profiles 
+    wind fields for wind-farm siting, turbine control, and airport wind-shear detection.
+  </p>
+
+  <p>
+    <em> (C) Industrial and Structural Monitoring: </em> Laser Doppler vibrometry measures vibration and 
+    deformation of structures without contact. Laser Doppler anemometry is used in fluid mechanics 
+    to obtain precise local flow velocities. In manufacturing, Doppler sensors track conveyor and reel speeds.
+  </p>
+
+  <p>
+    <em> (D) Medicine and Biology: </em> Doppler ultrasound enables doctors to assess blood flow in arteries and 
+    veins in real time. Laser Doppler flowmetry measures microcirculation in skin and tissue, while 
+    Doppler optical coherence tomography (OCT) reveals blood flow at the microscopic scale.
+  </p>
+
+  <p>
+    <em> (E) Space and Astronomy: </em> Astronomers detect exoplanets by measuring the Doppler wobble of their host stars, 
+    track spacecraft velocity with extreme precision, and use Doppler shifts in starlight to study cosmic expansion. 
+    On the Sun, Doppler imaging maps flows and oscillations across its surface.
+  </p>
+</div>
+
+<div class="content has-text-justified">
+<!-- Place this right under your 1.2 section content -->
+<figure class="image has-text-centered" id="fig-applications">
+  <!-- Click to open full-size in a new tab -->
+  <img
+    src="static/images/doppler_applications.png"
+    alt="Applications of the Doppler effect"
+    style="max-width:100%; height:auto;"
+    loading="lazy">
+  <figcaption class="is-size-7 has-text-grey">
+    Figure 1. Applications of the Doppler effect (click to view full size) (A1) Doppler radar guns (A2) Coherent Doppler lidar (FMCW lidar)
+    (B1) Doppler weather radar (B2) Coherent Doppler wind lidar (C1) Laser Doppler vibrometry (C2) Laser Doppler anemometry 
+    (D1) Doppler ultrasound (D2) Laser Doppler flowmetry (E1) Red and blue shift (E2) Distribution of galaxies with different red shift.
+  </figcaption>
+</figure>
+</div>
+
+
+<!-- =========================
+     1.4 Applications of the Doppler Effect
+     ========================= -->
+<h2 class="title is-4" id="ch1-3">1.3 Why do we need Doppler Rendering?</h2>
+
+<div class="content has-text-justified">
+  <p>
+    So how can we simulate the Doppler effect? Why do we need complex Doppler rendering algorithms to simulate these applications? 
+    Can’t we just use well-known Doppler formular to interpret and model the Doppler frequency shift?
+    Simple Doppler formular would works when the measurement is dominated by a single bounce off a simple surface. 
+    But in real scenes we get complex geometry and lots of interreflections. 
+    This typically happens for non-line-of-sight imaging, scanning glossy objects,or volumes full of tiny scatterers like red blood cells or aerosols. In those settings, the simple formulas miss important contributions.
+  </p>
+</div>
+
+<!-- =========================
+     1.4 Applications of the Doppler Effect
+     ========================= -->
+<h2 class="title is-4" id="ch1-4">1.4 Intensity vs. Field Amplitude Doppler</h2>
+
+<div class="content has-text-justified">
+  <p>
+    Though Doppler effect can occur in any wave, we only focus on optical range (visible - infrared), where standard light transport applies and lets us build on existing radiometric path tracers. 
+    In such optical range, the Doppler effect manifests in two ways. 
+    The first is <strong>intensity Doppler</strong>, where the effect appears as a modulation in the intensity of the light source. 
+    Doppler Time-of-Flight imaging systems leverage this phenomenon.
+    The second is <strong>field Doppler</strong>, where the Doppler effect occurs in the electromagnetic field of the light itself. 
+    A well-known example is the red and blue shift observed in astronomy. 
+    However, this shift also occurs at smaller scales in applications such as Doppler lidar, blood or wind velocimetry. 
+    These techniques that rely on optical interference are collectively referred to as optical heterodyne detection. 
+    Interestingly, these two Doppler effect measures different quantities due to huge <em> wavelength </em> difference which will be further explained in <a href="#ch3-2"> later section</a>.
+  </p>
+</div>
+
+<div class="content has-text-justified">
+<!-- Place this right under your 1.2 section content -->
+<figure class="image has-text-centered" id="fig-applications">
+  <!-- Click to open full-size in a new tab -->
+  <img
+    src="static/images/intensity_vs_field.png"
+    alt="Applications of the Doppler effect"
+    style="max-width:100%; height:auto;"
+    loading="lazy">
+  <figcaption class="is-size-7 has-text-grey">
+    In optical imaging system, Doppler effect can manifest in two ways; Intensity (wavelength : 10m) vs Field Doppler (wavelength : 1 um)
+  </figcaption>
+</figure>
+</div>
+
+
+<!-- =========================
+     2. Simple Doppler
+     ========================= -->
+<section class="section" id="ch2">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3"><span class="has-text-weight-bold">2.</span>Doppler Effect for Simple Case</h2>
+
     <div class="content has-text-justified">
       <p>
-        We adopt the classical Poisson model
-        \[
-          -\,\Delta u(\mathbf{x}) \;=\; f(\mathbf{x}) \quad \text{in } \Omega,
-          \qquad
-          u(\mathbf{x}) \;=\; g(\mathbf{x}) \quad \text{on } \partial\Omega,
-          \tag{1.1}
-        \]
-        where \(f\) is a given source term and \(g\) specifies Dirichlet boundary data.
-        For compactness we denote \(\langle a,b\rangle\) the Euclidean inner product.
+       Here, we will derive the Doppler effect for the simplest case, reflection from the single object.
       </p>
     </div>
 
-    <!-- 1.1.1 -->
-    <h4 class="title is-5" id="sec-1-1-1">1.1.1  Geometry and Variables</h4>
-    <div class="columns is-variable is-6">
-      <div class="column">
-        <div class="content has-text-justified">
-          <p>
-            Let \(B(\mathbf{x};R)\) be a disk of radius \(R\) centered at \(\mathbf{x}\). We will uniformly
-            sample points \(\mathbf{y}\in B(\mathbf{x};R)\) to estimate local contributions. We use the Green’s
-            function \(G(\mathbf{x},\mathbf{y})\) for \(-\Delta\) in \(\Omega\).
-          </p>
-          <p class="has-text-centered">
-            \[
-              \mathcal{S}(\mathbf{x})
-              \;=\;
-              \int_{B(\mathbf{x};R)} G(\mathbf{x},\mathbf{y})\,f(\mathbf{y})\,d\mathbf{y}.
-              \tag{1.2}
-            \]
-          </p>
-          <p>
-            In polar coordinates \(\mathbf{y}=\mathbf{x}+r\mathbf{e}_\phi\), the integral becomes
-            \[
-              \int_0^{2\pi}\!\!\int_0^{R}
-                G\!\big(\mathbf{x},\mathbf{x}+r\mathbf{e}_\phi\big)\,
-                f\!\big(\mathbf{x}+r\mathbf{e}_\phi\big)\, r\,dr\,d\phi.
-              \tag{1.3}
-            \]
-          </p>
+<!-- =========================
+     2.1  Monostatic reflection: phase evolution
+     ========================= -->
+<h3 class="title is-4" id="ch2-1"><span class="has-text-weight-bold">2.1</span> Monostatic Doppler Effect</h3>
+<div class="content has-text-justified">
+
+  <p><strong>Setup.</strong> A source emits a sinusoid \(s(t)\) of angular frequency \(\omega_0 = 2\pi f_0\) and wavelength \(\lambda_0\).
+  The receiver is collocated with the source. A point target at range \(d(t)\) moves with constant radial velocity \(v\)
+  (positive when moving <em>toward</em> the sensor). Reflectivity is 1 and amplitude variations are ignored
+  (we focus on phase).</p>
+
+  <p class="has-text-centered">
+    \[
+      s(t) \;=\;  e^{\,j\omega_0 t}, 
+      \qquad d(t) \;=\; d_0 - v t,
+      \qquad \lambda_0 \;=\; \frac{2\pi c}{\omega_0}.
+    \]
+  </p>
+
+  <p><strong>Round-trip delay.</strong> The emitted field returns after a two-way time-of-flight</p>
+  <p class="has-text-centered">
+    \[
+      \tau(t) \;=\; \frac{2\,d(t)}{c}
+      \;=\; \frac{2\,(d_0 - v t)}{c}.
+    \]
+  </p>
+
+  <p><strong>Received signal.</strong> Delaying the carrier by \(\tau(t)\) gives</p>
+  <p class="has-text-centered">
+    \[
+      r(t) \; = \; e^{\,j\omega_0\,(t - \tau(t))}
+      \;=\;
+      \exp\!\Big\{\,j\omega_0 t \;-\; j\,\omega_0 \tfrac{2 d(t)}{c}\Big\}
+      \;=\;
+      \exp\!\Big\{\,j\omega_0 t + j\omega_0 \tfrac{2v}{c} t \;-\; j\omega_0\,\tfrac{2d_0}{c}\Big\}.
+    \]
+  </p>
+
+  <p><strong>Phase and frequency.</strong> Differentiating the receiver phase \(\phi_r(t)\) gives the Doppler-shifted frequency</p>
+  <p class="has-text-centered">
+    \[
+      \frac{d\phi_r}{dt}
+      \;=\;
+      \omega_0 + \omega_0 \frac{2v}{c}
+      \quad\Longrightarrow\quad
+      f_r
+      \;=\;
+      \frac{1}{2\pi}\,\frac{d\phi_r}{dt}
+      \;=\;
+      f_0 + f_0 \frac{2v}{c}
+      \quad\Longrightarrow\quad
+      f_D = f_r - f_0 = f_0 \frac{2v}{c}.
+    \]
+  </p>
+
+  <p><em>Sign convention.</em> With \(v<0\) defined as receding, \(\phi(t)\) decreases linearly, producing a negative
+  angular rate \(\tfrac{d\phi}{dt}\); the observed Doppler shift is \(f_0 2v/c\).</p>
+
+  <!-- Small inline visualization -->
+  <figure class="image" style="max-width:680px; margin:1rem auto;">
+    <svg viewBox="0 0 820 220" width="100%" height="auto" role="img" aria-label="Monostatic Doppler geometry">
+      <!-- axes/background -->
+      <rect x="0" y="0" width="820" height="220" fill="#f8fafc" stroke="#e2e8f0"/>
+      <!-- sensor at left -->
+      <circle cx="80" cy="110" r="18" fill="#0ea5e9"/>
+      <text x="80" y="92" text-anchor="middle" font-size="12" fill="#0f172a">Tx/Rx</text>
+      <!-- target -->
+      <rect x="620" y="90" width="32" height="40" rx="4" fill="#64748b"/>
+      <text x="636" y="80" text-anchor="middle" font-size="12" fill="#0f172a">Target</text>
+      <!-- range line -->
+      <line x1="98" y1="110" x2="620" y2="110" stroke="#94a3b8" stroke-dasharray="6 6"/>
+      <text x="360" y="100" text-anchor="middle" font-size="12" fill="#0f172a">d(t) = d₀ + v t</text>
+      <!-- velocity arrow -->
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+        <polygon points="0 0, 6 3, 0 6" fill="#ef4444"/>
+      </marker>
+      <line x1="636" y1="140" x2="736" y2="140" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="736" y="152" text-anchor="end" font-size="12" fill="#ef4444">v (away)</text>
+      <!-- outgoing wave -->
+      <path d="M 110 110 C 180 70, 260 70, 330 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+      <path d="M 330 110 C 400 150, 480 150, 550 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+      <!-- incoming wave -->
+      <path d="M 550 110 C 480 70, 400 70, 330 110" fill="none" stroke="#22c55e" stroke-width="2"/>
+      <path d="M 330 110 C 260 150, 180 150, 110 110" fill="none" stroke="#22c55e" stroke-width="2"/>
+      <!-- labels -->
+      <text x="200" y="65" font-size="12" fill="#0ea5e9">outgoing</text>
+      <text x="200" y="165" font-size="12" fill="#22c55e">return</text>
+      <!-- phase equation -->
+      <foreignObject x="460" y="20" width="330" height="60">
+        <!-- <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:13px; color:#0f172a;">
+          <em>Baseband:</em> \( r_{\text{bb}}(t) = \exp\{-j\,\tfrac{4\pi}{\lambda} d(t)\} \)
+        </div> -->
+      </foreignObject>
+    </svg>
+    <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
+      Doppler shift from a single object moving away or toward to the collocated camera and light (Monostatic geometry).
+    </figcaption>
+  </figure>
+</section>
+<!-- ============================================
+     Interactive Doppler Demo (monostatic, d0 control, delayed return)
+     Time panel: right edge = now (t=0), scrolls left to -T
+     ============================================ -->
+<!-- ============================================
+     Interactive Doppler Demo (monostatic, d0 control)
+     Time panel: fixed window 0 → 20 s, outgoing starts with phase 0
+     ============================================ -->
+<section class="section" id="ch2-1-1">
+  <div class="container is-max-desktop">
+    <h3 class="title is-5"><span class="has-text-weight-bold"></span> Interactive Demo</h3>
+
+    <div class="box">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <label class="label is-small">Initial distance d₀ (m)</label>
+          <input id="dop5-d0" class="input is-small" type="number" min="0" step="0.1" value="3.0" style="width:110px;">
+        </div>
+        <div class="control">
+          <label class="label is-small">Target speed v (m/s)</label>
+          <input id="dop5-v" class="slider is-fullwidth" type="range" min="-0.5" max="0.5" step="0.01" value="0.10" style="width:260px;">
+          <p class="help">Toward sensor (+) · Away (–): <span id="dop5-v-read">0.10</span> m/s</p>
+        </div>
+        <div class="control" style="align-self:flex-end;">
+          <button id="dop5-play" class="button is-small is-dark">Pause</button>
+        </div>
+        <div class="control" style="align-self:flex-end;">
+          <button id="dop5-reset" class="button is-small">Reset</button>
         </div>
       </div>
-      <div class="column">
-        <figure class="image" style="max-width: 520px; margin: 0 auto;">
-          <img src="static/images/placeholder_disk.png" alt="Disk sampling">
-          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-            <em>Figure 2.</em> Uniform sampling in \(B(\mathbf{x};R)\).
-          </figcaption>
-        </figure>
-      </div>
+      <p class="is-size-7 has-text-grey">
+        Outgoing travels right and stops at the target. Return travels left and is drawn only to the left.
+        Phases match at the target. Bottom panel spans a fixed window \(t\in[0,20]\) s; outgoing starts with phase 0.
+      </p>
     </div>
 
-    <!-- 1.1.2 -->
-    <h4 class="title is-5" id="sec-1-1-2">1.1.2  Monte Carlo Estimator</h4>
-    <div class="content has-text-justified">
-      <p>
-        With i.i.d. samples \(\mathbf{y}_i\sim \mathcal{U}(B(\mathbf{x};R))\), we estimate \(\mathcal{S}\) by
-        \[
-          \widehat{\mathcal{S}}(\mathbf{x})
-          \;=\;
-          \frac{1}{M}\sum_{i=1}^{M} G(\mathbf{x},\mathbf{y}_i)\,f(\mathbf{y}_i),
-          \qquad
-          \mathbf{y}_i \sim \mathcal{U}\!\big(B(\mathbf{x};R)\big).
-          \tag{1.4}
-        \]
-        Variance can be reduced by importance sampling with density \(p(\mathbf{y})\):
-        \[
-          \widehat{\mathcal{S}}_{\mathrm{IS}}(\mathbf{x})
-          \;=\;
-          \frac{1}{M}\sum_{i=1}^M
-          \frac{ G(\mathbf{x},\mathbf{y}_i)\,f(\mathbf{y}_i) }{ p(\mathbf{y}_i) },
-          \qquad \mathbf{y}_i\sim p.
-          \tag{1.5}
-        \]
-      </p>
-      <div class="box" style="background:#f7fafc;">
-        <p class="is-size-6">
-          <strong>Remark 1.1.</strong>
-          If \(G(\mathbf{x},\cdot)\,f(\cdot)\) is radially concentrated, use a separable
-          \(p(r,\phi)=p_r(r)p_\phi(\phi)\) with \(p_\phi(\phi)=\tfrac{1}{2\pi}\) and \(p_r(r)\propto r\,w(r)\).
+    <!-- Spatial view -->
+    <div class="columns is-mobile">
+      <div class="column">
+        <canvas id="dop5-canvas" width="960" height="340"
+                style="width:100%; height:340px; border:1px solid #1a2027; border-radius:6px;"></canvas>
+        <p class="is-size-7 has-text-grey">
+          Top: outgoing (blue, →) up to the target. Bottom: return (green, ←) from the target to the left.
+          Vertical line marks the hit; ticks show identical \(y=\cos\phi\) at the hit.
         </p>
       </div>
     </div>
 
-    <!-- 1.2 -->
-    <h3 class="title is-4" id="sec-1-2">1.2  Practical Considerations</h3>
-    <div class="content has-text-justified">
-      <ul>
-        <li><strong>Sample count.</strong> A small \(M\) per step often suffices when many steps are taken.</li>
-        <li><strong>Control variates.</strong> Subtract a cheap surrogate and add back its integral.</li>
-        <li><strong>Stratification.</strong> Partition the disk by radius bands to reduce variance.</li>
-      </ul>
+    <!-- Time traces at the sensor (fixed: 0 → 20 s) -->
+    <div class="columns is-mobile">
+      <div class="column">
+        <canvas id="dop5-time" width="960" height="200"
+                style="width:100%; height:200px; border:1px solid #1a2027; border-radius:6px;"></canvas>
+        <p class="is-size-7 has-text-grey">
+          Time traces at the sensor. Left edge \(t=0\), right edge \(t=20\) s. Outgoing (blue) starts at phase 0; return (green) includes round-trip delay.
+        </p>
+      </div>
     </div>
-
   </div>
 </section>
 
-<!-- =========================================================
-     Section 2: Algorithms (with numbered subsubsections)
-     ========================================================= -->
-<section class="section" id="sec-2">
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // DOM
+  const d0El   = $('dop5-d0');
+  const vEl    = $('dop5-v');
+  const vRead  = $('dop5-v-read');
+  const playB  = $('dop5-play');
+  const resetB = $('dop5-reset');
+  const canvasSpatial = $('dop5-canvas');
+  const canvasTime    = $('dop5-time');
+
+  // State
+  let d0_m   = parseFloat(d0El.value);  // meters
+  let v_mps  = parseFloat(vEl.value);   // + toward sensor (left)
+  let running = true;
+
+  // Timing
+  let tStart = performance.now();  // start of current run (t=0 here)
+
+  let paused  = false;
+  let tFreeze = 0; // seconds captured when paused
+
+  function tElapsed(){              // elapsed seconds since last restart
+    return paused ? tFreeze : (performance.now() - tStart)/1000;
+  }
+
+  // Visual params
+  const metersToPixels = 120;   // 1 m ≈ 120 px (motion scale)
+  const f_vis = 0.8;            // visual carrier (Hz)
+  const kPeriods = 3.0;         // ~3 periods across width
+  const tarH_factor = 0.62;     // taller target
+  const Tfixed = 20.0;          // seconds shown in time panel (0 → 20)
+
+  function setCanvasSize(c){
+    const dpr = Math.min(2, window.devicePixelRatio||1);
+    const cssW=c.clientWidth||c.width, cssH=c.clientHeight||c.height;
+    const W=Math.floor(cssW*dpr), H=Math.floor(cssH*dpr);
+    if (c.width!==W||c.height!==H){ c.width=W; c.height=H; }
+    return {W,H,dpr};
+  }
+
+  function drawLightIcon(ctx, x, y, s){
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.fillStyle='#0ea5e9';
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(42,-10); ctx.lineTo(42,10); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#0ea5e9'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(44,0); ctx.lineTo(62,0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(44,-8); ctx.lineTo(60,-14); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(44,8); ctx.lineTo(60,14); ctx.stroke();
+    ctx.restore();
+  }
+  function drawEyeIcon(ctx, x, y, s){
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.strokeStyle='#0ea5e9'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(-28,0); ctx.quadraticCurveTo(0,-16,28,0); ctx.quadraticCurveTo(0,16,-28,0); ctx.stroke();
+    ctx.fillStyle='#0ea5e9'; ctx.beginPath(); ctx.arc(0,0,6,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  // Limit |v| below wave's visual phase speed for stability
+  function effectiveVelocity(dpr, span){
+    const kx = kPeriods*2*Math.PI/span;    // rad/pixel
+    const w  = 2*Math.PI*f_vis;            // rad/s
+    const v_phase_px = w / kx;             // px/s (visual)
+    const v_phase_px_cap = 0.8 * v_phase_px;
+    const v_req_px = v_mps * metersToPixels * dpr;
+    const v_eff_px = Math.sign(v_req_px) * Math.min(Math.abs(v_req_px), v_phase_px_cap);
+    return { v_eff_mps: v_eff_px / (metersToPixels * dpr), kx, w, c_phase_px: v_phase_px };
+  }
+
+  // ---------- Spatial view ----------
+  function drawSpatial(){
+    const {W,H,dpr} = setCanvasSize(canvasSpatial);
+    const ctx = canvasSpatial.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
+
+    // Layout
+    const leftPad = 90*dpr, rightPad=60*dpr, x0=leftPad, x1=W-rightPad, span=x1-x0;
+    const yTop = H*0.30, yBot = H*0.74, amp = 26*dpr;
+
+    // Axes
+    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(x0, yTop); ctx.lineTo(x1, yTop); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0, yTop-amp-12*dpr); ctx.lineTo(x0, yTop+amp+12*dpr); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0, yBot); ctx.lineTo(x1, yBot); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0, yBot-amp-12*dpr); ctx.lineTo(x0, yBot+amp+12*dpr); ctx.stroke();
+
+    // Icons
+    drawLightIcon(ctx, x0-62*dpr, yTop, 1.0*dpr);
+    drawEyeIcon(ctx,   x0-58*dpr, yBot, 1.0*dpr);
+
+    // Time since start (for spatial evolution)
+    //const t = (performance.now()-tStart)/1000;
+    const t = tElapsed();
+
+    // Wave params & effective v
+    const { v_eff_mps, kx, w } = effectiveVelocity(dpr, span);
+
+    // Target position: start at d0 from the sensor at t=0, then move left for +v
+    let xTar = x0 + d0_m * metersToPixels * dpr - v_eff_mps * metersToPixels * dpr * t;
+
+    // Wrap within corridor
+    const minX=x0+60*dpr, maxX=x1-10*dpr, width=(maxX-minX);
+    if (width>10){ while(xTar>maxX) xTar-=width; while(xTar<minX) xTar+=width; }
+
+    // Target bar
+    const tarW=26*dpr, tarH = Math.max(180*dpr, H*tarH_factor);
+    ctx.fillStyle='#0ea5e9';
+    ctx.fillRect(xTar-tarW/2, (H/2 - tarH/2), tarW, tarH);
+
+    // Outgoing (→) up to target
+    ctx.strokeStyle='#1d9bf0'; ctx.lineWidth=2*dpr; ctx.beginPath();
+    let started=false;
+    for (let i=0;i<=360;i++){
+      const s = i/360, X = x0 + s*span;
+      if (X > xTar) break;
+      const phi = kx*(X - x0) - w*t;
+      const Y = yTop + Math.cos(phi)*amp;
+      if (!started){ ctx.moveTo(X,Y); started=true; } else { ctx.lineTo(X,Y); }
+    }
+    if (started) ctx.stroke();
+
+    // Phase at target
+    const phiHit = kx*(xTar - x0) - w*t;
+
+    // Return (←) left of target
+    ctx.strokeStyle='#22c55e'; ctx.beginPath();
+    started=false;
+    for (let i=0;i<=360;i++){
+      const s = i/360, X = x0 + s*span;
+      if (X > xTar) break;
+      const phi = kx*(2*xTar - x0 - X) - w*t;
+      const Y = yBot + Math.cos(phi)*amp;
+      if (!started){ ctx.moveTo(X,Y); started=true; } else { ctx.lineTo(X,Y); }
+    }
+    if (started) ctx.stroke();
+
+    // Hit line + cosine ticks
+    ctx.strokeStyle='#94a3b8'; ctx.setLineDash([6*dpr, 6*dpr]); ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(xTar, yTop-amp-12*dpr); ctx.lineTo(xTar, yBot+amp+12*dpr); ctx.stroke();
+    ctx.setLineDash([]);
+    const yHitTop = yTop + Math.cos(phiHit)*amp;
+    const yHitBot = yBot + Math.cos(phiHit)*amp;
+    ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2*dpr;
+    ctx.beginPath(); ctx.moveTo(xTar-10*dpr, yHitTop); ctx.lineTo(xTar+10*dpr, yHitTop); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(xTar-10*dpr, yHitBot); ctx.lineTo(xTar+10*dpr, yHitBot); ctx.stroke();
+
+    // Labels
+    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
+    ctx.textAlign='left';
+    ctx.fillText('Outgoing (Tx):  y = cos(φ_out)', x0+6*dpr, yTop-amp-10*dpr);
+    ctx.fillText('Return (Rx):    y = cos(φ_ret)', x0+6*dpr, yBot-amp-10*dpr);
+  }
+
+  // ---------- Time traces (fixed window 0 → 20 s) ----------
+  function drawTimeTraces(){
+    const {W,H,dpr} = setCanvasSize(canvasTime);
+    const ctx = canvasTime.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
+
+    const leftPad = 50*dpr, rightPad = 20*dpr;
+    const x0 = leftPad, x1 = W-rightPad, span = x1-x0;
+    const yMid1 = H*0.35, yMid2 = H*0.75;
+    const amp = (H*0.22);
+
+    // Geometry from spatial canvas for consistent kx & speed
+    const {W:Wsp,dpr:dspr} = setCanvasSize(canvasSpatial);
+    const leftPadSp = 90*dspr, rightPadSp=60*dspr, x0Sp=leftPadSp, x1Sp=Wsp-rightPadSp, spanSp=x1Sp-x0Sp;
+    const { v_eff_mps, kx, w, c_phase_px } = effectiveVelocity(dspr, spanSp);
+    const c_phase_mps = c_phase_px / (metersToPixels * dspr);
+    // constant round-trip delay based ONLY on initial distance d0
+    // --- Add these ---
+    const tau0 = Math.max(0, 2 * d0_m / c_phase_mps);               // round-trip delay from d0 only
+    const v_eff_px = v_eff_mps * metersToPixels * dspr;              // px/s
+    const w_ret = w + 2 * kx * v_eff_px;                             // Doppler-shifted ω (monostatic)
+    //const xTar0 = x0Sp + d0_m * metersToPixels * dspr;               // initial target position
+    //const phaseAlign = Math.PI/2 - kx*(2*xTar0 - x0Sp - x_sensor);   // make return start at zero at t = tau0
+    const x_sensor = x0Sp;
+
+    // Absolute elapsed time since start (seconds)
+    // const tNow = (performance.now()-tStart)/1000;
+    const tNow = tElapsed();
+
+
+    // Axes
+    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
+    ctx.beginPath(); ctx.moveTo(x0, yMid1); ctx.lineTo(x1, yMid1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0, yMid2); ctx.lineTo(x1, yMid2); ctx.stroke();
+
+    // Labels
+    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
+    ctx.textAlign='left';
+    ctx.fillText('Outgoing @ sensor', x0+4*dpr, yMid1 - (amp+10*dpr));
+    ctx.fillText('Return @ sensor',   x0+4*dpr, yMid2 - (amp+10*dpr));
+    ctx.textAlign='right';
+    ctx.fillText('t = 0', x0, H-4*dpr);
+    ctx.fillText('t = 20', x1, H-4*dpr);
+
+    // Map pixel i → time t_i ∈ [0, Tfixed]
+    function t_at_pixel(i){ const s=i/(span-1); return s*Tfixed; }
+
+    // Target position at absolute time t_abs
+    function xTar_at(t_abs){
+      // start at d0 (to the right), move left for +v
+      return x0Sp + d0_m * metersToPixels * dspr - v_eff_mps * metersToPixels * dspr * t_abs;
+    }
+
+    // ---- Outgoing at sensor: enforce phase=0 at t=0 -> cos(+w t) ----
+    ctx.strokeStyle='#1d9bf0'; ctx.lineWidth=1.5*dpr; ctx.beginPath();
+    let started=false;
+    for (let i=0;i<span;i++){
+      const t_i = t_at_pixel(i);
+      if (t_i > tNow) break; // draw only up to current time
+      const phi_out = w * t_i + Math.PI/2;   // shift +90° ⇒ cos(ωt - π/2) = sin(ωt), starts at 0
+      const y = yMid1 + Math.cos(phi_out)*amp;
+      const X = x0 + i;
+      if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
+    }
+    if (started) ctx.stroke();
+
+    // ---- Return at sensor with round-trip delay τ(t) ≈ 2 d(t) / c_phase
+    ctx.strokeStyle='#22c55e'; ctx.beginPath();
+    started=false;
+    for (let i=0;i<span;i++){
+      const t_i = t_at_pixel(i);
+      if (t_i > tNow) break;
+
+      const xTar  = xTar_at(t_i); // keep instantaneous x for Doppler phase
+      const xTar0 = x0Sp + d0_m * metersToPixels * dspr; // initial position (d0)
+
+      // use constant delay based only on d0
+      const tau = tau0;
+
+
+      if (t_i < tau){
+        // No return yet
+        const X = x0 + i, y = yMid2;
+        if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
+        continue;
+      }
+
+      // Return phase: match at target + propagate back with delay
+      // φ_ret(x_sensor,t_i) = kx*(2 x_tar(t_i) - x0Sp - x_sensor) - w*(t_i - tau)
+      // const phi_ret = kx*(2*xTar - x0Sp - x_sensor) - w*(t_i - tau);
+      const phaseAlign = -Math.PI/2 - kx*(2*xTar - x0Sp - x_sensor);
+      const phi_ret = kx*(2*xTar - x0Sp - x_sensor) - w_ret*(t_i - tau) + phaseAlign;
+
+      const y = yMid2 + Math.cos(phi_ret)*amp;
+      const X = x0 + i;
+      if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
+    }
+    if (started) ctx.stroke();
+  }
+
+  // Re-start time window at t=0 and re-anchor target at d0
+function restart(){
+  tStart  = performance.now();  // t = 0
+  tFreeze = 0;
+  paused  = false;
+  playB.textContent = 'Pause';
+  requestAnimationFrame(loop);
+}
+
+  function recompute(){
+    d0_m  = parseFloat(d0El.value);
+    v_mps = parseFloat(vEl.value);
+    vRead.textContent = v_mps.toFixed(2);
+  }
+
+  d0El.addEventListener('input', ()=>{ recompute(); restart(); });
+  vEl .addEventListener('input', ()=>{ recompute(); restart(); });
+
+playB.addEventListener('click', ()=>{
+  if (!paused){
+    // go to PAUSE
+    tFreeze = tElapsed();       // capture current elapsed time
+    paused = true;
+    playB.textContent = 'Play';
+    // draw one final frame in paused state (optional)
+    drawSpatial(); drawTimeTraces();
+  } else {
+    // go to PLAY (resume without resetting time)
+    paused = false;
+    tStart = performance.now() - tFreeze*1000; // maintain continuity
+    playB.textContent = 'Pause';
+    requestAnimationFrame(loop);
+  }
+});
+  resetB.addEventListener('click', ()=>{ restart(); });
+
+function loop(){
+  drawSpatial();
+  drawTimeTraces();
+  if (!paused) requestAnimationFrame(loop);
+}
+  window.addEventListener('resize', ()=>{ drawSpatial(); drawTimeTraces(); });
+
+  // init
+  recompute();
+  restart();
+  loop();
+})();
+</script>
+
+
+
+<!-- =========================
+     2. Simple Doppler
+     ========================= -->
+<section class="section" id="ch3">
   <div class="container is-max-desktop">
-    <h2 class="title is-3">Section 2 — Algorithms</h2>
+    <h2 class="title is-3"><span class="has-text-weight-bold">3. </span>Doppler Effect for Rough Surface</h2>
 
-    <h3 class="title is-4" id="sec-2-1">2.1  Random Walk with Source Term</h3>
     <div class="content has-text-justified">
       <p>
-        We interleave boundary sampling with the source estimate from (1.4). Let \(\mathbf{x}_k\) be
-        the current point and \(R_k\) the largest admissible radius. A single step uses:
-      </p>
-      <ol>
-        <li>Draw \(\mathbf{y}\sim \mathcal{U}\!\big(B(\mathbf{x}_k; R_k)\big)\) and accumulate \(G(\mathbf{x}_k,\mathbf{y})f(\mathbf{y})\).</li>
-        <li>Sample the next boundary point on \(\partial B(\mathbf{x}_k; R_k)\) and recurse.</li>
-      </ol>
-    </div>
-
-    <h4 class="title is-5" id="sec-2-1-1">2.1.1  Pseudocode</h4>
-    <div class="box">
-      <pre style="white-space:pre-wrap;"><code>// RandomWalkWithSource(x0, steps, M)
-accum ← 0
-x ← x0
-for k = 1..steps:
-  R ← LargestAdmissibleRadius(x)
-  for i = 1..M:
-    y ← UniformDisk(x, R)
-    accum ← accum + G(x, y) * f(y)
-  x ← SampleOnCircle(x, R)  // boundary recursion
-return accum / M</code></pre>
-    </div>
-
-    <h4 class="title is-5" id="sec-2-1-2">2.1.2  Cost and Variance</h4>
-    <div class="content has-text-justified">
-      <p>
-        Per step cost is \(O(M)\). For fixed work \(W = M \times \text{steps}\), pick \(M\) to match the
-        integrand’s variability; stratification in \(r\) can reduce the effective variance constant.
+       Here, we will derive the Doppler effect for a rough surface at arbitrary angle.
       </p>
     </div>
 
-    <h3 class="title is-4" id="sec-2-2">2.2  Side-by-Side Illustration</h3>
-    <div class="columns is-variable is-6">
-      <div class="column">
-        <figure class="image">
-          <img src="static/images/placeholder_figure_left.png" alt="Left illustration">
-          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-            <em>Figure 3a.</em> Boundary sampling schematic.
-          </figcaption>
-        </figure>
-      </div>
-      <div class="column">
-        <figure class="image">
-          <img src="static/images/placeholder_figure_right.png" alt="Right illustration">
-          <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-            <em>Figure 3b.</em> Source sampling inside \(B(\mathbf{x})\).
-          </figcaption>
-        </figure>
-      </div>
-    </div>
 
-    <div class="box" style="background:#f7fafc;">
-      <p class="is-size-6">
-        <strong>Remark 2.1.</strong> Equations use KaTeX auto-render. Inline math like
-        \(e^{i\phi}\) and display math like
-        \[
-          \int_0^{2\pi}\!\!\int_0^R h(r,\phi)\,r\,dr\,d\phi
-        \]
-        will render automatically with your existing includes.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-<section class="section">
+<section class="section" id="ch3-1">
   <div class="container is-max-desktop">
     <!-- Global optics -->
     <h2 class="title is-4">Global Optics (synced)</h2>
@@ -421,7 +792,7 @@ return accum / M</code></pre>
     </div>
 
     <!-- Section 1 -->
-    <h2 class="title is-4">Section 1 — Surface Visualization + Phasor (t = 0)</h2>
+    <h2 class="title is-4" id="ch3-1"> <span class="has-text-weight-bold">3.1 </span> Phasor sum for Static Rough Surface</h2>
     <div id="s1" class="box">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
@@ -471,7 +842,9 @@ return accum / M</code></pre>
     </div>
 
     <!-- Section 2 -->
-    <h2 class="title is-4" style="margin-top:2rem;">Section 2 — Moving Window (visual) + Live Phasor + FFT of S(t)</h2>
+     
+    <h2 class="title is-4" id="ch3-2"> <span class="has-text-weight-bold">3.2 </span> Phasor sum for Dynamic Rough Surface</h2>
+    <!-- <h2 class="title is-4" style="margin-top:2rem;">Section 2 — Moving Window (visual) + Live Phasor + FFT of S(t)</h2> -->
     <div id="s2" class="box">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">

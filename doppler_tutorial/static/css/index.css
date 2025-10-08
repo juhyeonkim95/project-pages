@@ -136,3 +136,44 @@ body {
 /* Gaussian 2D widget tweaks */
 #g1d .label { margin-bottom: 0.25rem; }
 #g1d-step2 .label { margin-bottom: 0.25rem; }
+
+.author-line a { text-decoration: none; }
+.author-line a:hover { text-decoration: underline; }
+/* 1) Global link styling (skip buttons/tags/controls) */
+a:not(.button):not(.tag):not(.pagination-link) {
+  color: hsl(204, 86%, 53%);          /* Bulma primary blue */
+  text-decoration: underline;         /* always underlined = unmistakably a link */
+  text-underline-offset: 2px;
+}
+
+/* Visited links: slightly darker */
+a:visited:not(.button):not(.tag):not(.pagination-link) {
+  color: hsl(204, 76%, 43%);
+}
+
+/* Hover/active: stronger color + thicker underline for affordance */
+a:hover:not(.button):not(.tag):not(.pagination-link),
+a:active:not(.button):not(.tag):not(.pagination-link) {
+  color: hsl(204, 100%, 40%);
+  text-decoration-thickness: 2px;
+}
+
+/* Keyboard focus: clear, accessible focus ring */
+a:focus-visible {
+  outline: 2px solid hsl(204, 86%, 53%);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* 2) Add an icon for external links (target="_blank") */
+a[target="_blank"]:not(.button):not(.tag)::after {
+  content: "↗";
+  font-size: 0.85em;
+  margin-left: 0.25em;
+  opacity: 0.8;
+}
+
+/* 3) Optional: within prose blocks use slightly subtler color */
+.content a:not(.button):not(.tag) {
+  color: hsl(204, 80%, 45%);
+}
