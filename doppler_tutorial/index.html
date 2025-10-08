@@ -71,14 +71,9 @@
      <a href="https://juhyeonkim.netlify.app/" target="_blank" rel="noopener">Juhyeon Kim</a>
     </p>
       <div class="content has-text-justified">
-      <p>
-        Welcome to <em>Doppler Rendering in One Weekend</em>. 
-        The <a href="https://en.wikipedia.org/wiki/Doppler_effect">Doppler effect</a> is a physical phenomenon that frequency changes due to moving objects or observers.
-        Doppler rendering is about simulating such Doppler effect on complex scene, using existing Monte Carlo path tracers.
-        In this tutorial, you will learn the basics of Doppler effect, and understand how Doppler effect is fundamentally different 
-        for AMCW (intensity Doppler) and coherent detections (field amplitude Doppler), and also understand its implication on each detections'
-        simulation strategies.
-      </p>
+<p>Welcome to <em>Doppler Rendering in One Weekend</em>.
+The <a href="https://en.wikipedia.org/wiki/Doppler_effect">Doppler effect</a> is the change in observed frequency caused by relative motion between a source and an observer. <strong>Doppler rendering</strong> uses existing Monte Carlo path tracers to simulate Doppler phenomena in complex scenes.
+This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distinction between <em>intensity</em> Doppler (AMCW lidar) and <em>field</em> Doppler (optical heterodyne/interferometric), and (iii) the implications of these differences for the simulation strategy appropriate to each case.</p>
     </div>
 
     <!-- Contents -->
@@ -267,7 +262,7 @@
     style="max-width:100%; height:auto;"
     loading="lazy">
   <figcaption class="is-size-7 has-text-grey">
-    In optical imaging system, Doppler effect can manifest in two ways; Intensity (wavelength : 10m) vs Field Doppler (wavelength : 1 um)
+    Figure 2. In optical imaging system, Doppler effect can manifest in two ways; Intensity (wavelength : 10m) vs Field Doppler (wavelength : 1 um)
   </figcaption>
 </figure>
 </div>
@@ -357,13 +352,13 @@
       <text x="636" y="80" text-anchor="middle" font-size="12" fill="#0f172a">Target</text>
       <!-- range line -->
       <line x1="98" y1="110" x2="620" y2="110" stroke="#94a3b8" stroke-dasharray="6 6"/>
-      <text x="360" y="100" text-anchor="middle" font-size="12" fill="#0f172a">d(t) = d₀ + v t</text>
+      <text x="360" y="100" text-anchor="middle" font-size="12" fill="#0f172a">d(t) = d₀ - v t</text>
       <!-- velocity arrow -->
       <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
         <polygon points="0 0, 6 3, 0 6" fill="#ef4444"/>
       </marker>
-      <line x1="636" y1="140" x2="736" y2="140" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
-      <text x="736" y="152" text-anchor="end" font-size="12" fill="#ef4444">v (away)</text>
+      <line x1="736" y1="140" x2="636" y2="140" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="736" y="152" text-anchor="end" font-size="12" fill="#ef4444">v (toward)</text>
       <!-- outgoing wave -->
       <path d="M 110 110 C 180 70, 260 70, 330 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
       <path d="M 330 110 C 400 150, 480 150, 550 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
@@ -765,15 +760,32 @@ function loop(){
 
     <div class="content has-text-justified">
       <p>
-       Here, we will derive the Doppler effect for a rough surface at arbitrary angle.
+       Here, we will derive the Doppler effect for a rough surface at arbitrary angle. 
+       The setup is visualized in Figure 3.
       </p>
     </div>
+
+<div class="content has-text-justified">
+<!-- Place this right under your 1.2 section content -->
+<figure class="image has-text-centered" id="fig-applications">
+  <!-- Click to open full-size in a new tab -->
+  <img
+    src="static/images/macro_micro_geom.png"
+    alt="macro_micro_geom"
+    style="max-width:70%; height:auto;"
+    loading="lazy">
+  <figcaption class="is-size-7 has-text-grey">
+    Figure 3. Reflection on rough surface in macroscopic vs microscopic view. The ray has delta-extent in macroscopic view, but it covers 
+    numerous reflection points in microscopic perspective.
+  </figcaption>
+</figure>
+</div>
 
 
 <section class="section" id="ch3-1">
   <div class="container is-max-desktop">
     <!-- Global optics -->
-    <h2 class="title is-4">Global Optics (synced)</h2>
+    <h2 class="title is-4">Global Parameters</h2>
     <div class="box">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
@@ -786,7 +798,7 @@ function loop(){
         </div>
         <div class="control">
           <label class="label is-small">Outgoing θₒ (deg)</label>
-          <input id="gl-theta-o" class="input is-small" type="number" min="-89" max="89" step="0.1" value="20" style="width:90px;">
+          <input id="gl-theta-o" class="input is-small" type="number" min="-89" max="89" step="0.1" value="-20" style="width:90px;">
         </div>
       </div>
     </div>
