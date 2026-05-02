@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling">
+  <meta property="og:title" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling"/>
+  <meta property="og:description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling (SIGGRAPH 2025)"/>
+  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/tof_restir/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/teaser.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling">
+  <meta name="twitter:description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling (SIGGRAPH 2026)">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/teaser.png">
+  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling</title>
+  <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
+Resampling</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://juhyeonkim.netlify.app/" target="_blank">Juhyeon Kim</a><sup>1</sup>,</span>
+                <span class="author-block">
+                  <a href="https://cs.dartmouth.edu/~wjarosz/" target="_blank">Wojciech Jarosz</a><sup>1</sup>,</span>
+                  <span class="author-block">
+                    <a href="https://sites.google.com/view/adithyapediredla/" target="_blank">Adithya Pediredla</a><sup>1</sup>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Dartmouth College, <sup>2</sup> <br>ACM Transactions on Graphics (SIGGRAPH 2026)</span>
+                    <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                      <span class="link-block">
+                      <a href="https://dl.acm.org/doi/10.1145/3731150" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>ACM website</span>
+                    </a>
+                  </span>
+                      <span class="link-block">
+                        <a href="static/pdfs/OHD_SIGGRAPH_2025.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper (3.1 MB)</span>
+                      </a>
+                    </span>
+
+                    <!-- Supplementary PDF link -->
+                    <span class="link-block">
+                      <a href="static/pdfs/OHD_SIGGRAPH_2025_supple.pdf" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Supplementary (0.6 MB)</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="static/pdfs/OHD_SIGGRAPH_2025_slides.pdf" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Slide Notes (3.1 MB)</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                    <a href="https://docs.google.com/presentation/d/1LUzlnjvCBBATsxOHsOSn82JYfUZY_okD/edit?usp=drive_link&ouid=104087611313563817975&rtpof=true&sd=true" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Slides (PPT, 124 MB)</span>
+                  </a>
+                </span>
+
+                <!-- Github link -->
+                <span class="link-block">
+                  <a href="https://github.com/juhyeonkim95/ToFReSTIR" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/images/teaser.png" alt="teaser"/>
+      <h2 class="subtitle has-text-centered">
+        We present a general spectral-domain simulation framework for optical heterodyne detection (OHD), extending path integral rendering to capture power spectral density of OHD. Unlike existing domain-specific tools, our approach supports diverse scenes and applications.
+      </h2>
+      <h2 class="subtitle has-text-centered">
+        We propose a ray-tracing based Monte Carlo rendering framework for simulating optical heterodyne detection (OHD). (A) OHD is a technique that measures the frequency modulation of light using optical interferometry. Through spectral analysis of the photon-induced current on the photodetector, we can obtain useful information such as object velocity/distance or Doppler spectra.(B) Our MC simulation is based on the OHD path integral that resembles radiometric path integral [Veach 1997], but is resolved by the path frequency which depends on the path length and velocity. (C) Using our simulator, one can simulate various OHD scenarios, such as coherent lidar used in autonomous vehicles, non-invasive blood flow measurement, and atmospheric Doppler sensing.
+      </h2>
+    </div>
+  </div>
+</section> -->
+<!-- End teaser video -->
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present a novel spatio-temporal reuse framework for time-resolved light transport, enabling efficient Monte Carlo rendering of time-of-flight (ToF) phenomena such as time-gated imaging and transient light capture.
+            Existing ToF rendering methods are computationally expensive, scale poorly to complex dynamic scenes, and are therefore unsuitable for applications with strict latency constraints.
+            To address this limitation, we draw inspiration from \emph{ReSTIR}, a reuse-based technique for steady-state real-time rendering, and adapt its core principles to interactive-rate ToF simulation.
+            However, naively applying existing ReSTIR methods to ToF rendering leads to severe inefficiency, as reused paths frequently violate optical path-length constraints and thus contribute little or no signal.
+            We overcome this challenge by introducing a path reuse formulation that explicitly enforces physically valid optical path lengths.
+            The key idea is \emph{path-length-aware shift mapping}, a geometric transformation based on Newton’s method that adjusts reused light paths to satisfy temporal gating constraints, inspired by specular manifold exploration in steady-state caustics rendering.
+            The resulting framework substantially improves the efficiency of ToF rendering across a wide range of scenarios, including complex scenes with glossy or specular materials and dynamic motion.
+            Our method supports both time-gated and transient rendering at interactive frame rates, enabling simulation under practical latency constraints.
+            We demonstrate the effectiveness of our approach through two downstream applications, including shape reconstruction and navigation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- <section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Talk Video</h2>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video poster="" id="Conference talk" controls muted height="100%">
+        <source src="static/videos/OHD_SIGGRAPH_2025_talkvideo.mp4"
+        type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section> -->
+
+
+
+<!-- Introduction to OHD -->
+<!-- <section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">Introduction</h2>
+          
+            <h2 class="title is-4">What is OHD?</h2>
+         <p>
+              <img src="static/images/image1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+                  <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+                  technique for measuring frequency modulations in light.
+                  OHD mixes a weak signal beam with a strong, coherent reference
+                  beam, often referred to as the <em>local oscillator</em>.
+                  The interference between these two optical
+                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
+                  received signal is modulated relative to the reference signal. This
+                  often includes useful information such as the velocity or distance
+                  of various objects in the scene.
+            </p>
+            <h2 class="title is-4">Lasers for OHD</h2>
+                     <p>
+              <img src="static/images/image2.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+              Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<!-- Introduction -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">What is OHD?</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_1.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+Optical heterodyne detection (OHD) is a widely used interferometric technique for measuring frequency modulations in light. OHD mixes a weak signal beam with a strong, coherent reference beam, often referred to as the local oscillator. The interference between these two optical fields generates a beat signal at a lower frequency, which encodes how the received signal is modulated relative to the reference. This often includes useful information such as the velocity or distance of objects in the scene.          
+                  <!-- <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+                  technique for measuring frequency modulations in light.
+                  OHD mixes a weak signal beam with a strong, coherent reference
+                  beam, often referred to as the <em>local oscillator</em>.
+                  The interference between these two optical
+                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
+                  received signal is modulated relative to the reference signal. This
+                  often includes useful information such as the velocity or distance
+                  of various objects in the scene. -->
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_2.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          A single-frequency laser is only capable of detecting a Doppler shift. In contrast, a laser with a linearly increasing frequency produces a beat frequency that contains not only the Doppler shift, but also distance (or time-of-flight) information. FMCW lidar typically uses triangular chirps, allowing us to decompose each factor.
+          <!-- Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor. -->
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <img src="static/images/image0_3.png" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered">
+          A simple single-bounce model may work well if there is only a single object in the scene, but it fails when the scene contains complex geometry with different velocities and interreflections. This typically occurs when scanning over glossy objects or dense particles such as red blood cells or aerosols. These cases necessitate more accurate Monte Carlo simulations.
+          <!-- Simple single bounce model may work well if there is only a single object in the scene, but it fails if scene is composed of complex geometry with different velocities and lots of interreflections. This typically happens when we scan over glossy object, or dense particles such as red blood cells or aerosols. This necessiates more accurate Monte Carlo simulator. -->
+        </h2>
+      </div>
+  </div>
+</div>
+</div>
+</section>
+<!-- End image carousel -->
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code> (TBD) </code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
