@@ -94,7 +94,7 @@ Resampling</h1>
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
                       </span>
-                      <span>ACM website</span>
+                      <span>ACM website (TBD)</span>
                     </a>
                   </span>
                       <span class="link-block">
@@ -103,7 +103,7 @@ Resampling</h1>
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
                         </span>
-                        <span>Paper (3.1 MB)</span>
+                        <span>Paper (TBD)</span>
                       </a>
                     </span>
 
@@ -114,7 +114,7 @@ Resampling</h1>
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
                       </span>
-                      <span>Supplementary (0.6 MB)</span>
+                      <span>Supplementary (TBD)</span>
                     </a>
                   </span>
 
@@ -124,7 +124,7 @@ Resampling</h1>
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
-                    <span>Slide Notes (3.1 MB)</span>
+                    <span>Slide Notes (TBD)</span>
                   </a>
                 </span>
 
@@ -134,7 +134,7 @@ Resampling</h1>
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
-                    <span>Slides (PPT, 124 MB)</span>
+                    <span>Slides (TBD)</span>
                   </a>
                 </span>
 
@@ -158,19 +158,16 @@ Resampling</h1>
 
 
 <!-- Teaser video-->
-<!-- <section class="hero teaser">
+<section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <img src="static/images/teaser.png" alt="teaser"/>
       <h2 class="subtitle has-text-centered">
-        We present a general spectral-domain simulation framework for optical heterodyne detection (OHD), extending path integral rendering to capture power spectral density of OHD. Unlike existing domain-specific tools, our approach supports diverse scenes and applications.
-      </h2>
-      <h2 class="subtitle has-text-centered">
-        We propose a ray-tracing based Monte Carlo rendering framework for simulating optical heterodyne detection (OHD). (A) OHD is a technique that measures the frequency modulation of light using optical interferometry. Through spectral analysis of the photon-induced current on the photodetector, we can obtain useful information such as object velocity/distance or Doppler spectra.(B) Our MC simulation is based on the OHD path integral that resembles radiometric path integral [Veach 1997], but is resolved by the path frequency which depends on the path length and velocity. (C) Using our simulator, one can simulate various OHD scenarios, such as coherent lidar used in autonomous vehicles, non-invasive blood flow measurement, and atmospheric Doppler sensing.
+        We propose a real-time Time-of-Flight (ToF) rendering method inspired by ReSTIR, augmented with a novel path-length-aware shift mapping.
       </h2>
     </div>
   </div>
-</section> -->
+</section>
 <!-- End teaser video -->
 
 
@@ -255,51 +252,6 @@ Resampling</h1>
     </div>
   </div>
 </section> -->
-
-
-<!-- Introduction -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3">What is OHD?</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/image0_1.png" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-Optical heterodyne detection (OHD) is a widely used interferometric technique for measuring frequency modulations in light. OHD mixes a weak signal beam with a strong, coherent reference beam, often referred to as the local oscillator. The interference between these two optical fields generates a beat signal at a lower frequency, which encodes how the received signal is modulated relative to the reference. This often includes useful information such as the velocity or distance of objects in the scene.          
-                  <!-- <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
-                  technique for measuring frequency modulations in light.
-                  OHD mixes a weak signal beam with a strong, coherent reference
-                  beam, often referred to as the <em>local oscillator</em>.
-                  The interference between these two optical
-                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
-                  received signal is modulated relative to the reference signal. This
-                  often includes useful information such as the velocity or distance
-                  of various objects in the scene. -->
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/image0_2.png" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          A single-frequency laser is only capable of detecting a Doppler shift. In contrast, a laser with a linearly increasing frequency produces a beat frequency that contains not only the Doppler shift, but also distance (or time-of-flight) information. FMCW lidar typically uses triangular chirps, allowing us to decompose each factor.
-          <!-- Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor. -->
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/image0_3.png" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          A simple single-bounce model may work well if there is only a single object in the scene, but it fails when the scene contains complex geometry with different velocities and interreflections. This typically occurs when scanning over glossy objects or dense particles such as red blood cells or aerosols. These cases necessitate more accurate Monte Carlo simulations.
-          <!-- Simple single bounce model may work well if there is only a single object in the scene, but it fails if scene is composed of complex geometry with different velocities and lots of interreflections. This typically happens when we scan over glossy object, or dense particles such as red blood cells or aerosols. This necessiates more accurate Monte Carlo simulator. -->
-        </h2>
-      </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
