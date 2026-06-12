@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="Difference-aware Filtering for Event Camera Simulation">
+  <meta property="og:title" content="Difference-aware Filtering for Event Camera Simulation"/>
+  <meta property="og:description" content="Difference-aware Filtering for Event Camera Simulation (EGSR 2026)"/>
+  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/tof_restir/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/teaser.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="Difference-aware Filtering for Event Camera Simulation">
+  <meta name="twitter:description" content="Difference-aware Filtering for Event Camera Simulation (EGSR 2026)">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/teaser.png">
+  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="Event Camera, Physically-based Rendering">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>Difference-aware Filtering for Event Camera Simulation</title>
+  <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Difference-aware Filtering for <br> Event Camera Simulation</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://juhyeonkim.netlify.app/" target="_blank">Juhyeon Kim</a><sup>1</sup>,</span>
+                <span class="author-block">
+                  <a href="https://cs.dartmouth.edu/~wjarosz/" target="_blank">Wojciech Jarosz</a><sup>1</sup>,</span>
+                  <span class="author-block">
+                    <a href="https://sites.google.com/view/adithyapediredla/" target="_blank">Adithya Pediredla</a><sup>1</sup>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Dartmouth College, <br>Eurographics Symposium on Rendering (EGSR 2026)</span>
+                    <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                      <span class="link-block">
+                      <a href="https://dl.acm.org/doi/10.1145/3731150" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Official website (TBD)</span>
+                    </a>
+                  </span>
+                      <span class="link-block">
+                        <a href="static/pdfs/OHD_EGSR_2025.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper (TBD)</span>
+                      </a>
+                    </span>
+
+                    <!-- Supplementary PDF link -->
+                    <span class="link-block">
+                      <a href="static/pdfs/OHD_EGSR_2025_supple.pdf" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Supplementary (TBD)</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="static/pdfs/OHD_EGSR_2025_slides.pdf" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Slide Notes (TBD)</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                    <a href="https://docs.google.com/presentation/d/1LUzlnjvCBBATsxOHsOSn82JYfUZY_okD/edit?usp=drive_link&ouid=104087611313563817975&rtpof=true&sd=true" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Slides (TBD)</span>
+                  </a>
+                </span>
+
+                <!-- Github link -->
+                <span class="link-block">
+                  <a href="https://github.com/juhyeonkim95/ToFReSTIR" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- ArXiv abstract Link -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2605.11536" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/images/teaser.png" alt="teaser"/>
+      <h2 class="subtitle has-text-centered">
+        We present EventSVGF, an event camera rendering framework based on SVGF, that only takes 2spp for rendering temporally stable difference images.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present EventSVGF, an event camera rendering framework based on spatiotemporal variance-guided filtering (SVGF), designed to achieve high temporal accuracy especially in high-frequency regions, which is critical for faithful event simulation.
+            Unlike conventional rendering, event cameras measure temporal changes in brightness (log-intensity), requiring accurate estimation of per-pixel, frame-to-frame differences.
+            However, naively computing temporal differences from primal-domain RGB images leads to severe noise, as existing denoising methods are designed for primal signals rather than their differences.
+            Our key contribution is a method that directly denoises the pixel-wise temporal difference signal using correlated sampling, formulated as a difference-aware extension of the SVGF pipeline, termed EventSVGF.
+            EventSVGF incorporates a novel edge-stopping function, an adapted temporal accumulation scheme, and an albedo demodulation strategy, all tailored for accurate event camera simulation.
+            Our method achieves stable results at low sampling rates (2 spp), whereas existing approaches typically require significantly higher sampling budgets (32--512 spp).
+            We demonstrate EventSVGF on dynamic scenes, showing improved accuracy and high-frequency temporal stability in event simulation compared to prior works.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- <section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Talk Video</h2>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video poster="" id="Conference talk" controls muted height="100%">
+        <source src="static/videos/OHD_EGSR_2025_talkvideo.mp4"
+        type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section> -->
+
+
+
+<!-- Introduction to OHD -->
+<!-- <section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">Introduction</h2>
+          
+            <h2 class="title is-4">What is OHD?</h2>
+         <p>
+              <img src="static/images/image1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+                  <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
+                  technique for measuring frequency modulations in light.
+                  OHD mixes a weak signal beam with a strong, coherent reference
+                  beam, often referred to as the <em>local oscillator</em>.
+                  The interference between these two optical
+                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
+                  received signal is modulated relative to the reference signal. This
+                  often includes useful information such as the velocity or distance
+                  of various objects in the scene.
+            </p>
+            <h2 class="title is-4">Lasers for OHD</h2>
+                     <p>
+              <img src="static/images/image2.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p>
+              Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code> (TBD) </code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
