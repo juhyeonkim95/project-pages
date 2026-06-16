@@ -58,7 +58,18 @@ Resampling</title>
     <!-- To automatically render math in text elements, include the auto-render extension: -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
         onload="renderMathInElement(document.body);"></script>
-
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
 </head>
 <body>
 
@@ -145,7 +156,7 @@ Resampling</h1>
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
-                  <span>Code</span>
+                  <span>Code (TBD)</span>
                 </a>
               </span>
               <!-- ArXiv abstract Link -->
@@ -206,6 +217,249 @@ Resampling</h1>
   </div>
 </section>
 <!-- End paper abstract -->
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+
+      <!-- <h2 class="title is-3 has-text-centered">
+        Supplementary Video
+      </h2> -->
+
+      <video
+        controls
+        autoplay
+        muted
+        loop
+        playsinline
+        style="width: 100%; max-width: 1000px; display: block; margin: auto;">
+        <source src="static/videos/supplementary_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <p class="has-text-centered"
+         style="font-size: 0.9rem; margin-top: 1rem;">
+        6 minutes supplementary video.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Time-of-Flight Imaging and Rendering</h2>
+
+      <div class="content has-text-justified">
+        <p>
+          Time-of-flight (ToF) imaging measures scene geometry by observing
+          when light returns to the sensor after being emitted from a source.
+          Instead of measuring only the total steady-state radiance, ToF cameras
+          capture a time-resolved light transport signal, where different path
+          lengths arrive at different times.
+        </p>
+
+        <video
+          controls
+          muted
+          loop
+          playsinline
+          style="width: 80%; max-width: 800px; display: block; margin: 1.5rem auto;">
+          <source src="static/videos/tof_imaging.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <p class="has-text-centered"
+          style="font-size: 0.8rem; color: gray; margin-top: -0.5rem;">
+          Example transient light propagation in time-of-flight imaging.
+          Video adapted from
+          <a href="https://www.youtube.com/watch?v=EtsXgODHMWk" target="_blank">
+            this YouTube video
+          </a>.
+        </p>
+
+        <p>
+          In standard rendering, the image is obtained by integrating
+          contributions over all light paths over path space \(\mathcal{P}\):
+        </p>
+
+        <p class="has-text-centered">
+          \( I = \int_\mathcal{P} f(\bar{\mathbf{x}}) \, d\bar{\mathbf{x}}. \)
+        </p>
+
+        <p>
+          In ToF rendering, this steady-state integral is replaced by a
+          time-gated path integral, where each path contribution is weighted
+          according to its path length:
+        </p>
+
+        <p class="has-text-centered">
+          \( I_\tau = \int_\mathcal{P} f(\bar{\mathbf{x}})
+          W_\tau(|\bar{\mathbf{x}}|) \, d\bar{\mathbf{x}}. \)
+        </p>
+
+        <p>
+          Our goal is to evaluate above ToF path integral efficiently in an interactive-rate using ReSTIR-based method.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Path-Length-Aware Shift-Mapping</h2>
+      <!-- New text -->
+      <div class="content">
+        <p>
+          ToF rendering requires sampled light paths to satisfy
+          strict path-length constraints imposed by the temporal gate.
+          Conventional ReSTIR reuse strategies often violate
+          these constraints, leading to inefficient estimates with a lot of invalid samples that falls outside of the time gate.
+          Our method introduces path-length-aware shift mapping that preserves
+          temporal consistency while enabling efficient sample reuse.
+        </p>
+      </div>
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+        <img
+          src="static/images/overview_figure.png"
+          alt="overview_figure"
+          style="width: 80%; display: block; margin: auto;">
+        <h2 class="subtitle" style="font-size: 0.9rem; line-height: 1.4;">
+          Overview of proposed path-length-aware reuse strategies. 
+          (A) Naive path reuse from conventional steady-state ReSTIR ends up going outside of the valid time gate. To address this issue, we introduce path-length-aware shift mapping, illustrated by the red arrow.
+          (B) Illustration of a base path in the left pixel (blue), the naively reused path in the right pixel (orange), and the corrected path produced by our method (green), which satisfies the temporal constraint.  
+        </h2>
+      </div>
+       <div class="item">
+        <!-- Your image here -->
+        <img
+          src="static/images/path_length_shiftmap_overview.png"
+          alt="Overview"
+          style="width: 60%; display: block; margin: auto;">
+        <h2 class="subtitle" style="font-size: 0.9rem; line-height: 1.4;">
+          Baseline shift mapping (hybrid shift mapping&nbsp;[Lin et al. 2022])
+          transforms the base path \( \bar{\mathbf{x}} \) (blue) into an
+          offset path \( \bar{\mathbf{y}} \) (orange), with the reconnection
+          vertex \( \mathbf{p} \) at
+          \( \mathbf{y}_4 = \mathbf{x}_4 \).
+          We further perturb the offset path
+          \( \bar{\mathbf{y}} \) to
+          \( \bar{\mathbf{y}}' \) (green) to satisfy the
+          path-length constraint,
+          \( \ell(\bar{\mathbf{y}}') = \ell(\bar{\mathbf{x}}) + \Delta \ell \).
+          Rather than perturbing the entire offset path, we apply
+          path-length-aware shift mapping only at the reconnection vertex,
+          similar to Sawhney et al. (2022).
+        </h2>
+      </div>
+  </div>
+  <div class="content">
+        <p>
+          <br>
+          <br>
+          Searching on path-length manifold is very similar to that of specular reflection. 
+          However, unlike specular reflection, which uniquely determines the
+          reconnection vertex through geometric constraints, the
+          path-length constraint alone leaves one remaining degree of
+          freedom. 
+          We therefore introduce an additional constraint,
+          referred to as a gauge, to select a unique solution on the
+          feasible contour. 
+          Our average-gradient search efficiently
+          identifies a stable reconnection point satisfying this gauge.
+        </p>
+      </div>
+
+      <div id="gauge-carousel" class="carousel results-carousel">
+
+        <div class="item">
+          <img
+            src="static/images/specular_path_length_comparison.png"
+            alt="specular_path_length_comparison"
+            style="width: 60%; display: block; margin: auto;">
+
+          <h2 class="subtitle"
+              style="font-size: 0.9rem; line-height: 1.4;">
+            Specular materials impose a 2D constraint that uniquely determines
+            $\mathbf{p}'$ (as a function of $\xi'$) on the surface given
+            $\mathbf{p}_1$ and $\mathbf{p}_2$. In contrast, the path-length
+            constraint is only 1D, meaning that feasible $\mathbf{p}'$ lie on
+            an equi-distance contour on the surface. To further reduce the
+            remaining degree of freedom, we introduce an additional constraint,
+            referred to as a gauge in this paper.
+          </h2>
+        </div>
+
+        <div class="item">
+          <img
+            src="static/images/gauge_comparison_figure.png"
+            alt="gauge_comparison_figure"
+            style="width: 70%; display: block; margin: auto;">
+
+          <h2 class="subtitle"
+              style="font-size: 0.9rem; line-height: 1.4;">
+            Methods for imposing an additional constraint.
+            (A) A fixed-axis gauge is reversible and easy to implement, but it may require traveling a long distance to find a valid solution.
+            (B) Tracing along the gradient reduces the displacement, but it is not guaranteed to be reversible.
+            (C) Our average-gradient method uses gradients at both the start and end points, ensuring reversibility.
+            (D) Gradient flow is also bijective and yields small displacements, but it is not based on Newton’s method and requires many small steps.
+          </h2>
+        </div>
+
+      </div>
+</div>
+</div>
+</section>
+
+
+      
+
+<!-- <div class="item">
+        <img
+          src="static/images/specular_path_length_comparison.png"
+          alt="Overview"
+          style="width: 60%; display: block; margin: auto;">
+        <h2 class="subtitle" style="font-size: 0.9rem; line-height: 1.4;">
+          Specular materials impose a 2D constraint that uniquely determines
+          $\mathbf{p}'$ (as a function of $\xi'$) on the surface given
+          $\mathbf{p}_1$ and $\mathbf{p}_2$. In contrast, the path-length
+          constraint is only 1D, meaning that feasible $\mathbf{p}'$ lie on
+          an equi-distance contour on the surface. To further reduce the
+          remaining degree of freedom, we introduce an additional constraint,
+          referred to as a gauge in this paper.
+        </h2>
+      </div> -->
+
+<!-- <section class="section hero is-small">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <div class="content">
+          <h2 class="title is-3">Path Length Aware Shift Mapping</h2>
+         <p>
+              <img src="static/images/overview_figure.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
+            </p>
+            <p class="subtitle has-text-centered">
+              We found that there is an underlying difference in the physics between the Doppler effect in AMCW and OHD, which results in different measurement and simulation strategies. The main reason for this difference is the large disparity in wavelength. AMCW has a much longer wavelength compared to the microgeometry; it observes the rough plane as a smooth plane and thus measures the macroscopic rate of distance change, known as spot velocity. However, for OHD, since the microgeometry has large deviations compared to the wavelength, all microscopic perturbations remain independent and we can detect the actual microscopic velocity, which is called target velocity.
+              <!-- We found that there is underlying difference in physics between Doppler effect in AMCW and OHD, which results in different measurement and simulation strategy.
+              The main reason for the difference is the huge wavelength difference.
+              AMCW has much longer wavelength compared to the microgeometry, it observes the rough plane as a smooth plane which thus measures macroscopic distance change rate, known as <em>spot velocity</em>.
+              However, for OHD, since microgeometry has large deviation compared to wavelength, all microscopic perturbation remains independently and we can detect actual microscopic velocity, which is called <em>target velocity</em>. -->
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
 
 <!-- <section class="hero is-small">
   <div class="hero-body">
