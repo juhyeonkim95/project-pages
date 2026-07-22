@@ -150,7 +150,7 @@ Resampling</h1>
 
                 <!-- Github link -->
                 <span class="link-block">
-                  <a href="https://github.com/juhyeonkim95/ToFReSTIR" target="_blank"
+                  <a href="https://github.com/juhyeonkim95/FalcorComp" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fab fa-github"></i>
@@ -202,10 +202,10 @@ Resampling</h1>
           <p>
             We present a novel spatio-temporal reuse framework for time-resolved light transport, enabling efficient Monte Carlo rendering of time-of-flight (ToF) phenomena such as time-gated imaging and transient light capture.
             Existing ToF rendering methods are computationally expensive, scale poorly to complex dynamic scenes, and are therefore unsuitable for applications with strict latency constraints.
-            To address this limitation, we draw inspiration from \emph{ReSTIR}, a reuse-based technique for steady-state real-time rendering, and adapt its core principles to interactive-rate ToF simulation.
+            To address this limitation, we draw inspiration from ReSTIR, a reuse-based technique for steady-state real-time rendering, and adapt its core principles to interactive-rate ToF simulation.
             However, naively applying existing ReSTIR methods to ToF rendering leads to severe inefficiency, as reused paths frequently violate optical path-length constraints and thus contribute little or no signal.
             We overcome this challenge by introducing a path reuse formulation that explicitly enforces physically valid optical path lengths.
-            The key idea is \emph{path-length-aware shift mapping}, a geometric transformation based on Newton’s method that adjusts reused light paths to satisfy temporal gating constraints, inspired by specular manifold exploration in steady-state caustics rendering.
+            The key idea is path-length-aware shift mapping, a geometric transformation based on Newton’s method that adjusts reused light paths to satisfy temporal gating constraints, inspired by specular manifold exploration in steady-state caustics rendering.
             The resulting framework substantially improves the efficiency of ToF rendering across a wide range of scenarios, including complex scenes with glossy or specular materials and dynamic motion.
             Our method supports both time-gated and transient rendering at interactive frame rates, enabling simulation under practical latency constraints.
             We demonstrate the effectiveness of our approach through two downstream applications, including shape reconstruction and navigation.
@@ -417,105 +417,6 @@ Resampling</h1>
 </div>
 </div>
 </section>
-
-
-      
-
-<!-- <div class="item">
-        <img
-          src="static/images/specular_path_length_comparison.png"
-          alt="Overview"
-          style="width: 60%; display: block; margin: auto;">
-        <h2 class="subtitle" style="font-size: 0.9rem; line-height: 1.4;">
-          Specular materials impose a 2D constraint that uniquely determines
-          $\mathbf{p}'$ (as a function of $\xi'$) on the surface given
-          $\mathbf{p}_1$ and $\mathbf{p}_2$. In contrast, the path-length
-          constraint is only 1D, meaning that feasible $\mathbf{p}'$ lie on
-          an equi-distance contour on the surface. To further reduce the
-          remaining degree of freedom, we introduce an additional constraint,
-          referred to as a gauge in this paper.
-        </h2>
-      </div> -->
-
-<!-- <section class="section hero is-small">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full">
-        <div class="content">
-          <h2 class="title is-3">Path Length Aware Shift Mapping</h2>
-         <p>
-              <img src="static/images/overview_figure.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
-            </p>
-            <p class="subtitle has-text-centered">
-              We found that there is an underlying difference in the physics between the Doppler effect in AMCW and OHD, which results in different measurement and simulation strategies. The main reason for this difference is the large disparity in wavelength. AMCW has a much longer wavelength compared to the microgeometry; it observes the rough plane as a smooth plane and thus measures the macroscopic rate of distance change, known as spot velocity. However, for OHD, since the microgeometry has large deviations compared to the wavelength, all microscopic perturbations remain independent and we can detect the actual microscopic velocity, which is called target velocity.
-              <!-- We found that there is underlying difference in physics between Doppler effect in AMCW and OHD, which results in different measurement and simulation strategy.
-              The main reason for the difference is the huge wavelength difference.
-              AMCW has much longer wavelength compared to the microgeometry, it observes the rough plane as a smooth plane which thus measures macroscopic distance change rate, known as <em>spot velocity</em>.
-              However, for OHD, since microgeometry has large deviation compared to wavelength, all microscopic perturbation remains independently and we can detect actual microscopic velocity, which is called <em>target velocity</em>. -->
-            </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
-
-<!-- <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Talk Video</h2>
-    </div>
-  </div>
-</section>
-
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="Conference talk" controls muted height="100%">
-        <source src="static/videos/OHD_SIGGRAPH_2025_talkvideo.mp4"
-        type="video/mp4">
-      </video>
-    </div>
-  </div>
-</section> -->
-
-
-
-<!-- Introduction to OHD -->
-<!-- <section class="section hero is-small">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full">
-        <div class="content">
-          <h2 class="title is-3">Introduction</h2>
-          
-            <h2 class="title is-4">What is OHD?</h2>
-         <p>
-              <img src="static/images/image1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
-            </p>
-            <p>
-                  <em> Optical heterodyne detection (OHD)</em>  is a widely used interferometric 
-                  technique for measuring frequency modulations in light.
-                  OHD mixes a weak signal beam with a strong, coherent reference
-                  beam, often referred to as the <em>local oscillator</em>.
-                  The interference between these two optical
-                  fields generates a <em>beat signal</em> at a lower frequency, encoding how the
-                  received signal is modulated relative to the reference signal. This
-                  often includes useful information such as the velocity or distance
-                  of various objects in the scene.
-            </p>
-            <h2 class="title is-4">Lasers for OHD</h2>
-                     <p>
-              <img src="static/images/image2.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
-            </p>
-            <p>
-              Compared to standard laser which is only capable of detecting Doppler shift, swept frequency laser which has linearly increasing frequency, beat frequency contains not only doppler shift, but also distance, or time-of-flight information. FMCW lidar typically uses triangular chirps, so that we can decompose each factor.
-            </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
