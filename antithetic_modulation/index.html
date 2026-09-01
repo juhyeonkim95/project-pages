@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light">
+  <meta property="og:title" content="Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light">
+  <meta property="og:description" content="Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light (SIGGRAPH Asia 2026, Conference Track)">
+  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/antithetic_modulation/">
+  <meta property="og:image" content="static/images/teaser.png">
+  <meta name="twitter:title" content="Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light">
+  <meta name="twitter:description" content="Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light (SIGGRAPH Asia 2026, Conference Track)">
+  <meta name="twitter:image" content="static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="Antithetic Sampling, Modulated Light Transport, Structured Light, Continuous-wave Time-of-Flight Imaging">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light</title>
+  <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Geometric Antithetic Sampling for<br>Rendering Spatiotemporally Modulated Light</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://juhyeonkim.netlify.app/" target="_blank">Juhyeon Kim</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://jackcui.ca/" target="_blank">Jack Cui</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://cs.dartmouth.edu/~wjarosz/" target="_blank">Wojciech Jarosz</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://sites.google.com/view/adithyapediredla/" target="_blank">Adithya Pediredla</a><sup>1</sup></span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Dartmouth College<br>SIGGRAPH Asia 2026, Conference Track</span>
+            </div>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark" aria-disabled="true">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper (TBD)</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark" aria-disabled="true">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Supplementary (TBD)</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-fluid">
+      <div class="hero-body">
+        <img src="static/images/teaser.png" alt="Overview of geometric antithetic sampling for temporally and spatially modulated light transport">
+        <h2 class="subtitle has-text-centered">
+          We form antithetic pairs by geometrically deforming a primal light path so that its modulation term becomes opposite, reducing variance in modulated light rendering and downstream imaging applications.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              We propose a geometric antithetic sampling strategy for efficiently rendering spatiotemporally modulated light, encompassing both continuous-wave time-of-flight (CW-ToF) and structured light systems. This is motivated by the observation that modulated light transport can be decomposed into a slowly varying geometric term and a rapidly oscillating modulation term, where the latter dominates variance. Our key idea is to construct antithetic sample pairs by geometrically deforming an existing light path so that the modulation term changes sign while preserving similarity in the underlying transport. In both CW-ToF and structured light, antithetic samples lie on an antithetic manifold—the set of configurations with opposite modulation phase—and we search along it to find the path most similar to a given reference path, thereby maintaining strong negative correlation between paired samples. For CW-ToF, this corresponds to shifting paths in optical path-length space, while for structured light, it involves deforming emitter samples along the spatial modulation manifold on the projector coordinate. By unifying both cases under this geometric deformation framework, our method effectively cancels high-frequency modulation components through paired samples, leading to significant variance reduction and enabling more efficient simulation of coded illumination and sensing systems which are important in the field of computational imaging.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>(TBD)</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page. The website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
