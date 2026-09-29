@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
   <meta name="description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy">
   <meta property="og:title" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy"/>
   <meta property="og:description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy"/>
   <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/transient_absorption_spectroscopy/"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/teaser.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
+  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/transient_absorption_spectroscopy/static/images/teaser.png" />
 
 
   <meta name="twitter:title" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy">
   <meta name="twitter:description" content="Efficient Time Sampling Strategy for Transient Absorption Spectroscopy (ICCP 2024)">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/teaser.png">
-  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
+  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/transient_absorption_spectroscopy/static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="Transient Absorption Spectroscopy, Transient Imaging, Femtochemistry, Non-linear Curve Fitting">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,11 +36,22 @@
   <link rel="stylesheet" href="static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
 </head>
 <body>
 
@@ -121,7 +130,7 @@
     <div class="hero-body">
       <img src="static/images/teaser.png" alt="teaser"/>
       <h2 class="subtitle has-text-centered">
-        Overview of transient absorption spectroscopy (TAS). Our goal is to find efficient time sampling strategy for lifetime estimation.
+        Overview of transient absorption spectroscopy (TAS). Our goal is to find an efficient time sampling strategy for lifetime estimation.
       </h2>
     </div>
   </div>
@@ -136,7 +145,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Transient absorption spectroscopy (TAS) is a field of study that investigates the dynamic process of chemical compounds. Thanks to the recent emergence of ultrafast pulsed lasers, TAS now extends its reach to studying photochemical reactions occurring within few femtosecond to nanosecond timescales. With ultrafast TAS, changes in sample absorbance or transmittance over time following excitation by pulsed light can be measured at a high temporal resolution -tens of femtoseconds. An application of ultrafast TAS is lifetime measurement for fluorescence decay. However, due to various noise sources (sensor noise, shot noise, unintended photochemical reactions, etc.) during measurement, obtaining a reliable lifetime value often necessitates extensive repetition resulting in experiments lasting several hours. In this paper, we introduce an effective time sampling strategy tailored for lifetime measurement from noisy transient signals. We start with a well-established non-linear curve fitting algorithm and demonstrate that sampling time shifts that maximize the signal derivative ($t=\tau$) will minimize the variance in lifetime estimation. Additionally, we reduce the number of parameters by normalization to ensures the correctness of our algorithm. We demonstrate using simulation that our proposed method outperforms conventional time sampling or normalization methods across various conditions. Especially, we found that proposed method gives same error with 5.5 x less samples compared to the common TAS measurement strategy that uses exponential time sampling with full parameter curve-fitting. Moreover, through real-world TAS measurements, we show that our technique results in 2-8 x less standard deviation compared to baseline methods. We expect that our algorithm will be valuable not only for researchers who use TAS but also for researchers across various fields who use time-gated transient cameras for lifetime analysis.
+            Transient absorption spectroscopy (TAS) is a field of study that investigates the dynamic processes of chemical compounds. Thanks to the recent emergence of ultrafast pulsed lasers, TAS now extends its reach to studying photochemical reactions occurring on timescales ranging from a few femtoseconds to nanoseconds. With ultrafast TAS, changes in sample absorbance or transmittance over time following excitation by pulsed light can be measured at a high temporal resolution of tens of femtoseconds. An application of ultrafast TAS is lifetime measurement for fluorescence decay. However, due to various noise sources (sensor noise, shot noise, unintended photochemical reactions, etc.) during measurement, obtaining a reliable lifetime value often necessitates extensive repetition resulting in experiments lasting several hours. In this paper, we introduce an effective time sampling strategy tailored for lifetime measurement from noisy transient signals. We start with a well-established non-linear curve fitting algorithm and demonstrate that sampling time shifts that maximize the signal derivative ($t=\tau$) will minimize the variance in lifetime estimation. Additionally, we reduce the number of parameters by normalization to ensure the correctness of our algorithm. We demonstrate through simulations that our proposed method outperforms conventional time sampling or normalization methods across various conditions. In particular, we found that the proposed method achieves the same error using 5.5 times fewer samples than the common TAS measurement strategy that uses exponential time sampling with full parameter curve-fitting. Moreover, through real-world TAS measurements, we show that our technique reduces the standard deviation by a factor of 2–8 compared to baseline methods. We expect that our algorithm will be valuable not only for researchers who use TAS but also for researchers across various fields who use time-gated transient cameras for lifetime analysis.
           </p>
         </div>
       </div>
@@ -155,14 +164,14 @@
         <!-- Your image here -->
         <img src="static/images/result1.png" alt="result1"/>
         <h2 class="subtitle has-text-centered">
-          (A) RMSE of relative error between τ and ground truth τgt using different sampling method and normalization strategy. Proposed method(sampling only near τ with normalization) shows the best performance compared to other configurations. (B) Averaged and sorted time samples over sample index for each strategy.
+          (A) RMSE of relative error between τ and ground truth τgt using different sampling methods and normalization strategies. The proposed method (sampling only near τ with normalization) shows the best performance compared to other configurations. (B) Averaged and sorted time samples over sample index for each strategy.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/result2.png" alt="result2" width="500"/>
         <h2 class="subtitle has-text-centered">
-          RMSE of relative error between τ and ground truth τgt using different initial guess τs. It shows that our proposed method shows the lowest RMSE at τs = τgt and degrades as τs deviates from τgt. However, compared to other sampling methods, our method shows optimal property over a large range (±50%).
+          RMSE of relative error between τ and ground truth τgt using different initial guesses τs. Our proposed method achieves the lowest RMSE at τs = τgt and degrades as τs deviates from τgt. However, compared to other sampling methods, our method performs well over a wide range (±50%).
         </h2>
       </div>
   </div>
@@ -174,7 +183,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title is-3">Supplemental Video</h2>
+      <h2 class="title is-3">Supplementary Video</h2>
     </div>
   </div>
 </section>
@@ -209,8 +218,8 @@
         <div class="content">
 
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
 
@@ -8,14 +8,12 @@
   <meta property="og:description" content="Difference-aware Filtering for Event Camera Simulation (EGSR 2026)"/>
   <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/event_svgf/"/>
 
-  <meta property="og:image" content="static/images/teaser.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/event_svgf/static/images/teaser.png" />
 
   <meta name="twitter:title" content="Difference-aware Filtering for Event Camera Simulation">
   <meta name="twitter:description" content="Difference-aware Filtering for Event Camera Simulation (EGSR 2026)">
 
-  <meta name="twitter:image" content="static/images/teaser.png">
+  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/event_svgf/static/images/teaser.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <meta name="keywords" content="Event Camera, Physically-based Rendering">
@@ -100,7 +98,7 @@
     <div class="hero-body">
       <img src="static/images/teaser.png" alt="teaser"/>
       <h2 class="subtitle has-text-centered">
-        We present EventSVGF, an event camera rendering framework based on SVGF, that only takes 2spp for rendering temporally stable difference images.
+        We present EventSVGF, an event camera rendering framework based on SVGF that renders temporally stable difference images using only 2 samples per pixel.
       </h2>
     </div>
   </div>
@@ -118,7 +116,7 @@
             However, naively computing temporal differences from primal-domain RGB images leads to severe noise, as existing denoising methods are designed for primal signals rather than their differences.
             Our key contribution is a method that directly denoises the pixel-wise temporal difference signal using correlated sampling, formulated as a difference-aware extension of the SVGF pipeline, termed EventSVGF.
             EventSVGF incorporates a novel edge-stopping function, an adapted temporal accumulation scheme, and an albedo demodulation strategy, all tailored for accurate event camera simulation.
-            Our method achieves stable results at low sampling rates (2 spp), whereas existing approaches typically require significantly higher sampling budgets (32--512 spp).
+            Our method achieves stable results at low sampling rates (2 spp), whereas existing approaches typically require significantly higher sampling budgets (32–512 spp).
             We demonstrate EventSVGF on dynamic scenes, showing improved accuracy and high-frequency temporal stability in event simulation compared to prior works.
           </p>
         </div>
@@ -238,8 +236,8 @@
       <div class="column is-8">
         <div class="content">
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
         </div>

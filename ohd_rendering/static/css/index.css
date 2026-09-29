@@ -32,7 +32,7 @@ body {
 }
 
 .publication-banner {
-  max-height: parent;
+  max-height: 100%;
 
 }
 
@@ -41,7 +41,7 @@ body {
   left: auto;
   top: auto;
   transform: none;
-  object-fit: fit;
+  object-fit: contain;
 }
 
 .publication-header .hero-body {

@@ -202,7 +202,7 @@
         <header class="card-h">
           <div class="avatar">AL</div>
           <div>
-            <div class="name">Alice Kim (Bussiness Client)</div>
+            <div class="name">Alice Kim (Business Client)</div>
             <div class="meta">2h • Friends</div>
           </div>
           <div class="spacer"></div>
@@ -297,6 +297,7 @@
     const topTitle = document.getElementById('topTitle');
 
     function setScreen(name){
+      if (!screens[name]) return;
       Object.values(screens).forEach(el=> el.classList.remove('active'));
       if (screens[name]) screens[name].classList.add('active');
       tabs.forEach(t=> t.classList.toggle('active', t.dataset.screen===name));
@@ -368,13 +369,18 @@
 
     // Chat list render
     const chatList = document.getElementById('chatList');
+    function escapeHtml(value) {
+      const element = document.createElement('span');
+      element.textContent = value;
+      return element.innerHTML;
+    }
     function renderChats(){
       const rows = Array.from(conversations.values()).map(c=>`
         <div class="row chat-row" data-name="${c.name}">
           <div class="avatar">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
           <div>
             <div class="name">${c.name}</div>
-            <div class="sub">${(c.msgs[c.msgs.length-1]||{text:''}).text || 'New chat'}</div>
+            <div class="sub">${escapeHtml((c.msgs[c.msgs.length-1]||{text:''}).text || 'New chat')}</div>
           </div>
         </div>`).join('');
       chatList.innerHTML = rows || '<div class="row"><div class="sub">No chats yet. Double‑click a friend to start one.</div></div>';
@@ -426,7 +432,7 @@
     }
 
     function renderChatLog(convo){
-      chatLog.innerHTML = convo.msgs.map(m=>`<div class="bubble ${m.me?'me':'them'}">${m.text}</div>`).join('');
+      chatLog.innerHTML = convo.msgs.map(m=>`<div class="bubble ${m.me?'me':'them'}">${escapeHtml(m.text)}</div>`).join('');
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
   <meta name="description" content="A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
 Detection">
@@ -11,19 +11,17 @@ Detection"/>
   <meta property="og:description" content="A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
 Detection (SIGGRAPH 2025)"/>
   <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/ohd_rendering/"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/teaser.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
+  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/ohd_rendering/static/images/teaser.png" />
 
 
   <meta name="twitter:title" content="A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
 Detection">
   <meta name="twitter:description" content="A Monte Carlo Rendering Framework for Simulating Optical Heterodyne
 Detection (SIGGRAPH 2025)">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/teaser.png">
-  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
+  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/ohd_rendering/static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,7 +42,6 @@ Detection</title>
   <link rel="stylesheet" href="static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
@@ -173,7 +170,7 @@ Detection</h1>
     <div class="hero-body">
       <img src="static/images/teaser.png" alt="teaser"/>
       <h2 class="subtitle has-text-centered">
-        We present a general spectral-domain simulation framework for optical heterodyne detection (OHD), extending path integral rendering to capture power spectral density of OHD. Unlike existing domain-specific tools, our approach supports diverse scenes and applications.
+        We present a general spectral-domain simulation framework for optical heterodyne detection (OHD), extending path integral rendering to capture the power spectral density of OHD. Unlike existing domain-specific tools, our approach supports diverse scenes and applications.
       </h2>
       <!-- <h2 class="subtitle has-text-centered">
         We propose a ray-tracing based Monte Carlo rendering framework for simulating optical heterodyne detection (OHD). (A) OHD is a technique that measures the frequency modulation of light using optical interferometry. Through spectral analysis of the photon-induced current on the photodetector, we can obtain useful information such as object velocity/distance or Doppler spectra.(B) Our MC simulation is based on the OHD path integral that resembles radiometric path integral [Veach 1997], but is resolved by the path frequency which depends on the path length and velocity. (C) Using our simulator, one can simulate various OHD scenarios, such as coherent lidar used in autonomous vehicles, non-invasive blood flow measurement, and atmospheric Doppler sensing.
@@ -192,7 +189,7 @@ Detection</h1>
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Optical heterodyne detection (OHD) employs coherent light and optical interference techniques to extract physical parameters, such as velocity or distance, which are encoded in the frequency modulation of the light. With its superior signal-to-noise ratio compared to incoherent detection methods, such as time-of-flight lidar, OHD has become integral to applications requiring high sensitivity, including autonomous navigation, atmospheric sensing, and biomedical velocimetry. However, current simulation tools for OHD focus narrowly on specific applications, relying on domain-specific settings like restricted reflection functions, scene configurations, or single-bounce assumptions, which limit their applicability. In this work, we introduce a flexible and general framework for spectral-domain simulation of OHD. We demonstrate that classical radiometry-based path integral formulation can be adapted and extended to simulate the OHD measurements in the spectral domain. This enables us to leverage the rich modeling and sampling capabilities of existing Monte Carlo path tracing techniques. Our formulation shares structural similarities with transient rendering but operates in the spectral domain and accounts for the Doppler effect. While simulators for the Doppler effect in incoherent (intensity) detection methods exist, they are largely not suitable to simulate OHD. We use a microsurface interpretation to show that these two Doppler imaging techniques capture different physical quantities and thus need different simulation frameworks. We validate the correctness and predictive power of our simulation framework by qualitatively comparing the simulations with real-world captured data for three different OHD applications---FMCW lidar, blood flow velocimetry, and wind Doppler lidar.
+            Optical heterodyne detection (OHD) employs coherent light and optical interference techniques to extract physical parameters, such as velocity or distance, which are encoded in the frequency modulation of the light. With its superior signal-to-noise ratio compared to incoherent detection methods, such as time-of-flight lidar, OHD has become integral to applications requiring high sensitivity, including autonomous navigation, atmospheric sensing, and biomedical velocimetry. However, current simulation tools for OHD focus narrowly on specific applications, relying on domain-specific settings like restricted reflection functions, scene configurations, or single-bounce assumptions, which limit their applicability. In this work, we introduce a flexible and general framework for spectral-domain simulation of OHD. We demonstrate that the classical radiometry-based path integral formulation can be adapted and extended to simulate the OHD measurements in the spectral domain. This enables us to leverage the rich modeling and sampling capabilities of existing Monte Carlo path tracing techniques. Our formulation shares structural similarities with transient rendering but operates in the spectral domain and accounts for the Doppler effect. While simulators for the Doppler effect in incoherent (intensity) detection methods exist, they are largely not suitable for simulating OHD. We use a microsurface interpretation to show that these two Doppler imaging techniques capture different physical quantities and thus need different simulation frameworks. We validate the correctness and predictive power of our simulation framework by qualitatively comparing the simulations with real-world captured data for three different OHD applications: FMCW lidar, blood flow velocimetry, and wind Doppler lidar.
           </p>
         </div>
       </div>
@@ -212,7 +209,7 @@ Detection</h1>
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video poster="" id="Conference talk" controls muted height="100%">
+      <video poster="" id="conference-talk" controls muted height="100%">
         <!-- Your video here -->
         <source src="static/videos/OHD_SIGGRAPH_2025_talkvideo.mp4"
         type="video/mp4">
@@ -265,7 +262,7 @@ Detection</h1>
   <div class="hero-body">
     <div class="container is-max-desktop">
       <h2 class="title is-3">What is OHD?</h2>
-      <div id="results-carousel" class="carousel results-carousel">
+      <div id="results-carousel-1" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
         <img src="static/images/image0_1.png" alt="MY ALT TEXT"/>
@@ -311,7 +308,7 @@ Optical heterodyne detection (OHD) is a widely used interferometric technique fo
   <div class="hero-body">
     <div class="container is-max-desktop">
       <h2 class="title is-3">(1) Proposed OHD Path Integral</h2>
-      <div id="results-carousel" class="carousel results-carousel">
+      <div id="results-carousel-2" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
         <img src="static/images/image1_1.png" alt="MY ALT TEXT"/>
@@ -345,7 +342,7 @@ Optical heterodyne detection (OHD) is a widely used interferometric technique fo
   <div class="hero-body">
     <div class="container is-max-desktop">
       <h2 class="title is-3">(2) OHD Speckle Simulation</h2>
-      <div id="results-carousel" class="carousel results-carousel">
+      <div id="results-carousel-3" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
         <img src="static/images/image2_1.png" alt="MY ALT TEXT"/>
@@ -361,7 +358,7 @@ Both methods only depend on macroscopic path space. -->
         <!-- Your image here -->
         <img src="static/images/image2_2.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          We demonstrate the validity on a Cornell box scene, showing that both methods converge to the same PSD. However, we believe Alg1 should be the default choice, as Alg2 requires many iterations to converge. Meanwhile, the green line shows the single-bounce model, which clearly fails.
+          We demonstrate the validity of both methods in a Cornell box scene, showing that they converge to the same PSD. However, we believe Alg1 should be the default choice, as Alg2 requires many iterations to converge. Meanwhile, the green line shows the single-bounce model, which clearly fails.
           <!-- We demonstrate the validity on Cornell box scene, showing that both methods converges to the same PSD. However, we believe Alg1 should be a default choice, as Alg2 requires many iteration to converge. Meanwhile, green line shows single bounce model, which clearly fails. -->
         </h2>
       </div>
@@ -403,7 +400,7 @@ Both methods only depend on macroscopic path space. -->
               <img src="static/images/image_result_1.png" alt="Directional Weight Score" class="blend-img-background center-image" style="max-width: 100%; height: auto;">
             </p>
             <p class="subtitle has-text-centered">
-              We demonstrate our simulation algorithm for three different OHD applications. Please refer main paper for details.
+              We demonstrate our simulation algorithm for three different OHD applications. Please refer to the main paper for details.
             </p>
         </div>
       </div>
@@ -414,7 +411,7 @@ Both methods only depend on macroscopic path space. -->
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title is-3">Supplemental Video</h2>
+      <h2 class="title is-3">Supplementary Video</h2>
     </div>
   </div>
 </section>
@@ -436,7 +433,7 @@ Both methods only depend on macroscopic path space. -->
   <div class="hero-body">
     <div class="container">
       <h2 class="title">Poster</h2>
-      <iframe  src="static/pdfs/OHD_SIGGRAPH_2025_poster.pdf" width="100%" height="550">
+      <iframe src="static/pdfs/OHD_SIGGRAPH_2025_poster.pdf" title="OHD poster" width="100%" height="550">
           </iframe>
       </div>
     </div>
@@ -499,8 +496,8 @@ Both methods only depend on macroscopic path space. -->
         <div class="content">
 
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
 

@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="Template">
-  <meta property="og:title" content="Template"/>
-  <meta property="og:description" content="Template"/>
-  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/template/"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/teaser.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+  <meta name="description" content="Doppler Rendering in One Weekend">
+  <meta property="og:title" content="Doppler Rendering in One Weekend"/>
+  <meta property="og:description" content="Doppler Rendering in One Weekend"/>
+  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
+  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/static/images/doppler_applications.png" />
 
 
-  <meta name="twitter:title" content="template">
-  <meta name="twitter:description" content="template">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/teaser.png">
-  <meta name="twitter:card" content="static/images/teaser.png">
+  <meta name="twitter:title" content="Doppler Rendering in One Weekend">
+  <meta name="twitter:description" content="Doppler Rendering in One Weekend">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
+  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/static/images/doppler_applications.png">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +36,6 @@
   <link rel="stylesheet" href="static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
@@ -52,7 +49,6 @@
     <!-- To automatically render math in text elements, include the auto-render extension: -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
         onload="renderMathInElement(document.body);"></script>
-<script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
 
 
 </head>
@@ -83,15 +79,15 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
         <li><a href="#ch1"><strong>1.</strong> Overview</a></li>
         <li style="margin-left:1.2rem;"><a href="#ch1-1"><strong>1.1</strong> What is the Doppler Effect?</a></li>
         <li style="margin-left:1.2rem;"><a href="#ch1-2"><strong>1.2</strong> Applications of the Doppler Effect</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch1-3"><strong>1.3</strong> Why we need Doppler Rendering?</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch1-3"><strong>1.3</strong> Why do we need Doppler Rendering?</a></li>
         <li style="margin-left:1.2rem;"><a href="#ch1-4"><strong>1.4</strong> Intensity vs. Field Doppler</a></li>
         
-        <li style="margin-top:.5rem;"><a href="#ch2"><strong>2.</strong> Doppler Effect for Simple Case</a></li>
+        <li style="margin-top:.5rem;"><a href="#ch2"><strong>2.</strong> Doppler Effect for a Simple Case</a></li>
         <li style="margin-left:1.2rem;"><a href="#ch2-1"><strong>2.1</strong> Monostatic Doppler Effect</a></li>
 
-        <li style="margin-top:.5rem;"><a href="#ch3"><strong>3.</strong> Doppler Effect for Rough Surface</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch3-1"><strong>3.1</strong> Phasor sum on Static Rough Surface</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch3-2"><strong>3.2</strong> Phasor sum on Dynamic Rough Surface</a></li>
+        <li style="margin-top:.5rem;"><a href="#ch3"><strong>3.</strong> Doppler Effect for a Rough Surface</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch3-1"><strong>3.1</strong> Phasor Sum for a Static Rough Surface</a></li>
+        <li style="margin-left:1.2rem;"><a href="#ch3-2"><strong>3.2</strong> Phasor Sum for a Dynamic Rough Surface</a></li>
         
         <!-- <li style="margin-top:.5rem;"><a href="#ch4"><strong>4.</strong> Doppler Rendering</a></li>
         <li style="margin-left:1.2rem;"><a href="#ch4-1"><strong>4.1</strong> Intensity Doppler Rendering</a></li>
@@ -111,7 +107,7 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 
     <div class="content has-text-justified">
       <p>
-        Let's first review the basic concepts of the Doppler effect, that you have learned in high-school physics.
+        Let's first review the basic concepts of the Doppler effect that you may have learned in high school physics.
       </p>
     </div>
 
@@ -150,7 +146,7 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
   </p>
 
   <p>
-    with \(v_r = v_o - v_s\) denoting the <strong>relative radial velocity</strong>.
+    with \(v_r = v_o + v_s\) denoting the <strong>relative approach speed</strong> under the sign convention above.
     This linearized form is especially common in radar, lidar, and optical
     heterodyne detection, where shifts of only a few kilohertz or megahertz
     are measured against optical carriers in the terahertz range.
@@ -226,10 +222,10 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 <div class="content has-text-justified">
   <p>
     So how can we simulate the Doppler effect? Why do we need complex Doppler rendering algorithms to simulate these applications? 
-    Can’t we just use well-known Doppler formular to interpret and model the Doppler frequency shift?
-    Simple Doppler formular would works when the measurement is dominated by a single bounce off a simple surface. 
+    Can’t we just use well-known Doppler formulas to interpret and model the Doppler frequency shift?
+    A simple Doppler formula works when the measurement is dominated by a single bounce off a simple surface.
     But in real scenes we get complex geometry and lots of interreflections. 
-    This typically happens for non-line-of-sight imaging, scanning glossy objects,or volumes full of tiny scatterers like red blood cells or aerosols. In those settings, the simple formulas miss important contributions.
+    This typically happens for non-line-of-sight imaging, scanning glossy objects, or volumes full of tiny scatterers like red blood cells or aerosols. In those settings, the simple formulas miss important contributions.
   </p>
 </div>
 
@@ -240,21 +236,21 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 
 <div class="content has-text-justified">
   <p>
-    Though Doppler effect can occur in any wave, we only focus on optical range (visible - infrared), where standard light transport applies and lets us build on existing radiometric path tracers. 
-    In such optical range, the Doppler effect manifests in two ways. 
+    Although the Doppler effect can occur in any wave, we focus on the optical range (visible to infrared), where standard light transport applies and lets us build on existing radiometric path tracers.
+    In this optical range, the Doppler effect manifests in two ways.
     The first is <strong>intensity Doppler</strong>, where the effect appears as a modulation in the intensity of the light source. 
     Doppler Time-of-Flight imaging systems leverage this phenomenon.
     The second is <strong>field Doppler</strong>, where the Doppler effect occurs in the electromagnetic field of the light itself. 
     A well-known example is the red and blue shift observed in astronomy. 
     However, this shift also occurs at smaller scales in applications such as Doppler lidar, blood or wind velocimetry. 
     These techniques that rely on optical interference are collectively referred to as optical heterodyne detection. 
-    Interestingly, these two Doppler effect measures different quantities due to huge <em> wavelength </em> difference which will be further explained in <a href="#ch3-2"> later section</a>.
+    Interestingly, these two Doppler effects measure different quantities because of the large <em> wavelength </em> difference, which will be explained further in a <a href="#ch3-2"> later section</a>.
   </p>
 </div>
 
 <div class="content has-text-justified">
 <!-- Place this right under your 1.2 section content -->
-<figure class="image has-text-centered" id="fig-applications">
+<figure class="image has-text-centered" id="fig-doppler-types">
   <!-- Click to open full-size in a new tab -->
   <img
     src="static/images/intensity_vs_field.png"
@@ -262,7 +258,7 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
     style="max-width:100%; height:auto;"
     loading="lazy">
   <figcaption class="is-size-7 has-text-grey">
-    Figure 2. In optical imaging system, Doppler effect can manifest in two ways; Intensity (wavelength : 10m) vs Field Doppler (wavelength : 1 um)
+    Figure 2. In an optical imaging system, the Doppler effect can manifest in two ways: intensity Doppler (wavelength: 10 m) and field Doppler (wavelength: 1 µm).
   </figcaption>
 </figure>
 </div>
@@ -271,13 +267,15 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 <!-- =========================
      2. Simple Doppler
      ========================= -->
+  </div>
+</section>
 <section class="section" id="ch2">
   <div class="container is-max-desktop">
-    <h2 class="title is-3"><span class="has-text-weight-bold">2.</span>Doppler Effect for Simple Case</h2>
+    <h2 class="title is-3"><span class="has-text-weight-bold">2.</span>Doppler Effect for a Simple Case</h2>
 
     <div class="content has-text-justified">
       <p>
-       Here, we will derive the Doppler effect for the simplest case, reflection from the single object.
+       Here, we will derive the Doppler effect for the simplest case, reflection from a single object.
       </p>
     </div>
 
@@ -336,8 +334,7 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
     \]
   </p>
 
-  <p><em>Sign convention.</em> With \(v<0\) defined as receding, \(\phi(t)\) decreases linearly, producing a negative
-  angular rate \(\tfrac{d\phi}{dt}\); the observed Doppler shift is \(f_0 2v/c\).</p>
+  <p><em>Sign convention.</em> With \(v&lt;0\) defined as receding, the phase relative to the emitted carrier decreases linearly; the observed Doppler shift is \(f_0 2v/c\).</p>
 
   <!-- Small inline visualization -->
   <figure class="image" style="max-width:680px; margin:1rem auto;">
@@ -376,9 +373,11 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
       </foreignObject>
     </svg>
     <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-      Doppler shift from a single object moving away or toward to the collocated camera and light (Monostatic geometry).
+      Doppler shift from a single object moving away from or toward the collocated camera and light source (monostatic geometry).
     </figcaption>
   </figure>
+</div>
+  </div>
 </section>
 <!-- ============================================
      Interactive Doppler Demo (monostatic, d0 control, delayed return)
@@ -457,7 +456,7 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
   // State
   let d0_m   = parseFloat(d0El.value);  // meters
   let v_mps  = parseFloat(vEl.value);   // + toward sensor (left)
-  let running = true;
+  let animationFrame = null;
 
   // Timing
   let tStart = performance.now();  // start of current run (t=0 here)
@@ -547,7 +546,9 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 
     // Wrap within corridor
     const minX=x0+60*dpr, maxX=x1-10*dpr, width=(maxX-minX);
-    if (width>10){ while(xTar>maxX) xTar-=width; while(xTar<minX) xTar+=width; }
+    if (width > 10 && (xTar > maxX || xTar < minX)) {
+      xTar = minX + ((xTar - minX) % width + width) % width;
+    }
 
     // Target bar
     const tarW=26*dpr, tarH = Math.max(180*dpr, H*tarH_factor);
@@ -701,27 +702,32 @@ This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distin
 
   // Re-start time window at t=0 and re-anchor target at d0
 function restart(){
+  cancelAnimationFrame(animationFrame);
   tStart  = performance.now();  // t = 0
   tFreeze = 0;
   paused  = false;
   playB.textContent = 'Pause';
-  requestAnimationFrame(loop);
+  animationFrame = requestAnimationFrame(loop);
 }
 
   function recompute(){
+    if (!d0El.validity.valid || !vEl.validity.valid ||
+        !Number.isFinite(d0El.valueAsNumber) || !Number.isFinite(vEl.valueAsNumber)) return false;
     d0_m  = parseFloat(d0El.value);
     v_mps = parseFloat(vEl.value);
     vRead.textContent = v_mps.toFixed(2);
+    return true;
   }
 
-  d0El.addEventListener('input', ()=>{ recompute(); restart(); });
-  vEl .addEventListener('input', ()=>{ recompute(); restart(); });
+  d0El.addEventListener('input', ()=>{ if (recompute()) restart(); });
+  vEl .addEventListener('input', ()=>{ if (recompute()) restart(); });
 
 playB.addEventListener('click', ()=>{
   if (!paused){
     // go to PAUSE
     tFreeze = tElapsed();       // capture current elapsed time
     paused = true;
+    cancelAnimationFrame(animationFrame);
     playB.textContent = 'Play';
     // draw one final frame in paused state (optional)
     drawSpatial(); drawTimeTraces();
@@ -730,7 +736,7 @@ playB.addEventListener('click', ()=>{
     paused = false;
     tStart = performance.now() - tFreeze*1000; // maintain continuity
     playB.textContent = 'Pause';
-    requestAnimationFrame(loop);
+    animationFrame = requestAnimationFrame(loop);
   }
 });
   resetB.addEventListener('click', ()=>{ restart(); });
@@ -738,14 +744,13 @@ playB.addEventListener('click', ()=>{
 function loop(){
   drawSpatial();
   drawTimeTraces();
-  if (!paused) requestAnimationFrame(loop);
+  if (!paused) animationFrame = requestAnimationFrame(loop);
 }
   window.addEventListener('resize', ()=>{ drawSpatial(); drawTimeTraces(); });
 
   // init
   recompute();
   restart();
-  loop();
 })();
 </script>
 
@@ -756,18 +761,18 @@ function loop(){
      ========================= -->
 <section class="section" id="ch3">
   <div class="container is-max-desktop">
-    <h2 class="title is-3"><span class="has-text-weight-bold">3. </span>Doppler Effect for Rough Surface</h2>
+    <h2 class="title is-3"><span class="has-text-weight-bold">3. </span>Doppler Effect for a Rough Surface</h2>
 
     <div class="content has-text-justified">
       <p>
-       Here, we will derive the Doppler effect for a rough surface at arbitrary angle. 
+       Here, we will derive the Doppler effect for a rough surface at an arbitrary angle.
        The setup is visualized in Figure 3.
       </p>
     </div>
 
 <div class="content has-text-justified">
 <!-- Place this right under your 1.2 section content -->
-<figure class="image has-text-centered" id="fig-applications">
+<figure class="image has-text-centered" id="fig-rough-surface">
   <!-- Click to open full-size in a new tab -->
   <img
     src="static/images/macro_micro_geom.png"
@@ -775,14 +780,17 @@ function loop(){
     style="max-width:70%; height:auto;"
     loading="lazy">
   <figcaption class="is-size-7 has-text-grey">
-    Figure 3. Reflection on rough surface in macroscopic vs microscopic view. The ray has delta-extent in macroscopic view, but it covers 
-    numerous reflection points in microscopic perspective.
+    Figure 3. Reflection from a rough surface at macroscopic and microscopic scales. The ray has infinitesimal extent in the macroscopic view, but it covers
+    numerous reflection points in the microscopic view.
   </figcaption>
 </figure>
 </div>
 
 
-<section class="section" id="ch3-1">
+  </div>
+</section>
+
+<section class="section" id="rough-surface-demo">
   <div class="container is-max-desktop">
     <!-- Global optics -->
     <h2 class="title is-4">Global Parameters</h2>
@@ -804,7 +812,7 @@ function loop(){
     </div>
 
     <!-- Section 1 -->
-    <h2 class="title is-4" id="ch3-1"> <span class="has-text-weight-bold">3.1 </span> Phasor sum for Static Rough Surface</h2>
+    <h2 class="title is-4" id="ch3-1"> <span class="has-text-weight-bold">3.1 </span> Phasor Sum for a Static Rough Surface</h2>
     <div id="s1" class="box">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
@@ -855,7 +863,7 @@ function loop(){
 
     <!-- Section 2 -->
      
-    <h2 class="title is-4" id="ch3-2"> <span class="has-text-weight-bold">3.2 </span> Phasor sum for Dynamic Rough Surface</h2>
+    <h2 class="title is-4" id="ch3-2"> <span class="has-text-weight-bold">3.2 </span> Phasor Sum for a Dynamic Rough Surface</h2>
     <!-- <h2 class="title is-4" style="margin-top:2rem;">Section 2 — Moving Window (visual) + Live Phasor + FFT of S(t)</h2> -->
     <div id="s2" class="box">
       <div class="field is-grouped is-grouped-multiline">
@@ -1172,9 +1180,11 @@ function loop(){
   function updateSection1(){
     sigma_um=parseFloat(s1Sigma.value);
     ell_um=parseFloat(s1Ell.value);
-    lambda_um=parseFloat(glLam.value);
-    theta_i_deg=parseFloat(glTi.value);
-    theta_o_deg=parseFloat(glTo.value);
+    if ([glLam, glTi, glTo].every(input => input.validity.valid && Number.isFinite(input.valueAsNumber))) {
+      lambda_um=parseFloat(glLam.value);
+      theta_i_deg=parseFloat(glTi.value);
+      theta_o_deg=parseFloat(glTo.value);
+    }
 
     s1TSigma.textContent=sigma_um.toFixed(2);
     s1TEll.textContent=ell_um.toFixed(1);
@@ -1250,7 +1260,10 @@ function loop(){
   }
 
   // ===== events =====
-  [glLam, glTi, glTo].forEach(el=> el.addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); }));
+  [glLam, glTi, glTo].forEach(el=> el.addEventListener('input', ()=>{
+    if (![glLam, glTi, glTo].every(input => input.validity.valid && Number.isFinite(input.valueAsNumber))) return;
+    updateSection1(); updateSection2(); restartAnim();
+  }));
   s1Sigma.addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
   s1Ell  .addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
   s1SeedBtn.addEventListener('click', ()=>{ seed=(Math.random()*1e9)>>>0; updateSection1(); updateSection2(); restartAnim(); });
@@ -1277,8 +1290,8 @@ function loop(){
         <div class="content">
 
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
 

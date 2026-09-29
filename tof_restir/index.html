@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
   <meta name="description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
 Resampling">
   <meta property="og:title" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
 Resampling"/>
   <meta property="og:description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
-Resampling (SIGGRAPH 2025)"/>
+Resampling (SIGGRAPH 2026)"/>
   <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/tof_restir/"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/teaser.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
+  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/tof_restir/static/images/teaser.png" />
 
 
   <meta name="twitter:title" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
 Resampling">
   <meta name="twitter:description" content="ToF ReSTIR: Time-of-Flight Rendering with Spatio-temporal Reservoir
 Resampling (SIGGRAPH 2026)">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/teaser.png">
-  <meta name="twitter:card" content="static/images/teaser.png">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
+  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/tof_restir/static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,22 +42,12 @@ Resampling</title>
   <link rel="stylesheet" href="static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-
-    <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-
-    <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
     <script>
-    MathJax = {
+    window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']]
       }
@@ -238,7 +226,7 @@ Resampling</h1>
 
       <p class="has-text-centered"
          style="font-size: 0.9rem; margin-top: 1rem;">
-        6 minutes supplementary video.
+        Six-minute supplementary video.
       </p>
 
     </div>
@@ -298,7 +286,7 @@ Resampling</h1>
         </p>
 
         <p>
-          Our goal is to evaluate above ToF path integral efficiently in an interactive-rate using ReSTIR-based method.
+          Our goal is to evaluate the ToF path integral above efficiently at interactive frame rates using a ReSTIR-based method.
         </p>
       </div>
     </div>
@@ -319,7 +307,7 @@ Resampling</h1>
           ToF rendering requires sampled light paths to satisfy
           strict path-length constraints imposed by the temporal gate.
           Conventional ReSTIR reuse strategies often violate
-          these constraints, leading to inefficient estimates with a lot of invalid samples that falls outside of the time gate.
+          these constraints, leading to inefficient estimates with many invalid samples that fall outside the time gate.
           Our method introduces path-length-aware shift mapping that preserves
           temporal consistency while enabling efficient sample reuse.
         </p>
@@ -332,7 +320,7 @@ Resampling</h1>
           alt="overview_figure"
           style="width: 80%; display: block; margin: auto;">
         <h2 class="subtitle" style="font-size: 0.9rem; line-height: 1.4;">
-          Overview of proposed path-length-aware reuse strategies. 
+          Overview of the proposed path-length-aware reuse strategies.
           (A) Naive path reuse from conventional steady-state ReSTIR ends up going outside of the valid time gate. To address this issue, we introduce path-length-aware shift mapping, illustrated by the red arrow.
           (B) Illustration of a base path in the left pixel (blue), the naively reused path in the right pixel (orange), and the corrected path produced by our method (green), which satisfies the temporal constraint.  
         </h2>
@@ -364,7 +352,7 @@ Resampling</h1>
         <p>
           <br>
           <br>
-          Searching on path-length manifold is very similar to that of specular reflection. 
+          Searching on a path-length manifold is similar to searching on a specular reflection manifold.
           However, unlike specular reflection, which uniquely determines the
           reconnection vertex through geometric constraints, the
           path-length constraint alone leaves one remaining degree of
@@ -457,8 +445,8 @@ Resampling</h1>
       <div class="column is-8">
         <div class="content">
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
         </div>
