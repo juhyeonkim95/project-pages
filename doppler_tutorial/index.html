@@ -1,1304 +1,318 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriately as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="Doppler Rendering in One Weekend">
-  <meta property="og:title" content="Doppler Rendering in One Weekend"/>
-  <meta property="og:description" content="Doppler Rendering in One Weekend"/>
-  <meta property="og:url" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
-  <meta property="og:image" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/static/images/doppler_applications.png" />
-
-
-  <meta name="twitter:title" content="Doppler Rendering in One Weekend">
-  <meta name="twitter:description" content="Doppler Rendering in One Weekend">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
-  <meta name="twitter:image" content="https://juhyeonkim95.github.io/project-pages/doppler_tutorial/static/images/doppler_applications.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="Time-of-Flight Imaging, Physically-based Rendering">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
+  <meta name="description" content="An academic, interactive tutorial on Doppler rendering: from the single-reflector Doppler formula to the distinction between macroscopic spot velocity and microscopic target velocity.">
   <title>Doppler Rendering in One Weekend</title>
-  <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
-
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/bulma-carousel.min.js"></script>
-  <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
-
-    <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
-
-    <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
-
-
+  <link rel="icon" href="static/images/butterfly.ico">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/katex/katex.min.js" defer></script>
+  <script src="vendor/katex/contrib/auto-render.min.js" defer></script>
+  <script src="physics.js" defer></script>
+  <script src="tutorial.js" defer></script>
 </head>
-
-
-
 <body>
-
-<!-- =========================
-     Title • Authors • TOC
-     ========================= -->
-<section class="section hero is-light" id="doc-top">
-  <div class="container is-max-desktop">
-    <h1 class="title is-1 has-text-centered">Doppler Rendering in One Weekend</h1>
-    <p class="is-size-5 has-text-centered author-line" style="margin-bottom:1rem;">
-     <a href="https://juhyeonkim.netlify.app/" target="_blank" rel="noopener">Juhyeon Kim</a>
-    </p>
-      <div class="content has-text-justified">
-<p>Welcome to <em>Doppler Rendering in One Weekend</em>.
-The <a href="https://en.wikipedia.org/wiki/Doppler_effect">Doppler effect</a> is the change in observed frequency caused by relative motion between a source and an observer. <strong>Doppler rendering</strong> uses existing Monte Carlo path tracers to simulate Doppler phenomena in complex scenes.
-This tutorial covers (i) the fundamentals of the Doppler effect, (ii) the distinction between <em>intensity</em> Doppler (AMCW lidar) and <em>field</em> Doppler (optical heterodyne/interferometric), and (iii) the implications of these differences for the simulation strategy appropriate to each case.</p>
-    </div>
-
-    <!-- Contents -->
-    <div class="box">
-      <h2 class="title is-4" style="margin-bottom:.25rem;">Contents</h2>
-      <ul class="is-size-6" style="margin-left:1rem; line-height:1.6;">
-        <li><a href="#ch1"><strong>1.</strong> Overview</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch1-1"><strong>1.1</strong> What is the Doppler Effect?</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch1-2"><strong>1.2</strong> Applications of the Doppler Effect</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch1-3"><strong>1.3</strong> Why do we need Doppler Rendering?</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch1-4"><strong>1.4</strong> Intensity vs. Field Doppler</a></li>
-        
-        <li style="margin-top:.5rem;"><a href="#ch2"><strong>2.</strong> Doppler Effect for a Simple Case</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch2-1"><strong>2.1</strong> Monostatic Doppler Effect</a></li>
-
-        <li style="margin-top:.5rem;"><a href="#ch3"><strong>3.</strong> Doppler Effect for a Rough Surface</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch3-1"><strong>3.1</strong> Phasor Sum for a Static Rough Surface</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch3-2"><strong>3.2</strong> Phasor Sum for a Dynamic Rough Surface</a></li>
-        
-        <!-- <li style="margin-top:.5rem;"><a href="#ch4"><strong>4.</strong> Doppler Rendering</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch4-1"><strong>4.1</strong> Intensity Doppler Rendering</a></li>
-        <li style="margin-left:1.2rem;"><a href="#ch4-2"><strong>4.2</strong> Field Amplitude Doppler Rendering</a></li>
-         -->
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- =========================
-     1. Overview
-     ========================= -->
-<section class="section" id="ch1">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3"><span class="has-text-weight-bold">1.</span> Overview</h2>
-
-    <div class="content has-text-justified">
-      <p>
-        Let's first review the basic concepts of the Doppler effect that you may have learned in high school physics.
-      </p>
-    </div>
-
-<!-- =========================
-     1.1  Doppler Effect
-     ========================= -->
-<h3 class="title is-4" id="ch1-1"><span class="has-text-weight-bold">1.1</span> What is the Doppler Effect?</h3>
-<div class="content has-text-justified">
-  <p>
-    The <em>Doppler effect</em> describes the apparent change in frequency of a wave
-    when there is relative motion between the source and the observer. 
-    For a wave with frequency \(f\) and wavelength \(\lambda\), if the source
-    moves with velocity \(v_s\) and the observer with velocity \(v_o\) along the
-    line of sight (positive when approaching), the observed frequency is
-  </p>
-
-  <p class="has-text-centered">
-    \[
-      f' \;=\; f \,\frac{c + v_o}{c - v_s},
-    \]
-  </p>
-
-  <p>
-    where \(c\) is the wave propagation speed (e.g., \(c \approx 3\times10^8\ \text{m/s}\) for light in vacuum and \(c \approx 3.4\times10^2\ \text{m/s}\) for sound in air).
-  </p>
-
-  <p>
-    In the limit where both velocities are much smaller than \(c\),
-    the frequency shift \(\Delta f = f' - f\) simplifies to
-  </p>
-
-  <p class="has-text-centered">
-    \[
-      \Delta f \;\approx\; f \,\frac{v_r}{c},
-    \]
-  </p>
-
-  <p>
-    with \(v_r = v_o + v_s\) denoting the <strong>relative approach speed</strong> under the sign convention above.
-    This linearized form is especially common in radar, lidar, and optical
-    heterodyne detection, where shifts of only a few kilohertz or megahertz
-    are measured against optical carriers in the terahertz range.
-  </p>
-</div>
-
-
-<!-- =========================
-     1.2 Applications of the Doppler Effect
-     ========================= -->
-<h2 class="title is-4" id="ch1-2">1.2 Applications of the Doppler Effect</h2>
-
-<div class="content has-text-justified">
-  <p>
-    The Doppler effect finds use in many areas of science and technology. By interpreting
-    frequency shifts as evidence of motion, it enables accurate measurements in diverse fields.
-  </p>
-
-  <p>
-    <em> (A) Transportation and Safety: </em> Radar guns measure vehicle speeds using microwave Doppler shifts. 
-    Modern automotive radar and lidar systems also exploit the Doppler effect to distinguish moving from 
-    stationary objects, improving driver-assistance and self-driving capabilities.
-  </p>
-
-  <p>
-    <em> (B) Weather and Environmental Sensing: </em> Doppler weather radar maps wind fields and storm rotation 
-    by detecting shifts from raindrops and snow. Coherent Doppler lidar, using infrared lasers, profiles 
-    wind fields for wind-farm siting, turbine control, and airport wind-shear detection.
-  </p>
-
-  <p>
-    <em> (C) Industrial and Structural Monitoring: </em> Laser Doppler vibrometry measures vibration and 
-    deformation of structures without contact. Laser Doppler anemometry is used in fluid mechanics 
-    to obtain precise local flow velocities. In manufacturing, Doppler sensors track conveyor and reel speeds.
-  </p>
-
-  <p>
-    <em> (D) Medicine and Biology: </em> Doppler ultrasound enables doctors to assess blood flow in arteries and 
-    veins in real time. Laser Doppler flowmetry measures microcirculation in skin and tissue, while 
-    Doppler optical coherence tomography (OCT) reveals blood flow at the microscopic scale.
-  </p>
-
-  <p>
-    <em> (E) Space and Astronomy: </em> Astronomers detect exoplanets by measuring the Doppler wobble of their host stars, 
-    track spacecraft velocity with extreme precision, and use Doppler shifts in starlight to study cosmic expansion. 
-    On the Sun, Doppler imaging maps flows and oscillations across its surface.
-  </p>
-</div>
-
-<div class="content has-text-justified">
-<!-- Place this right under your 1.2 section content -->
-<figure class="image has-text-centered" id="fig-applications">
-  <!-- Click to open full-size in a new tab -->
-  <img
-    src="static/images/doppler_applications.png"
-    alt="Applications of the Doppler effect"
-    style="max-width:100%; height:auto;"
-    loading="lazy">
-  <figcaption class="is-size-7 has-text-grey">
-    Figure 1. Applications of the Doppler effect (click to view full size) (A1) Doppler radar guns (A2) Coherent Doppler lidar (FMCW lidar)
-    (B1) Doppler weather radar (B2) Coherent Doppler wind lidar (C1) Laser Doppler vibrometry (C2) Laser Doppler anemometry 
-    (D1) Doppler ultrasound (D2) Laser Doppler flowmetry (E1) Red and blue shift (E2) Distribution of galaxies with different red shift.
-  </figcaption>
-</figure>
-</div>
-
-
-<!-- =========================
-     1.4 Applications of the Doppler Effect
-     ========================= -->
-<h2 class="title is-4" id="ch1-3">1.3 Why do we need Doppler Rendering?</h2>
-
-<div class="content has-text-justified">
-  <p>
-    So how can we simulate the Doppler effect? Why do we need complex Doppler rendering algorithms to simulate these applications? 
-    Can’t we just use well-known Doppler formulas to interpret and model the Doppler frequency shift?
-    A simple Doppler formula works when the measurement is dominated by a single bounce off a simple surface.
-    But in real scenes we get complex geometry and lots of interreflections. 
-    This typically happens for non-line-of-sight imaging, scanning glossy objects, or volumes full of tiny scatterers like red blood cells or aerosols. In those settings, the simple formulas miss important contributions.
-  </p>
-</div>
-
-<!-- =========================
-     1.4 Applications of the Doppler Effect
-     ========================= -->
-<h2 class="title is-4" id="ch1-4">1.4 Intensity vs. Field Amplitude Doppler</h2>
-
-<div class="content has-text-justified">
-  <p>
-    Although the Doppler effect can occur in any wave, we focus on the optical range (visible to infrared), where standard light transport applies and lets us build on existing radiometric path tracers.
-    In this optical range, the Doppler effect manifests in two ways.
-    The first is <strong>intensity Doppler</strong>, where the effect appears as a modulation in the intensity of the light source. 
-    Doppler Time-of-Flight imaging systems leverage this phenomenon.
-    The second is <strong>field Doppler</strong>, where the Doppler effect occurs in the electromagnetic field of the light itself. 
-    A well-known example is the red and blue shift observed in astronomy. 
-    However, this shift also occurs at smaller scales in applications such as Doppler lidar, blood or wind velocimetry. 
-    These techniques that rely on optical interference are collectively referred to as optical heterodyne detection. 
-    Interestingly, these two Doppler effects measure different quantities because of the large <em> wavelength </em> difference, which will be explained further in a <a href="#ch3-2"> later section</a>.
-  </p>
-</div>
-
-<div class="content has-text-justified">
-<!-- Place this right under your 1.2 section content -->
-<figure class="image has-text-centered" id="fig-doppler-types">
-  <!-- Click to open full-size in a new tab -->
-  <img
-    src="static/images/intensity_vs_field.png"
-    alt="Applications of the Doppler effect"
-    style="max-width:100%; height:auto;"
-    loading="lazy">
-  <figcaption class="is-size-7 has-text-grey">
-    Figure 2. In an optical imaging system, the Doppler effect can manifest in two ways: intensity Doppler (wavelength: 10 m) and field Doppler (wavelength: 1 µm).
-  </figcaption>
-</figure>
-</div>
-
-
-<!-- =========================
-     2. Simple Doppler
-     ========================= -->
-  </div>
-</section>
-<section class="section" id="ch2">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3"><span class="has-text-weight-bold">2.</span>Doppler Effect for a Simple Case</h2>
-
-    <div class="content has-text-justified">
-      <p>
-       Here, we will derive the Doppler effect for the simplest case, reflection from a single object.
-      </p>
-    </div>
-
-<!-- =========================
-     2.1  Monostatic reflection: phase evolution
-     ========================= -->
-<h3 class="title is-4" id="ch2-1"><span class="has-text-weight-bold">2.1</span> Monostatic Doppler Effect</h3>
-<div class="content has-text-justified">
-
-  <p><strong>Setup.</strong> A source emits a sinusoid \(s(t)\) of angular frequency \(\omega_0 = 2\pi f_0\) and wavelength \(\lambda_0\).
-  The receiver is collocated with the source. A point target at range \(d(t)\) moves with constant radial velocity \(v\)
-  (positive when moving <em>toward</em> the sensor). Reflectivity is 1 and amplitude variations are ignored
-  (we focus on phase).</p>
-
-  <p class="has-text-centered">
-    \[
-      s(t) \;=\;  e^{\,j\omega_0 t}, 
-      \qquad d(t) \;=\; d_0 - v t,
-      \qquad \lambda_0 \;=\; \frac{2\pi c}{\omega_0}.
-    \]
-  </p>
-
-  <p><strong>Round-trip delay.</strong> The emitted field returns after a two-way time-of-flight</p>
-  <p class="has-text-centered">
-    \[
-      \tau(t) \;=\; \frac{2\,d(t)}{c}
-      \;=\; \frac{2\,(d_0 - v t)}{c}.
-    \]
-  </p>
-
-  <p><strong>Received signal.</strong> Delaying the carrier by \(\tau(t)\) gives</p>
-  <p class="has-text-centered">
-    \[
-      r(t) \; = \; e^{\,j\omega_0\,(t - \tau(t))}
-      \;=\;
-      \exp\!\Big\{\,j\omega_0 t \;-\; j\,\omega_0 \tfrac{2 d(t)}{c}\Big\}
-      \;=\;
-      \exp\!\Big\{\,j\omega_0 t + j\omega_0 \tfrac{2v}{c} t \;-\; j\omega_0\,\tfrac{2d_0}{c}\Big\}.
-    \]
-  </p>
-
-  <p><strong>Phase and frequency.</strong> Differentiating the receiver phase \(\phi_r(t)\) gives the Doppler-shifted frequency</p>
-  <p class="has-text-centered">
-    \[
-      \frac{d\phi_r}{dt}
-      \;=\;
-      \omega_0 + \omega_0 \frac{2v}{c}
-      \quad\Longrightarrow\quad
-      f_r
-      \;=\;
-      \frac{1}{2\pi}\,\frac{d\phi_r}{dt}
-      \;=\;
-      f_0 + f_0 \frac{2v}{c}
-      \quad\Longrightarrow\quad
-      f_D = f_r - f_0 = f_0 \frac{2v}{c}.
-    \]
-  </p>
-
-  <p><em>Sign convention.</em> With \(v&lt;0\) defined as receding, the phase relative to the emitted carrier decreases linearly; the observed Doppler shift is \(f_0 2v/c\).</p>
-
-  <!-- Small inline visualization -->
-  <figure class="image" style="max-width:680px; margin:1rem auto;">
-    <svg viewBox="0 0 820 220" width="100%" height="auto" role="img" aria-label="Monostatic Doppler geometry">
-      <!-- axes/background -->
-      <rect x="0" y="0" width="820" height="220" fill="#f8fafc" stroke="#e2e8f0"/>
-      <!-- sensor at left -->
-      <circle cx="80" cy="110" r="18" fill="#0ea5e9"/>
-      <text x="80" y="92" text-anchor="middle" font-size="12" fill="#0f172a">Tx/Rx</text>
-      <!-- target -->
-      <rect x="620" y="90" width="32" height="40" rx="4" fill="#64748b"/>
-      <text x="636" y="80" text-anchor="middle" font-size="12" fill="#0f172a">Target</text>
-      <!-- range line -->
-      <line x1="98" y1="110" x2="620" y2="110" stroke="#94a3b8" stroke-dasharray="6 6"/>
-      <text x="360" y="100" text-anchor="middle" font-size="12" fill="#0f172a">d(t) = d₀ - v t</text>
-      <!-- velocity arrow -->
-      <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-        <polygon points="0 0, 6 3, 0 6" fill="#ef4444"/>
-      </marker>
-      <line x1="736" y1="140" x2="636" y2="140" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
-      <text x="736" y="152" text-anchor="end" font-size="12" fill="#ef4444">v (toward)</text>
-      <!-- outgoing wave -->
-      <path d="M 110 110 C 180 70, 260 70, 330 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
-      <path d="M 330 110 C 400 150, 480 150, 550 110" fill="none" stroke="#0ea5e9" stroke-width="2"/>
-      <!-- incoming wave -->
-      <path d="M 550 110 C 480 70, 400 70, 330 110" fill="none" stroke="#22c55e" stroke-width="2"/>
-      <path d="M 330 110 C 260 150, 180 150, 110 110" fill="none" stroke="#22c55e" stroke-width="2"/>
-      <!-- labels -->
-      <text x="200" y="65" font-size="12" fill="#0ea5e9">outgoing</text>
-      <text x="200" y="165" font-size="12" fill="#22c55e">return</text>
-      <!-- phase equation -->
-      <foreignObject x="460" y="20" width="330" height="60">
-        <!-- <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:13px; color:#0f172a;">
-          <em>Baseband:</em> \( r_{\text{bb}}(t) = \exp\{-j\,\tfrac{4\pi}{\lambda} d(t)\} \)
-        </div> -->
-      </foreignObject>
-    </svg>
-    <figcaption class="has-text-grey is-size-7" style="margin-top:.5rem;">
-      Doppler shift from a single object moving away from or toward the collocated camera and light source (monostatic geometry).
-    </figcaption>
-  </figure>
-</div>
-  </div>
-</section>
-<!-- ============================================
-     Interactive Doppler Demo (monostatic, d0 control, delayed return)
-     Time panel: right edge = now (t=0), scrolls left to -T
-     ============================================ -->
-<!-- ============================================
-     Interactive Doppler Demo (monostatic, d0 control)
-     Time panel: fixed window 0 → 20 s, outgoing starts with phase 0
-     ============================================ -->
-<section class="section" id="ch2-1-1">
-  <div class="container is-max-desktop">
-    <h3 class="title is-5"><span class="has-text-weight-bold"></span> Interactive Demo</h3>
-
-    <div class="box">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <label class="label is-small">Initial distance d₀ (m)</label>
-          <input id="dop5-d0" class="input is-small" type="number" min="0" step="0.1" value="3.0" style="width:110px;">
-        </div>
-        <div class="control">
-          <label class="label is-small">Target speed v (m/s)</label>
-          <input id="dop5-v" class="slider is-fullwidth" type="range" min="-0.5" max="0.5" step="0.01" value="0.10" style="width:260px;">
-          <p class="help">Toward sensor (+) · Away (–): <span id="dop5-v-read">0.10</span> m/s</p>
-        </div>
-        <div class="control" style="align-self:flex-end;">
-          <button id="dop5-play" class="button is-small is-dark">Pause</button>
-        </div>
-        <div class="control" style="align-self:flex-end;">
-          <button id="dop5-reset" class="button is-small">Reset</button>
-        </div>
-      </div>
-      <p class="is-size-7 has-text-grey">
-        Outgoing travels right and stops at the target. Return travels left and is drawn only to the left.
-        Phases match at the target. Bottom panel spans a fixed window \(t\in[0,20]\) s; outgoing starts with phase 0.
-      </p>
-    </div>
-
-    <!-- Spatial view -->
-    <div class="columns is-mobile">
-      <div class="column">
-        <canvas id="dop5-canvas" width="960" height="340"
-                style="width:100%; height:340px; border:1px solid #1a2027; border-radius:6px;"></canvas>
-        <p class="is-size-7 has-text-grey">
-          Top: outgoing (blue, →) up to the target. Bottom: return (green, ←) from the target to the left.
-          Vertical line marks the hit; ticks show identical \(y=\cos\phi\) at the hit.
-        </p>
-      </div>
-    </div>
-
-    <!-- Time traces at the sensor (fixed: 0 → 20 s) -->
-    <div class="columns is-mobile">
-      <div class="column">
-        <canvas id="dop5-time" width="960" height="200"
-                style="width:100%; height:200px; border:1px solid #1a2027; border-radius:6px;"></canvas>
-        <p class="is-size-7 has-text-grey">
-          Time traces at the sensor. Left edge \(t=0\), right edge \(t=20\) s. Outgoing (blue) starts at phase 0; return (green) includes round-trip delay.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-(function(){
-  const $ = id => document.getElementById(id);
-
-  // DOM
-  const d0El   = $('dop5-d0');
-  const vEl    = $('dop5-v');
-  const vRead  = $('dop5-v-read');
-  const playB  = $('dop5-play');
-  const resetB = $('dop5-reset');
-  const canvasSpatial = $('dop5-canvas');
-  const canvasTime    = $('dop5-time');
-
-  // State
-  let d0_m   = parseFloat(d0El.value);  // meters
-  let v_mps  = parseFloat(vEl.value);   // + toward sensor (left)
-  let animationFrame = null;
-
-  // Timing
-  let tStart = performance.now();  // start of current run (t=0 here)
-
-  let paused  = false;
-  let tFreeze = 0; // seconds captured when paused
-
-  function tElapsed(){              // elapsed seconds since last restart
-    return paused ? tFreeze : (performance.now() - tStart)/1000;
-  }
-
-  // Visual params
-  const metersToPixels = 120;   // 1 m ≈ 120 px (motion scale)
-  const f_vis = 0.8;            // visual carrier (Hz)
-  const kPeriods = 3.0;         // ~3 periods across width
-  const tarH_factor = 0.62;     // taller target
-  const Tfixed = 20.0;          // seconds shown in time panel (0 → 20)
-
-  function setCanvasSize(c){
-    const dpr = Math.min(2, window.devicePixelRatio||1);
-    const cssW=c.clientWidth||c.width, cssH=c.clientHeight||c.height;
-    const W=Math.floor(cssW*dpr), H=Math.floor(cssH*dpr);
-    if (c.width!==W||c.height!==H){ c.width=W; c.height=H; }
-    return {W,H,dpr};
-  }
-
-  function drawLightIcon(ctx, x, y, s){
-    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
-    ctx.fillStyle='#0ea5e9';
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(42,-10); ctx.lineTo(42,10); ctx.closePath(); ctx.fill();
-    ctx.strokeStyle='#0ea5e9'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(44,0); ctx.lineTo(62,0); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(44,-8); ctx.lineTo(60,-14); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(44,8); ctx.lineTo(60,14); ctx.stroke();
-    ctx.restore();
-  }
-  function drawEyeIcon(ctx, x, y, s){
-    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
-    ctx.strokeStyle='#0ea5e9'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(-28,0); ctx.quadraticCurveTo(0,-16,28,0); ctx.quadraticCurveTo(0,16,-28,0); ctx.stroke();
-    ctx.fillStyle='#0ea5e9'; ctx.beginPath(); ctx.arc(0,0,6,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-  }
-
-  // Limit |v| below wave's visual phase speed for stability
-  function effectiveVelocity(dpr, span){
-    const kx = kPeriods*2*Math.PI/span;    // rad/pixel
-    const w  = 2*Math.PI*f_vis;            // rad/s
-    const v_phase_px = w / kx;             // px/s (visual)
-    const v_phase_px_cap = 0.8 * v_phase_px;
-    const v_req_px = v_mps * metersToPixels * dpr;
-    const v_eff_px = Math.sign(v_req_px) * Math.min(Math.abs(v_req_px), v_phase_px_cap);
-    return { v_eff_mps: v_eff_px / (metersToPixels * dpr), kx, w, c_phase_px: v_phase_px };
-  }
-
-  // ---------- Spatial view ----------
-  function drawSpatial(){
-    const {W,H,dpr} = setCanvasSize(canvasSpatial);
-    const ctx = canvasSpatial.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
-
-    // Layout
-    const leftPad = 90*dpr, rightPad=60*dpr, x0=leftPad, x1=W-rightPad, span=x1-x0;
-    const yTop = H*0.30, yBot = H*0.74, amp = 26*dpr;
-
-    // Axes
-    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(x0, yTop); ctx.lineTo(x1, yTop); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x0, yTop-amp-12*dpr); ctx.lineTo(x0, yTop+amp+12*dpr); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x0, yBot); ctx.lineTo(x1, yBot); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x0, yBot-amp-12*dpr); ctx.lineTo(x0, yBot+amp+12*dpr); ctx.stroke();
-
-    // Icons
-    drawLightIcon(ctx, x0-62*dpr, yTop, 1.0*dpr);
-    drawEyeIcon(ctx,   x0-58*dpr, yBot, 1.0*dpr);
-
-    // Time since start (for spatial evolution)
-    //const t = (performance.now()-tStart)/1000;
-    const t = tElapsed();
-
-    // Wave params & effective v
-    const { v_eff_mps, kx, w } = effectiveVelocity(dpr, span);
-
-    // Target position: start at d0 from the sensor at t=0, then move left for +v
-    let xTar = x0 + d0_m * metersToPixels * dpr - v_eff_mps * metersToPixels * dpr * t;
-
-    // Wrap within corridor
-    const minX=x0+60*dpr, maxX=x1-10*dpr, width=(maxX-minX);
-    if (width > 10 && (xTar > maxX || xTar < minX)) {
-      xTar = minX + ((xTar - minX) % width + width) % width;
-    }
-
-    // Target bar
-    const tarW=26*dpr, tarH = Math.max(180*dpr, H*tarH_factor);
-    ctx.fillStyle='#0ea5e9';
-    ctx.fillRect(xTar-tarW/2, (H/2 - tarH/2), tarW, tarH);
-
-    // Outgoing (→) up to target
-    ctx.strokeStyle='#1d9bf0'; ctx.lineWidth=2*dpr; ctx.beginPath();
-    let started=false;
-    for (let i=0;i<=360;i++){
-      const s = i/360, X = x0 + s*span;
-      if (X > xTar) break;
-      const phi = kx*(X - x0) - w*t;
-      const Y = yTop + Math.cos(phi)*amp;
-      if (!started){ ctx.moveTo(X,Y); started=true; } else { ctx.lineTo(X,Y); }
-    }
-    if (started) ctx.stroke();
-
-    // Phase at target
-    const phiHit = kx*(xTar - x0) - w*t;
-
-    // Return (←) left of target
-    ctx.strokeStyle='#22c55e'; ctx.beginPath();
-    started=false;
-    for (let i=0;i<=360;i++){
-      const s = i/360, X = x0 + s*span;
-      if (X > xTar) break;
-      const phi = kx*(2*xTar - x0 - X) - w*t;
-      const Y = yBot + Math.cos(phi)*amp;
-      if (!started){ ctx.moveTo(X,Y); started=true; } else { ctx.lineTo(X,Y); }
-    }
-    if (started) ctx.stroke();
-
-    // Hit line + cosine ticks
-    ctx.strokeStyle='#94a3b8'; ctx.setLineDash([6*dpr, 6*dpr]); ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(xTar, yTop-amp-12*dpr); ctx.lineTo(xTar, yBot+amp+12*dpr); ctx.stroke();
-    ctx.setLineDash([]);
-    const yHitTop = yTop + Math.cos(phiHit)*amp;
-    const yHitBot = yBot + Math.cos(phiHit)*amp;
-    ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2*dpr;
-    ctx.beginPath(); ctx.moveTo(xTar-10*dpr, yHitTop); ctx.lineTo(xTar+10*dpr, yHitTop); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(xTar-10*dpr, yHitBot); ctx.lineTo(xTar+10*dpr, yHitBot); ctx.stroke();
-
-    // Labels
-    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
-    ctx.textAlign='left';
-    ctx.fillText('Outgoing (Tx):  y = cos(φ_out)', x0+6*dpr, yTop-amp-10*dpr);
-    ctx.fillText('Return (Rx):    y = cos(φ_ret)', x0+6*dpr, yBot-amp-10*dpr);
-  }
-
-  // ---------- Time traces (fixed window 0 → 20 s) ----------
-  function drawTimeTraces(){
-    const {W,H,dpr} = setCanvasSize(canvasTime);
-    const ctx = canvasTime.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
-
-    const leftPad = 50*dpr, rightPad = 20*dpr;
-    const x0 = leftPad, x1 = W-rightPad, span = x1-x0;
-    const yMid1 = H*0.35, yMid2 = H*0.75;
-    const amp = (H*0.22);
-
-    // Geometry from spatial canvas for consistent kx & speed
-    const {W:Wsp,dpr:dspr} = setCanvasSize(canvasSpatial);
-    const leftPadSp = 90*dspr, rightPadSp=60*dspr, x0Sp=leftPadSp, x1Sp=Wsp-rightPadSp, spanSp=x1Sp-x0Sp;
-    const { v_eff_mps, kx, w, c_phase_px } = effectiveVelocity(dspr, spanSp);
-    const c_phase_mps = c_phase_px / (metersToPixels * dspr);
-    // constant round-trip delay based ONLY on initial distance d0
-    // --- Add these ---
-    const tau0 = Math.max(0, 2 * d0_m / c_phase_mps);               // round-trip delay from d0 only
-    const v_eff_px = v_eff_mps * metersToPixels * dspr;              // px/s
-    const w_ret = w + 2 * kx * v_eff_px;                             // Doppler-shifted ω (monostatic)
-    //const xTar0 = x0Sp + d0_m * metersToPixels * dspr;               // initial target position
-    //const phaseAlign = Math.PI/2 - kx*(2*xTar0 - x0Sp - x_sensor);   // make return start at zero at t = tau0
-    const x_sensor = x0Sp;
-
-    // Absolute elapsed time since start (seconds)
-    // const tNow = (performance.now()-tStart)/1000;
-    const tNow = tElapsed();
-
-
-    // Axes
-    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(x0, yMid1); ctx.lineTo(x1, yMid1); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x0, yMid2); ctx.lineTo(x1, yMid2); ctx.stroke();
-
-    // Labels
-    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
-    ctx.textAlign='left';
-    ctx.fillText('Outgoing @ sensor', x0+4*dpr, yMid1 - (amp+10*dpr));
-    ctx.fillText('Return @ sensor',   x0+4*dpr, yMid2 - (amp+10*dpr));
-    ctx.textAlign='right';
-    ctx.fillText('t = 0', x0, H-4*dpr);
-    ctx.fillText('t = 20', x1, H-4*dpr);
-
-    // Map pixel i → time t_i ∈ [0, Tfixed]
-    function t_at_pixel(i){ const s=i/(span-1); return s*Tfixed; }
-
-    // Target position at absolute time t_abs
-    function xTar_at(t_abs){
-      // start at d0 (to the right), move left for +v
-      return x0Sp + d0_m * metersToPixels * dspr - v_eff_mps * metersToPixels * dspr * t_abs;
-    }
-
-    // ---- Outgoing at sensor: enforce phase=0 at t=0 -> cos(+w t) ----
-    ctx.strokeStyle='#1d9bf0'; ctx.lineWidth=1.5*dpr; ctx.beginPath();
-    let started=false;
-    for (let i=0;i<span;i++){
-      const t_i = t_at_pixel(i);
-      if (t_i > tNow) break; // draw only up to current time
-      const phi_out = w * t_i + Math.PI/2;   // shift +90° ⇒ cos(ωt - π/2) = sin(ωt), starts at 0
-      const y = yMid1 + Math.cos(phi_out)*amp;
-      const X = x0 + i;
-      if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
-    }
-    if (started) ctx.stroke();
-
-    // ---- Return at sensor with round-trip delay τ(t) ≈ 2 d(t) / c_phase
-    ctx.strokeStyle='#22c55e'; ctx.beginPath();
-    started=false;
-    for (let i=0;i<span;i++){
-      const t_i = t_at_pixel(i);
-      if (t_i > tNow) break;
-
-      const xTar  = xTar_at(t_i); // keep instantaneous x for Doppler phase
-      const xTar0 = x0Sp + d0_m * metersToPixels * dspr; // initial position (d0)
-
-      // use constant delay based only on d0
-      const tau = tau0;
-
-
-      if (t_i < tau){
-        // No return yet
-        const X = x0 + i, y = yMid2;
-        if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
-        continue;
-      }
-
-      // Return phase: match at target + propagate back with delay
-      // φ_ret(x_sensor,t_i) = kx*(2 x_tar(t_i) - x0Sp - x_sensor) - w*(t_i - tau)
-      // const phi_ret = kx*(2*xTar - x0Sp - x_sensor) - w*(t_i - tau);
-      const phaseAlign = -Math.PI/2 - kx*(2*xTar - x0Sp - x_sensor);
-      const phi_ret = kx*(2*xTar - x0Sp - x_sensor) - w_ret*(t_i - tau) + phaseAlign;
-
-      const y = yMid2 + Math.cos(phi_ret)*amp;
-      const X = x0 + i;
-      if (!started){ ctx.moveTo(X,y); started=true; } else { ctx.lineTo(X,y); }
-    }
-    if (started) ctx.stroke();
-  }
-
-  // Re-start time window at t=0 and re-anchor target at d0
-function restart(){
-  cancelAnimationFrame(animationFrame);
-  tStart  = performance.now();  // t = 0
-  tFreeze = 0;
-  paused  = false;
-  playB.textContent = 'Pause';
-  animationFrame = requestAnimationFrame(loop);
-}
-
-  function recompute(){
-    if (!d0El.validity.valid || !vEl.validity.valid ||
-        !Number.isFinite(d0El.valueAsNumber) || !Number.isFinite(vEl.valueAsNumber)) return false;
-    d0_m  = parseFloat(d0El.value);
-    v_mps = parseFloat(vEl.value);
-    vRead.textContent = v_mps.toFixed(2);
-    return true;
-  }
-
-  d0El.addEventListener('input', ()=>{ if (recompute()) restart(); });
-  vEl .addEventListener('input', ()=>{ if (recompute()) restart(); });
-
-playB.addEventListener('click', ()=>{
-  if (!paused){
-    // go to PAUSE
-    tFreeze = tElapsed();       // capture current elapsed time
-    paused = true;
-    cancelAnimationFrame(animationFrame);
-    playB.textContent = 'Play';
-    // draw one final frame in paused state (optional)
-    drawSpatial(); drawTimeTraces();
-  } else {
-    // go to PLAY (resume without resetting time)
-    paused = false;
-    tStart = performance.now() - tFreeze*1000; // maintain continuity
-    playB.textContent = 'Pause';
-    animationFrame = requestAnimationFrame(loop);
-  }
-});
-  resetB.addEventListener('click', ()=>{ restart(); });
-
-function loop(){
-  drawSpatial();
-  drawTimeTraces();
-  if (!paused) animationFrame = requestAnimationFrame(loop);
-}
-  window.addEventListener('resize', ()=>{ drawSpatial(); drawTimeTraces(); });
-
-  // init
-  recompute();
-  restart();
-})();
-</script>
-
-
-
-<!-- =========================
-     2. Simple Doppler
-     ========================= -->
-<section class="section" id="ch3">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3"><span class="has-text-weight-bold">3. </span>Doppler Effect for a Rough Surface</h2>
-
-    <div class="content has-text-justified">
-      <p>
-       Here, we will derive the Doppler effect for a rough surface at an arbitrary angle.
-       The setup is visualized in Figure 3.
-      </p>
-    </div>
-
-<div class="content has-text-justified">
-<!-- Place this right under your 1.2 section content -->
-<figure class="image has-text-centered" id="fig-rough-surface">
-  <!-- Click to open full-size in a new tab -->
-  <img
-    src="static/images/macro_micro_geom.png"
-    alt="macro_micro_geom"
-    style="max-width:70%; height:auto;"
-    loading="lazy">
-  <figcaption class="is-size-7 has-text-grey">
-    Figure 3. Reflection from a rough surface at macroscopic and microscopic scales. The ray has infinitesimal extent in the macroscopic view, but it covers
-    numerous reflection points in the microscopic view.
-  </figcaption>
-</figure>
-</div>
-
-
-  </div>
-</section>
-
-<section class="section" id="rough-surface-demo">
-  <div class="container is-max-desktop">
-    <!-- Global optics -->
-    <h2 class="title is-4">Global Parameters</h2>
-    <div class="box">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <label class="label is-small">Wavelength λ (µm)</label>
-          <input id="gl-lambda" class="input is-small" type="number" min="0.2" max="10" step="0.01" value="1.5" style="width:100px;">
-        </div>
-        <div class="control">
-          <label class="label is-small">Incidence θᵢ (deg)</label>
-          <input id="gl-theta-i" class="input is-small" type="number" min="-89" max="89" step="0.1" value="20" style="width:90px;">
-        </div>
-        <div class="control">
-          <label class="label is-small">Outgoing θₒ (deg)</label>
-          <input id="gl-theta-o" class="input is-small" type="number" min="-89" max="89" step="0.1" value="-20" style="width:90px;">
-        </div>
-      </div>
-    </div>
-
-    <!-- Section 1 -->
-    <h2 class="title is-4" id="ch3-1"> <span class="has-text-weight-bold">3.1 </span> Phasor Sum for a Static Rough Surface</h2>
-    <div id="s1" class="box">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <label class="label is-small">RMS height σ (µm)</label>
-          <input id="s1-sigma" class="slider is-fullwidth" type="range" min="0" max="5.0" step="0.01" value="1.50">
-          <p class="help">σ: <span id="s1-tSigma">1.50</span> µm</p>
-        </div>
-        <div class="control">
-          <label class="label is-small">Correlation length ℓ (µm)</label>
-          <input id="s1-ell" class="slider is-fullwidth" type="range" min="0" max="50" step="0.1" value="8.0">
-          <p class="help">ℓ: <span id="s1-tEll">8.0</span> µm</p>
-        </div>
-        <div class="control" style="align-self:flex-end;">
-          <button id="s1-reseed" class="button is-small is-dark">Reseed</button>
-        </div>
-      </div>
-
-      <div class="columns is-mobile">
-        <div class="column">
-          <canvas id="s1-surface" width="720" height="260" style="width:100%; height:260px; border:1px solid #1a2027; border-radius:6px;"></canvas>
-          <p class="is-size-7 has-text-grey">
-            h(x) over L = 100 µm. Middle half (25–75 µm) is used for the phasor sum. Vertical axis fixed at ±10 µm. Gray fill = surface.
-          </p>
-        </div>
-      </div>
-
-      <div class="columns is-mobile">
-        <div class="column is-narrow">
-          <canvas id="s1-argand" width="240" height="240" style="border:1px solid #1a2027; border-radius:6px; width:240px; height:240px;"></canvas>
-        </div>
-        <div class="column">
-          <div class="content" style="margin-left:0.5rem;">
-            <p class="is-size-6"><strong>Phasor Sum (middle half, t = 0)</strong></p>
-            <ul class="is-size-6">
-              <li>Window M = <span id="s1-M">—</span> samples</li>
-              <li>|S| = <span id="s1-mag">—</span> &nbsp; |S|/M = <span id="s1-magn">—</span></li>
-              <li>∠S (rad) = <span id="s1-ang">—</span></li>
-              <li>Re(S) = <span id="s1-re">—</span> · Im(S) = <span id="s1-im">—</span></li>
-            </ul>
-            <p class="is-size-7 has-text-grey">
-              \(z_k=\exp\{j[\Delta k_x x_k - (2\pi/\lambda)\,q\,h(x_k)]\}\), with
-              \(q=\cos\theta_i+\cos\theta_o\), \(\Delta k_x=(2\pi/\lambda)(\sin\theta_o-\sin\theta_i)\).
-            </p>
+  <a class="skip-link" href="#overview">Skip to the first chapter</a>
+  <main class="document" id="top">
+    <header class="title-block">
+      <h1>Doppler Rendering in One Weekend</h1>
+      <p class="author"><a href="https://juhyeonkim.netlify.app/">Juhyeon Kim</a></p>
+      <p class="subtitle">Macroscopic and microscopic Doppler from first principles</p>
+    </header>
+
+    <p>Welcome to <em>Doppler Rendering in One Weekend</em>. The Doppler effect is the change in observed frequency caused by motion of a source, a receiver, or a scattering object. <em>Doppler rendering</em> simulates these measurements in scenes with complex geometry, materials, and light transport.</p>
+    <p>This tutorial starts with the familiar Doppler formula for a single reflector, then asks what changes when that reflector is a rough surface. We will distinguish <em>intensity Doppler</em>, measured by amplitude-modulated continuous-wave (AMCW) time-of-flight systems, from <em>optical-field Doppler</em>, measured by optical heterodyne detection (OHD). Following <a href="#ref-ohd">Kim et al. (2025), Section 6</a>, we will see why the wavelength of the measured signal determines whether a measurement follows macroscopic path-length changes or microscopic material motion.</p>
+    <p>The figures introduce the geometry before the equations. Small experiments placed throughout the text let you change the relevant parameters, inspect phase contributions, and compute a rough-surface spectrum. The final chapter connects these observations to Monte Carlo rendering.</p>
+
+    <nav class="toc" aria-labelledby="contents-title">
+      <h2 id="contents-title">Contents</h2>
+      <ol>
+        <li><a href="#overview">Overview</a><ol>
+          <li><a href="#what-is-doppler">What is the Doppler effect?</a></li>
+          <li><a href="#applications">Applications of the Doppler effect</a></li>
+          <li><a href="#why-render">Why do we need Doppler rendering?</a></li>
+          <li><a href="#intensity-field">Intensity versus optical-field Doppler</a></li>
+        </ol></li>
+        <li><a href="#single-reflector">Doppler effect for a single reflector</a><ol>
+          <li><a href="#monostatic">Monostatic geometry and phase evolution</a></li>
+          <li><a href="#single-experiment">Experiment: path length, phase, and frequency</a></li>
+        </ol></li>
+        <li><a href="#rough-surfaces">Doppler effect for a rough surface</a><ol>
+          <li><a href="#phasor-sum">The static phasor sum</a></li>
+          <li><a href="#wavelength-experiment">Experiment: changing the wavelength</a></li>
+          <li><a href="#moving-surface">Following a moving surface</a></li>
+        </ol></li>
+        <li><a href="#two-velocities">Macroscopic and microscopic Doppler</a><ol>
+          <li><a href="#target-velocity">Microscopic correspondence: target velocity</a></li>
+          <li><a href="#spot-velocity">Macroscopic correspondence: spot velocity</a></li>
+          <li><a href="#geometry-experiment">Experiment: normal and transverse motion</a></li>
+          <li><a href="#spectrum-experiment">Experiment: a computed rough-surface spectrum</a></li>
+        </ol></li>
+        <li><a href="#rendering">Implications for Doppler rendering</a></li>
+        <li><a href="#references">References and further reading</a></li>
+      </ol>
+    </nav>
+    <p class="reading-note"><strong>Conventions.</strong> We use radians for phase, hertz for frequency, and positive frequency shift for approach. All motion is nonrelativistic. A wavelength refers to the signal whose phase is measured: the modulation wavelength for AMCW, or the optical wavelength for OHD.</p>
+
+    <section class="chapter" id="overview">
+      <h2><span>Chapter 1:</span> Overview</h2>
+      <section id="what-is-doppler">
+        <h3>1.1 What is the Doppler effect?</h3>
+        <p>Imagine successive crests of a wave arriving at a receiver. If the propagation distance decreases between successive emissions, the crests arrive closer together, increasing the observed frequency. Increasing the propagation distance has the opposite effect.</p>
+        <p>For a wave propagating through a stationary medium, with source speed \(v_s\) and observer speed \(v_o\) positive when approaching one another, the classical one-dimensional relation is</p>
+        <div class="equation" id="eq-classical">\[ f' = f\,\frac{c+v_o}{c-v_s}. \tag{1} \]</div>
+        <p>Here \(c\) is the propagation speed in the medium. Equation (1) is the classical medium-based formula, appropriate for sound; it is not the exact relativistic formula for light. For velocities much smaller than the propagation speed, the first-order frequency shift takes the familiar form</p>
+        <div class="equation" id="eq-first-order">\[ \Delta f = f'-f \simeq f\,\frac{v_r}{c} = \frac{v_r}{\lambda}, \qquad |v_r|\ll c. \tag{2} \]</div>
+        <p>For the one-way geometry above, \(v_r=v_s+v_o\). Reflection from a moving object introduces an incoming and an outgoing path segment. This gives the factor of two in the monostatic Doppler formula we will derive in <a href="#single-reflector">Chapter 2</a>.</p>
+      </section>
+      <section id="applications">
+        <h3>1.2 Applications of the Doppler effect</h3>
+        <p>Doppler measurements are useful whenever motion changes the phase of a received wave. The following examples span different wavelengths, scattering geometries, and measurement scales.</p>
+        <p><strong>(A) Transportation and safety.</strong> Radar speed measurements use microwave Doppler shifts. Coherent automotive lidar also measures the Doppler shift of reflected light, providing velocity information in addition to range.</p>
+        <p><strong>(B) Weather and environmental sensing.</strong> Weather radar measures motion in precipitation. Coherent Doppler wind lidar measures the motion of atmospheric scatterers and is used to study wind fields and turbulence.</p>
+        <p><strong>(C) Industrial and structural monitoring.</strong> Laser Doppler vibrometry measures vibration of a surface. Laser Doppler anemometry measures flow, while related velocity measurements can monitor moving conveyor belts, reels, and other machinery.</p>
+        <p><strong>(D) Medicine and biology.</strong> Doppler ultrasound measures blood-flow motion using acoustic waves. Optical techniques such as laser Doppler flowmetry and Doppler optical coherence tomography infer motion from light scattered in tissue.</p>
+        <p><strong>(E) Space and astronomy.</strong> Spectral shifts provide information about stellar motion, orbiting planets, and spacecraft. The astronomical examples in Figure 1 also include cosmological redshift, which is associated with the expansion of space and should not be identified in general with the local, nonrelativistic Doppler formula.</p>
+        <figure id="fig-applications" class="wide-figure">
+          <a href="static/images/doppler_applications.png" target="_blank" rel="noopener" aria-label="Open the Doppler applications figure at full resolution"><img src="static/images/doppler_applications.png" width="7514" height="2242" alt="Applications grouped into transportation, weather, industrial monitoring, medicine, and astronomy." decoding="async"></a>
+          <figcaption><strong>Figure 1.</strong> Applications of the Doppler effect. (A1) Radar speed measurement; (A2) coherent automotive lidar; (B1) weather radar; (B2) wind lidar; (C1) laser Doppler vibrometry; (C2) laser Doppler anemometry; (D1) Doppler ultrasound; (D2) laser Doppler flowmetry; (E1) spectral redshift and blueshift; (E2) astronomical redshift observations. Original tutorial figure; click to inspect the full-resolution image.</figcaption>
+        </figure>
+      </section>
+      <section id="why-render">
+        <h3>1.3 Why do we need Doppler rendering?</h3>
+        <p>A single-reflector formula describes a measurement dominated by one simple scattering event. A real scene can contain glossy surfaces, interreflections, occlusions, and volumes filled with moving particles. A received photon may have interacted with several objects, each with its own velocity.</p>
+        <p>These effects are relevant in non-line-of-sight imaging, scanning reflective objects, and measurements of blood or atmospheric flow. We need to account for <em>which paths reach the receiver</em>, <em>how strongly they contribute</em>, and <em>how their phase changes</em>. Monte Carlo light transport provides the geometric and radiometric machinery; Doppler rendering adds the appropriate temporal or spectral model.</p>
+        <p>There is also a more subtle issue. Even for a single rough plane, differentiating the depth along a camera ray need not give the Doppler shift produced by the moving surface material. Understanding this distinction is the main purpose of the following chapters.</p>
+      </section>
+      <section id="intensity-field">
+        <h3>1.4 Intensity versus optical-field Doppler</h3>
+        <p>We now restrict attention to optical imaging. Two systems can illuminate the same object with infrared light but retain different kinds of phase information.</p>
+        <p><strong>Intensity Doppler (AMCW).</strong> The source intensity is modulated, for example as \(I(t)=I_0[1+m\cos(2\pi f_m t)]\), and the receiver measures the phase or frequency of this intensity modulation. Its effective wavelength is</p>
+        <div class="equation">\[ \lambda_m=\frac{c}{f_m}\simeq 10~\mathrm{m}\quad\text{for } f_m=30~\mathrm{MHz}. \tag{3} \]</div>
+        <p>The light still has an optical carrier. The metre-scale wavelength in (3) describes its modulation envelope, not the electromagnetic carrier.</p>
+        <p><strong>Optical-field Doppler (OHD).</strong> The received field \(E_s\) interferes with a coherent reference field \(E_{\mathrm{LO}}\), called the local oscillator. A square-law detector produces the interference term</p>
+        <div class="equation">\[ i(t)\propto |E_{\mathrm{LO}}+E_s|^2,\qquad
+          i_{\mathrm{AC}}(t)\propto 2\operatorname{Re}\!\left\{E_sE_{\mathrm{LO}}^*\right\}. \tag{4} \]</div>
+        <p>This beat signal preserves the relative optical phase. At an optical wavelength \(\lambda_0=1.55~\mu\mathrm{m}\), the carrier frequency is approximately \(193~\mathrm{THz}\), but the difference frequency can be measured electronically. OHD does not require electronics that directly sample the optical oscillations.</p>
+        <figure id="fig-intensity-field">
+          <a href="static/images/intensity_vs_field.png" target="_blank" rel="noopener"><img src="static/images/intensity_vs_field.png" width="2809" height="804" alt="Slow oscillation of light intensity compared with the much faster oscillation of the electromagnetic field." loading="lazy" decoding="async"></a>
+          <figcaption><strong>Figure 2.</strong> Intensity modulation and optical-field oscillation, reproduced from the original tutorial. The relevant phase wavelength can be metres for AMCW and micrometres for OHD. The plotted time scales are schematic.</figcaption>
+        </figure>
+        <p>Changing wavelength plainly changes the scale of a Doppler frequency. The more surprising consequence is that, after contributions from a rough surface are combined, it can also change <em>which geometric motion the measurement follows</em>.</p>
+      </section>
+    </section>
+
+    <section class="chapter" id="single-reflector">
+      <h2><span>Chapter 2:</span> Doppler Effect for a Single Reflector</h2>
+      <section id="monostatic">
+        <h3>2.1 Monostatic geometry and phase evolution</h3>
+        <p>Let the source and receiver be colocated. A reflector starts at range \(d_0\) and approaches at constant speed \(v\), so that \(d(t)=d_0-vt\). We ignore amplitude changes and work to first order in \(v/c\). The round-trip delay is approximately</p>
+        <div class="equation">\[ \tau(t)=\frac{2d(t)}{c},\qquad s(t)=e^{i2\pi f_0t}. \tag{5} \]</div>
+        <p>The returned signal is a delayed copy of the source. Substituting (5) gives</p>
+        <div class="equation">\[ r(t)=e^{i2\pi f_0[t-\tau(t)]}
+          =e^{i2\pi f_0t}\,e^{-i4\pi d_0/\lambda}\,e^{i4\pi vt/\lambda}. \tag{6} \]</div>
+        <p>After removing the source oscillation, the remaining baseband signal has phase \(\phi_{\mathrm{bb}}(t)=-4\pi d(t)/\lambda\). Its derivative is the Doppler shift:</p>
+        <div class="equation" id="eq-monostatic">\[ \boxed{\Delta f=\frac{1}{2\pi}\frac{d\phi_{\mathrm{bb}}}{dt}
+          =-\frac{2}{\lambda}\frac{dd}{dt}
+          =\frac{2v}{\lambda}.} \tag{7} \]</div>
+        <p>The factor of two comes from the two path segments. An approaching reflector gives a positive shift; a receding reflector gives a negative shift. The initial range changes the phase offset, but not its slope.</p>
+        <figure id="fig-monostatic" class="diagram-figure">
+          <svg viewBox="0 0 820 230" role="img" aria-labelledby="mono-title mono-description">
+            <title id="mono-title">Monostatic Doppler geometry</title><desc id="mono-description">A colocated source and receiver sends light toward a reflector on the right. The reflector moves toward the sensor. Both outgoing and returning path lengths decrease.</desc>
+            <defs><marker id="mono-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#455e80"/></marker></defs>
+            <circle cx="85" cy="115" r="23" fill="#e5ecf4" stroke="#455e80" stroke-width="2"/><text x="85" y="76" text-anchor="middle">Source / receiver</text>
+            <rect x="650" y="62" width="25" height="112" fill="#d9dde2" stroke="#555"/>
+            <text x="662" y="40" text-anchor="middle">Reflector</text>
+            <line x1="112" y1="115" x2="650" y2="115" stroke="#88929e" stroke-dasharray="5 5"/>
+            <path d="M125 97 Q380 10 631 97" fill="none" stroke="#455e80" stroke-width="2" marker-end="url(#mono-arrow)"/>
+            <path d="M631 140 Q380 225 125 140" fill="none" stroke="#7e5665" stroke-width="2"/>
+            <text x="372" y="58" text-anchor="middle" fill="#455e80">outgoing</text><text x="372" y="204" text-anchor="middle" fill="#7e5665">return</text>
+            <text x="376" y="110" text-anchor="middle" class="svg-math">d(t) = d₀ − vt</text>
+            <line x1="737" y1="152" x2="691" y2="152" stroke="#455e80" stroke-width="2" marker-end="url(#mono-arrow)"/><text x="718" y="177" text-anchor="middle">v &gt; 0</text>
+          </svg>
+          <figcaption><strong>Figure 3.</strong> The single-reflector geometry from the original tutorial, redrawn with the same source, receiver, range, and motion convention. The total propagation length is \(L(t)=2d(t)\).</figcaption>
+        </figure>
+        <p>More generally, a path of length \(L(t)\) contributes a relative phase \(-2\pi L(t)/\lambda\), and therefore</p>
+        <div class="equation" id="eq-path">\[ \Delta f=-\frac{1}{\lambda}\frac{dL}{dt}. \tag{8} \]</div>
+        <p>Both AMCW and OHD obey this phase principle. The distinction will arise when we combine the contributions of many microscopic reflectors.</p>
+      </section>
+      <section id="single-experiment">
+        <h3>2.2 Experiment: path length, phase, and frequency</h3>
+        <p>Change the initial range and velocity below. The left plot shows the accumulated baseband phase change in cycles, \([\phi(t)-\phi(0)]/(2\pi)\); the right plot shows the real part of the baseband signal, including its initial phase. Switching the measured wavelength changes the time scale needed to see an oscillation.</p>
+        <figure class="interactive" id="single-demo">
+          <div class="demo-heading">Interactive figure 1 — Single reflector</div>
+          <div class="controls three-controls">
+            <label for="single-range"><span class="control-name">Initial range \(d_0\) </span><output id="single-range-value" for="single-range">3.0 m</output><input id="single-range" type="range" min="1" max="5" step="0.1" value="3"></label>
+            <label for="single-velocity"><span class="control-name">Approach velocity \(v\) </span><output id="single-velocity-value" for="single-velocity">+0.5 m/s</output><input id="single-velocity" type="range" min="-2" max="2" step="0.1" value="0.5"></label>
+            <label for="single-wave">Measured signal<select id="single-wave"><option value="10">AMCW: λ = 10 m</option><option value="0.00000155">OHD: λ = 1.55 μm</option></select></label>
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="plot-pair"><div><h4>Baseband phase change</h4><canvas id="single-phase" role="img" aria-label="Accumulated baseband phase in cycles versus time"></canvas></div><div><h4>Real baseband signal</h4><canvas id="single-signal" role="img" aria-label="Real part of the returned baseband signal versus time"></canvas></div></div>
+          <p class="demo-result" id="single-result" aria-live="polite"></p>
+          <figcaption>The curves evaluate (6)–(7), rather than a wave with an artificially reduced propagation speed. The AMCW window is at most 2 s and ends before the reflector reaches the sensor; the OHD window is 2 μs. A real sinusoid alone does not determine the sign of its frequency: signed shifts assume a complex/quadrature convention.</figcaption>
+        </figure>
+        <div class="exercise"><p><strong>Exercise 1.</strong> Why does changing \(d_0\) alter the sinusoid on the right without changing the slope on the left?</p><details><summary>Show the explanation</summary><p>In (6), \(d_0\) appears only in the constant phase \(-4\pi d_0/\lambda\). Differentiating with respect to time removes this term. Velocity determines the slope \(2v/\lambda\), independently of the starting range.</p></details></div>
+      </section>
+    </section>
 
-    <!-- Section 2 -->
-     
-    <h2 class="title is-4" id="ch3-2"> <span class="has-text-weight-bold">3.2 </span> Phasor Sum for a Dynamic Rough Surface</h2>
-    <!-- <h2 class="title is-4" style="margin-top:2rem;">Section 2 — Moving Window (visual) + Live Phasor + FFT of S(t)</h2> -->
-    <div id="s2" class="box">
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <label class="label is-small">Velocity v (m/s)</label>
-          <input id="s2-vel" class="slider is-fullwidth" type="range" min="0" max="2" step="0.01" value="0.50">
-          <p class="help">v: <span id="s2-tVel">0.50</span> m/s (≡ <span id="s2-tVelMic">0.50</span> µm/µs)</p>
-        </div>
-        <div class="control" style="align-self:flex-end;">
-          <button id="s2-recompute" class="button is-small">Recompute FFT</button>
-        </div>
-      </div>
-
-      <!-- Animated surface (window moves visually only) -->
-      <div class="columns is-mobile">
-        <div class="column">
-          <canvas id="s2-surface" width="720" height="260" style="width:100%; height:260px; border:1px solid #1a2027; border-radius:6px;"></canvas>
-          <p class="is-size-7 has-text-grey">
-            The blue window moves right and wraps every 1 s (visualization).
-            FFT is computed from S(t) built with the fixed middle window and the shifted surface \(h(x-vt)\).
-          </p>
-        </div>
-      </div>
-
-      <!-- Live Argand + FFT (no |S(t)| plot) -->
-      <div class="columns is-mobile">
-        <div class="column is-narrow">
-          <canvas id="s2-argand" width="240" height="240" style="border:1px solid #1a2027; border-radius:6px; width:240px; height:240px;"></canvas>
-        </div>
-        <div class="column">
-          <div class="content" style="margin-left:0.5rem;">
-            <p class="is-size-6"><strong>Live Phasor (uses S(t) at the current animation time)</strong></p>
-            <ul class="is-size-6">
-              <li>Window M = <span id="s2-M">—</span> samples</li>
-              <li>|S(t)| = <span id="s2-mag">—</span> &nbsp; |S|/M = <span id="s2-magn">—</span></li>
-              <li>∠S (rad) = <span id="s2-ang">—</span></li>
-              <li>Re(S) = <span id="s2-re">—</span> · Im(S) = <span id="s2-im">—</span></li>
-            </ul>
-            <p class="is-size-7 has-text-grey">
-              Live time mapping: one real-time second corresponds to a spatial shift of \(T\cdot v\) with \(T=10\,\mu s\).
-            </p>
+    <section class="chapter" id="rough-surfaces">
+      <h2><span>Chapter 3:</span> Doppler Effect for a Rough Surface</h2>
+      <p>A ray in a macroscopic renderer represents a small illuminated region, not one optically isolated point. Within that region, many microscopic heights contribute different phases to the received signal. Figure 4 makes this distinction explicit.</p>
+      <figure id="fig-microgeometry">
+        <a href="static/images/macro_micro_geom.png" target="_blank" rel="noopener"><img src="static/images/macro_micro_geom.png" width="2856" height="1149" alt="A macroscopic incident and outgoing ray, with a magnified view of the many rough surface points inside the illuminated footprint." loading="lazy" decoding="async"></a>
+        <figcaption><strong>Figure 4.</strong> Reflection at macroscopic and microscopic scales, reproduced from the original tutorial. A single macroscopic scattering event covers a distribution of microscopic surface heights.</figcaption>
+      </figure>
+      <section id="phasor-sum">
+        <h3>3.1 The static phasor sum</h3>
+        <p>Let a microscopic surface point be \(\mathbf r=\mathbf x+h(\mathbf x)\mathbf n\), where \(\mathbf x\) lies in the mean plane, \(\mathbf n\) is its normal, and \(h\) is the height. Let \(\mathbf a_i\) and \(\mathbf a_s\) be unit vectors along incoming and outgoing propagation. Define the wavevector difference</p>
+        <div class="equation">\[ \mathbf q=\mathbf k_s-\mathbf k_i
+          =\frac{2\pi}{\lambda}(\mathbf a_s-\mathbf a_i). \tag{9} \]</div>
+        <p>Relative to the origin, the propagation phase contributed by this point is</p>
+        <div class="equation">\[ \Delta\Phi(\mathbf x)=
+          \underbrace{\mathbf q\cdot\mathbf x}_{\text{position in the mean plane}}
+          +\underbrace{h(\mathbf x)\,\mathbf q\cdot\mathbf n}_{\text{microscopic height}}. \tag{10} \]</div>
+        <p>The far-field signal is a sum of phasors over the illuminated region \(\mathcal S\). With constant amplitude for this simplified phase model,</p>
+        <div class="equation" id="eq-phasor">\[ U=\int_{\mathcal S}e^{i\Delta\Phi(\mathbf x)}\,d\mathbf x
+          \;\simeq\; \sum_j e^{i\Delta\Phi(\mathbf x_j)}\,\Delta A_j. \tag{11} \]</div>
+        <p>For OHD, these are optical-field amplitudes. For AMCW, the analogous complex quantities describe the phase of intensity modulation; summing them does not imply that the optical carrier fields are coherently detected.</p>
+        <p>At a monostatic viewing angle \(\theta\), measured from the normal, the RMS height-dependent phase is</p>
+        <div class="equation">\[ \sigma_\Phi=\frac{4\pi\sigma_h\cos\theta}{\lambda}. \tag{12} \]</div>
+        <p>When \(\sigma_\Phi\ll1\), microscopic heights barely perturb the measured phase. When it spans many radians, different heights can contribute very different phasors. Thus “rough” is a statement about the surface <em>relative to the wavelength</em>, not the surface alone.</p>
+      </section>
+      <section id="wavelength-experiment">
+        <h3>3.2 Experiment: changing the wavelength</h3>
+        <p>The following experiment uses one fixed surface realization and a \(100~\mu\mathrm m\) footprint at \(\theta=45^\circ\). Change the wavelength from \(1.55~\mu\mathrm m\) to \(10~\mathrm m\) without changing the heights. Observe both the height-dependent phase scale and the directions of the phasors.</p>
+        <figure class="interactive" id="rough-demo">
+          <div class="demo-heading">Interactive figure 2 — Static rough-surface phases</div>
+          <div class="demo-actions"><button type="button" data-static-wave="1.55" aria-pressed="true">Optical: 1.55 μm</button><button type="button" data-static-wave="10000000" aria-pressed="false">Modulation: 10 m</button><button type="button" id="static-reseed">New surface realization</button></div>
+          <div class="controls three-controls">
+            <label for="static-wave"><span class="control-name">Wavelength \(\lambda\) </span><output id="static-wave-value" for="static-wave"></output><input id="static-wave" type="range" min="-0.3" max="7" step="0.001" value="0.1903317"><small>Logarithmic scale</small></label>
+            <label for="static-height"><span class="control-name">RMS height \(\sigma_h\) </span><output id="static-height-value" for="static-height"></output><input id="static-height" type="range" min="0" max="5" step="0.05" value="2"></label>
+            <label for="static-correlation"><span class="control-name">Correlation length \(\ell\) </span><output id="static-correlation-value" for="static-correlation"></output><input id="static-correlation" type="range" min="1.5" max="30" step="0.5" value="3"></label>
           </div>
-        </div>
-      </div>
+          <div class="plot-pair rough-plots"><div><h4>Height profile \(h(x)\)</h4><canvas id="static-surface" role="img" aria-label="Height profile across a 100 micrometre surface patch"></canvas></div><div><h4>Phasors \(e^{i\Delta\Phi(x_j)}\)</h4><canvas id="static-phasors" role="img" aria-label="Phasors at 64 sample points of the rough surface"></canvas></div></div>
+          <p class="demo-result" id="static-result" aria-live="polite"></p>
+          <figcaption>Colours connect 64 displayed surface samples to their unit phasors. Both terms in (10) are included. The RMS phase readout refers only to the height term. The height field is a Gaussian random Fourier construction with nominal covariance \(C_h(r)\propto e^{-r^2/(2\ell^2)}\), normalized to the selected RMS over its periodic domain. This figure illustrates phases; the dynamic spectrum is computed in <a href="#spectrum-experiment">Section 4.4</a>.</figcaption>
+        </figure>
+        <p>At the modulation wavelength, both the heights and this entire microscopic footprint are small relative to a cycle. At the optical wavelength, the phases vary rapidly. This is the starting point of the correspondence argument—not, by itself, a complete prediction of a Doppler spectrum.</p>
+      </section>
+      <section id="moving-surface">
+        <h3>3.3 Following a moving surface</h3>
+        <p>Suppose the surface translates rigidly with velocity \(\mathbf v\). A point attached to the material moves from \(\mathbf r\) to \(\mathbf r+\mathbf vt\). The set of material points illuminated by a fixed beam also changes. We must include both effects:</p>
+        <div class="equation">\[ U(t)=\int_{\mathcal S_t}
+          \exp\!\left(i\left[\mathbf q\cdot\mathbf x+
+          h(\mathbf x)\,\mathbf q\cdot\mathbf n+
+          \mathbf q\cdot\mathbf v\,t\right]\right)\,d\mathbf x. \tag{13} \]</div>
+        <p>Here \(\mathcal S_t\) is the illuminated region in <em>material coordinates</em>. It is generally not a fixed integration domain. Pulling the explicit motion term outside the integral and then treating the remaining integral as constant would miss the change of material inside the beam.</p>
+        <p>Section 6 of the OHD paper studies this sum through its temporal correlation. The resulting limiting behaviour depends on whether correlation follows individual material patches or the macroscopic illuminated region.</p>
+      </section>
+    </section>
 
-      <div class="columns is-mobile">
-        <div class="column">
-          <canvas id="s2-spec" width="720" height="220" style="width:100%; height:220px; border:1px solid #1a2027; border-radius:6px;"></canvas>
-          <p class="is-size-7 has-text-grey">|FFT{S(t)}| (rectangular window), frequency in MHz, 0…Nyquist (M=128 over T=10 µs).</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="chapter" id="two-velocities">
+      <h2><span>Chapter 4:</span> Macroscopic and Microscopic Doppler</h2>
+      <section id="target-velocity">
+        <h3>4.1 Microscopic correspondence: target velocity</h3>
+        <p>Consider a surface that is sufficiently rough relative to the optical wavelength, with sufficiently weak correlation between distinct microscopic contributions. Terms from unrelated patches cancel in an ensemble average, while correlation remains when the <em>same material patch</em> is followed at two times.</p>
+        <p>Using the convention \(C_U(\tau)=\langle U(t+\tau)U^*(t)\rangle\), this attached correspondence produces a phase factor \(e^{i\mathbf q\cdot\mathbf v\tau}\). Its frequency is therefore</p>
+        <div class="equation" id="eq-target">\[ \boxed{\Delta f_{\mathrm{tg}}
+          =\frac{(\mathbf a_s-\mathbf a_i)\cdot\mathbf v}{\lambda_0},
+          \qquad v_{\mathrm{tg}}=(\mathbf a_s-\mathbf a_i)\cdot\mathbf v.} \tag{14} \]</div>
+        <p>This is the usual scattering Doppler formula. The paper calls \(v_{\mathrm{tg}}\) the <em>target velocity</em>. It is a directionally weighted scalar, not the magnitude of the three-dimensional velocity vector. Microscopic correspondence does not require the camera to spatially resolve the microscopic features.</p>
+        <p>A finite beam also has boundary regions where material enters or leaves. Limited overlap and speckle decorrelation can broaden a measured spectrum. The ideal narrow target-frequency limit assumes that these effects do not dominate the correlation of the illuminated bulk.</p>
+      </section>
+      <section id="spot-velocity">
+        <h3>4.2 Macroscopic correspondence: spot velocity</h3>
+        <p>For metre-scale intensity modulation, micrometre heights produce negligible phase perturbations. If the footprint is also small relative to the modulation wavelength, the summed modulation phase follows the macroscopic intersection of the illumination ray and the surface.</p>
+        <p>Let the mean plane have normal \(\mathbf n\), let \(v_N=\mathbf n\cdot\mathbf v\), and let \(\theta_i\) be the incidence angle. The velocity of this fixed ray’s intersection is</p>
+        <div class="equation">\[ \mathbf u_{\mathrm{sp}}=-\frac{v_N}{\cos\theta_i}\,\mathbf a_i,
+          \qquad
+          \boxed{\Delta f_{\mathrm{sp}}
+          =\frac{(\mathbf a_s-\mathbf a_i)\cdot\mathbf u_{\mathrm{sp}}}{\lambda_m}.} \tag{15} \]</div>
+        <p>The paper defines \(v_{\mathrm{sp}}=(\mathbf a_s-\mathbf a_i)\cdot\mathbf u_{\mathrm{sp}}\), the <em>spot velocity</em>. The spot is a geometric intersection, so it can move across the material. For a broad, uniform plane sliding tangentially, \(v_N=0\): its intersection with a fixed ray remains stationary even though the material moves.</p>
+        <p><strong>The difference is not “path length versus Doppler.”</strong> Both results come from phase changes caused by propagation. The difference is the correspondence that survives after many microscopic contributions have been combined. Simply replacing the wavelength in the material-velocity formula does not reproduce the macroscopic limit.</p>
+      </section>
+      <section id="geometry-experiment">
+        <h3>4.3 Experiment: normal and transverse motion</h3>
+        <p>Use a colocated source and receiver above and to the left of the plane. Let \(v_T\) be positive to the left and \(v_N\) positive upward. The unit direction toward the sensor is \(\mathbf s=(-\sin\theta,\cos\theta)\), so the two velocities reduce to</p>
+        <div class="equation">\[ v_{\mathrm{tg}}=2(v_N\cos\theta+v_T\sin\theta),
+          \qquad v_{\mathrm{sp}}=\frac{2v_N}{\cos\theta}. \tag{16} \]</div>
+        <p>Many instruments report <em>equivalent radial velocity</em>, \(v_r=\lambda\Delta f/2\). These radial values are one half of the paper’s \(v_{\mathrm{tg}}\) and \(v_{\mathrm{sp}}\) in this monostatic geometry. The table below shows both conventions.</p>
+        <figure class="interactive" id="motion-demo">
+          <div class="demo-heading">Interactive figure 3 — Material point and beam intersection</div>
+          <div class="demo-actions" role="group" aria-label="Motion cases"><button type="button" data-motion="normal" aria-pressed="true">Normal motion</button><button type="button" data-motion="transverse" aria-pressed="false">Transverse motion</button><button type="button" data-motion="beam" aria-pressed="false">Along the beam</button></div>
+          <div class="controls three-controls"><label for="motion-angle"><span class="control-name">Angle \(\theta\) </span><output id="motion-angle-value" for="motion-angle"></output><input id="motion-angle" type="range" min="0" max="70" step="1" value="45"></label><label for="motion-normal"><span class="control-name">Normal velocity \(v_N\) </span><output id="motion-normal-value" for="motion-normal"></output><input id="motion-normal" type="range" min="-2" max="2" step="0.1" value="2"></label><label for="motion-tangent"><span class="control-name">Transverse velocity \(v_T\) </span><output id="motion-tangent-value" for="motion-tangent"></output><input id="motion-tangent" type="range" min="-2" max="2" step="0.1" value="0"></label></div>
+          <canvas id="motion-geometry" class="geometry-canvas" role="img" aria-label="The motion of a material point and the spot formed by a fixed beam on a translating plane"></canvas>
+          <div class="playback"><button type="button" id="motion-play">Play</button><button type="button" id="motion-reset">Reset time</button><label for="motion-time">Time</label><input id="motion-time" type="range" min="0" max="250" step="1" value="0"><output id="motion-time-value" for="motion-time">0 ms</output></div>
+          <div class="table-scroll"><table class="measurement-table"><thead><tr><th scope="col">Quantity</th><th scope="col">AMCW: spot</th><th scope="col">OHD: target</th></tr></thead><tbody><tr><th scope="row">Paper velocity \(v_{\mathrm{sp}},v_{\mathrm{tg}}\)</th><td id="motion-spot-paper"></td><td id="motion-target-paper"></td></tr><tr><th scope="row">Equivalent radial velocity \(v_r\)</th><td id="motion-spot-radial"></td><td id="motion-target-radial"></td></tr><tr><th scope="row">Measured wavelength</th><td>10 m</td><td>1.55 μm</td></tr><tr><th scope="row">Frequency shift \(\Delta f\)</th><td id="motion-spot-frequency"></td><td id="motion-target-frequency"></td></tr></tbody></table></div>
+          <p class="demo-result" id="motion-result" aria-live="polite"></p>
+          <figcaption>Orange marks the macroscopic beam intersection; blue marks one attached material point. Surface relief and beam width are schematic. The table evaluates the limiting formulas (14)–(16), not a spectrum measured from the drawing. Playback slows 0.25 s of motion to a six-second replay.</figcaption>
+        </figure>
+        <p>For pure normal motion at \(45^\circ\), the spot’s equivalent radial speed is twice the target’s. For pure transverse motion at an oblique angle, the spot is stationary while the target has nonzero line-of-sight velocity. At normal incidence, both radial velocities equal \(v_N\). Motion along the beam also makes the two correspondences agree.</p>
+        <div class="exercise"><p><strong>Exercise 2.</strong> Set \(v_N=2~\mathrm{m/s}\), \(v_T=0\), and \(\theta=45^\circ\). Predict both frequency shifts before inspecting the table.</p><details><summary>Show the calculation</summary><p>The equivalent radial velocities are \(v_{r,\mathrm{sp}}=2/\cos45^\circ=2.828~\mathrm{m/s}\) and \(v_{r,\mathrm{tg}}=2\cos45^\circ=1.414~\mathrm{m/s}\). Thus \(\Delta f_{\mathrm{sp}}\simeq0.566~\mathrm{Hz}\) at \(\lambda_m=10~\mathrm m\), whereas \(\Delta f_{\mathrm{tg}}\simeq1.825~\mathrm{MHz}\) at \(\lambda_0=1.55~\mu\mathrm m\). Comparing only the frequencies would obscure the additional geometric factor.</p></details></div>
+      </section>
+      <section id="spectrum-experiment">
+        <h3>4.4 Experiment: a computed rough-surface spectrum</h3>
+        <p>The limiting formulas do not imply a sharp threshold at a particular roughness. Figure 10 of the OHD paper varies height statistics and shows how the spectrum changes. In particular, short optical wavelength alone is not sufficient: strong spatial correlation can invalidate the approximation used to obtain target velocity.</p>
+        <p>We can examine this with a one-dimensional version of (13). Keep \(\theta=45^\circ\), \(v_N=2~\mathrm{m/s}\), \(v_T=0\), and a \(100~\mu\mathrm m\) footprint. In material coordinates \(x\), the centre of the illuminated interval moves at</p>
+        <div class="equation">\[ a=v_T-v_N\tan\theta,\qquad
+          q_x=-\frac{4\pi\sin\theta}{\lambda},\quad
+          q_n=\frac{4\pi\cos\theta}{\lambda}. \tag{17} \]</div>
+        <p>For footprint width \(W\), evaluate the complex field and its finite-time power spectrum:</p>
+        <div class="equation">\[ U(t)=e^{i2\pi\Delta f_{\mathrm{tg}}t}
+          \int_{at-W/2}^{at+W/2}e^{i[q_xx+q_nh(x)]}\,dx,
+          \qquad P(f)=\left|\mathcal F\{w(t)U(t)/W\}\right|^2. \tag{18} \]</div>
+        <p>The taper \(w(t)\) is a Hann window. Both motion of the material and motion of the integration bounds are included. For a perfectly flat height field, the integral contributes an additional phase \(q_xat\), giving the spot frequency exactly. For suitable roughness statistics, the computed spectrum instead concentrates near the target frequency.</p>
+        <figure class="interactive" id="spectrum-demo">
+          <div class="demo-heading">Interactive figure 4 — Numerical phase integration and FFT</div>
+          <div class="controls three-controls"><label for="spectrum-wave"><span class="control-name">Optical wavelength \(\lambda\) </span><output id="spectrum-wave-value" for="spectrum-wave"></output><input id="spectrum-wave" type="range" min="0.8" max="3.1" step="0.05" value="1.55"></label><label for="spectrum-height"><span class="control-name">RMS height \(\sigma_h\) </span><output id="spectrum-height-value" for="spectrum-height"></output><input id="spectrum-height" type="range" min="0" max="4" step="0.05" value="3.1"></label><label for="spectrum-correlation"><span class="control-name">Correlation length \(\ell\) </span><output id="spectrum-correlation-value" for="spectrum-correlation"></output><input id="spectrum-correlation" type="range" min="1.5" max="30" step="0.5" value="3"></label></div>
+          <div class="demo-actions"><label for="spectrum-ensemble">Surface realizations <select id="spectrum-ensemble"><option value="1">1</option><option value="8" selected>8</option><option value="32">32</option></select></label><button type="button" id="spectrum-run">Run simulation</button><button type="button" id="spectrum-smooth">Set a smooth surface</button><button type="button" id="spectrum-rough">Restore rough surface</button></div>
+          <p class="simulation-status" id="spectrum-status" role="status">The initial spectrum will be computed when this figure comes into view.</p>
+          <canvas id="spectrum-plot" class="spectrum-canvas" role="img" aria-label="Signed frequency power spectrum computed from rough-surface phase integration"></canvas>
+          <p class="plot-key"><span class="line-key target"></span> Target-frequency limit <span class="line-key spot"></span> Spot-frequency limit <span class="line-key computed"></span> Computed power</p>
+          <p class="demo-result" id="spectrum-result"></p>
+          <figcaption>Direct numerical evaluation of (18), averaged over the selected number of independent surface realizations. Domain: 512 μm with 16,384 height samples; observation: 16 μs with 512 temporal samples; FFT spacing: 62.5 kHz. Power is relative to a unit, fully coherent aperture return, with the Hann coherent gain removed. This is a 1D phase-only experiment inspired by Section 6, not a reproduction of its 2D, BRDF-normalized Monte Carlo results. Away from specular reflection, a smooth surface can have a very weak return.</figcaption>
+        </figure>
+        <p><strong>Things to try.</strong> Start with the smooth preset and locate the spot-frequency peak. Restore the rough surface and compare its peak with the target marker. Then increase the correlation length while keeping RMS height fixed. The phases become more spatially correlated; both the spectral shape and return power can change. These results should not be interpreted as a universal interpolation between two velocities.</p>
+        <details class="implementation"><summary>Numerical implementation of the moving footprint</summary><p>The integrand is time independent in material coordinates. Precompute its cumulative trapezoidal integral, then evaluate it at the two moving endpoints. This is the same quadrature as summing the aperture at every time step, with much less repeated work.</p><pre><code>q = (2 * pi / wavelength) * (a_out - a_in);
+F = cumulativeIntegral(exp(i * (q.x * x + q.y * height(x))));
+for (n = 0; n &lt; timeSamples; ++n) {
+    t = n * duration / timeSamples;
+    aperture = F(a * t + width/2) - F(a * t - width/2);
+    U[n] = aperture * exp(i * 2*pi * targetFrequency * t) / width;
+}
+power = abs(FFT(hann * U) / sum(hann))^2;
+// Average powers, not complex fields, across surface realizations.</code></pre></details>
+      </section>
+    </section>
 
-<script>
-(function(){
-  // ===== constants =====
-  const L_um = 100.0;              // spatial span
-  const N = 4096;                  // fixed spatial samples
-  const dx_um = L_um / N;
-  const T_us = 10.0;               // time span for S(t)
-  const M_ts = 128;                // time samples (FFT length)
+    <section class="chapter" id="rendering">
+      <h2><span>Chapter 5:</span> Implications for Doppler Rendering</h2>
+      <p>The distinction changes what a renderer must track. A macroscopic ray intersection is generally detached from the moving material, whereas the rough-surface optical limit uses correspondence attached to that material.</p>
+      <h3>5.1 AMCW: macroscopic path evolution</h3>
+      <p>For AMCW Doppler, evaluate the intensity-modulation phase using macroscopic path lengths as the scene moves. This requires time-dependent intersections, visibility, and transport weights, or an estimator that correctly accounts for their evolution. The surface point reached by a fixed ray at a later time need not be the same material point.</p>
+      <p>A uniform treadmill is a useful test: if its mean surface geometry and reflectance remain unchanged, translating its material alone does not produce the spot-frequency shift of a changing range. Texture, edges, or deformation can introduce additional temporal modulation and lie outside that idealized test.</p>
+      <h3>5.2 OHD: material velocity along a path</h3>
+      <p>Under the rough-surface statistical assumptions, a geometry snapshot with material velocities at scattering events can predict the mean Doppler spectrum. For a path with vertices \(\mathbf x_0,\ldots,\mathbf x_N\), unit segment directions \(\mathbf e_j\), and attached velocities \(\mathbf v_j\),</p>
+      <div class="equation">\[ \dot L=\sum_{j=0}^{N-1}\mathbf e_j\cdot
+        (\mathbf v_{j+1}-\mathbf v_j),\qquad
+        \Delta f=-\frac{\dot L}{\lambda_0}. \tag{19} \]</div>
+      <p>At an internal scattering event, this becomes \((\mathbf e_{\mathrm{out}}-\mathbf e_{\mathrm{in}})\cdot\mathbf v/\lambda_0\). Sum the frequency changes along the path and accumulate its radiometric weight in the appropriate spectral bin. Speckle statistics and finite observation time require additional treatment, as discussed in Sections 4–5 of the OHD paper.</p>
+      <div class="table-scroll"><table class="summary-table"><caption>Table 1. The two limiting regimes discussed in this tutorial.</caption><thead><tr><th scope="col"></th><th scope="col">Intensity Doppler (AMCW)</th><th scope="col">Optical-field Doppler (rough-surface OHD)</th></tr></thead><tbody><tr><th scope="row">Phase wavelength</th><td>Modulation; e.g. 10 m</td><td>Optical field; e.g. 1.55 μm</td></tr><tr><th scope="row">Correspondence</th><td>Macroscopic illuminated region</td><td>Moving microscopic material</td></tr><tr><th scope="row">Velocity in the phase law</th><td>Spot velocity</td><td>Target velocity</td></tr><tr><th scope="row">Uniform tangentially moving plane</th><td>No macroscopic range change</td><td>Doppler if material motion has a line-of-sight component</td></tr><tr><th scope="row">Rendering strategy</th><td>Evolving geometry and modulation paths</td><td>Material velocities and a statistical optical spectrum</td></tr></tbody></table></div>
+      <p>The common starting point is the propagation phase. The large wavelength disparity makes the same microgeometry nearly invisible to intensity-modulation phase but significant to optical-field phase. Its spatial correlations then determine which temporal correspondence survives. This is why the two measurements can disagree even though they observe the same moving object.</p>
+    </section>
 
-  // ===== DOM =====
-  const $ = id => document.getElementById(id);
-  // global
-  const glLam = $('gl-lambda'), glTi = $('gl-theta-i'), glTo = $('gl-theta-o');
-  // s1
-  const s1Sigma=$('s1-sigma'), s1Ell=$('s1-ell'), s1SeedBtn=$('s1-reseed');
-  const s1TSigma=$('s1-tSigma'), s1TEll=$('s1-tEll');
-  const s1Surf=$('s1-surface'), s1Arg=$('s1-argand');
-  const s1M=$('s1-M'), s1Mag=$('s1-mag'), s1Magn=$('s1-magn'), s1Ang=$('s1-ang'), s1Re=$('s1-re'), s1Im=$('s1-im');
-  // s2
-  const s2Vel=$('s2-vel'), s2TVel=$('s2-tVel'), s2TVelMic=$('s2-tVelMic'), s2Recomp=$('s2-recompute');
-  const s2Surf=$('s2-surface'), s2Spec=$('s2-spec'), s2Arg=$('s2-argand');
-  const s2M=$('s2-M'), s2Mag=$('s2-mag'), s2Magn=$('s2-magn'), s2Ang=$('s2-ang'), s2Re=$('s2-re'), s2Im=$('s2-im');
-
-  // ===== state =====
-  let sigma_um=parseFloat(s1Sigma.value);
-  let ell_um=parseFloat(s1Ell.value);
-  let lambda_um=parseFloat(glLam.value);
-  let theta_i_deg=parseFloat(glTi.value);
-  let theta_o_deg=parseFloat(glTo.value);
-  let v_mps=parseFloat(s2Vel.value); // 1 m/s == 1 µm/µs
-  let seed=(Math.random()*1e9)>>>0;
-
-  // arrays
-  const x_um=new Float64Array(N);
-  for (let i=0;i<N;i++) x_um[i]=i*dx_um;
-  let h_um=new Float64Array(N);
-
-  // ===== FFT =====
-  function bitReverse(n,b){ let r=0; for(let i=0;i<b;i++){ r=(r<<1)|(n&1); n>>=1; } return r; }
-  function fftComplex(re,im,inverse=false){
-    const NN=re.length, lev=Math.log2(NN)|0; if ((1<<lev)!==NN) throw new Error('FFT length must be power of 2');
-    for(let i=0;i<NN;i++){ const j=bitReverse(i,lev); if (j>i){ [re[i],re[j]]=[re[j],re[i]]; [im[i],im[j]]=[im[j],im[i]]; } }
-    for(let size=2; size<=NN; size<<=1){
-      const half=size>>1, theta=(inverse?-2:2)*Math.PI/size, wpr=Math.cos(theta), wpi=Math.sin(theta);
-      for(let i=0;i<NN;i+=size){
-        let wr=1, wi=0;
-        for(let j=0;j<half;j++){
-          const k=i+j, t=k+half;
-          const tr=wr*re[t]-wi*im[t], ti=wr*im[t]+wi*re[t];
-          re[t]=re[k]-tr; im[t]=im[k]-ti;
-          re[k]+=tr;      im[k]+=ti;
-          const wtmp=wr; wr=wtmp*wpr-wi*wpi; wi=wtmp*wpi+wi*wpr;
-        }
-      }
-    }
-    if (inverse){ for(let i=0;i<NN;i++){ re[i]/=NN; im[i]/=NN; } }
-  }
-  function ifftComplex(re,im){ fftComplex(re,im,true); }
-  function fftfreq(N, d){
-    const val=1/(N*d), out=new Float64Array(N);
-    const N2=Math.floor((N-1)/2)+1;
-    for(let i=0;i<N2;i++) out[i]=i*val;
-    for(let i=N2;i<N;i++) out[i]=(i-N)*val;
-    return out;
-  }
-  function RNG(s){ let x=(s|0)||123456789; return ()=>{ x^=x<<13; x^=x>>>17; x^=x<<5; return (x>>>0)/0xFFFFFFFF; }; }
-
-  // ===== surface generation (1D spectral, Gaussian PSD) =====
-  // PSD(f)=exp(-0.5 f^2 ell^2), f in cycles/µm
-  function generateSurface(){
-    const f=fftfreq(N, dx_um);
-    const sqrtPSD=new Float64Array(N);
-    const ell2=ell_um*ell_um;
-    for (let k=0;k<N;k++){ const fk=f[k]; sqrtPSD[k]=Math.exp(-0.25*fk*fk*ell2); }
-
-    const re=new Float64Array(N), im=new Float64Array(N);
-    const rng=RNG(seed);
-    re[0]=(rng()-0.5)*2*sqrtPSD[0]; im[0]=0;
-    const kmax=Math.floor(N/2);
-    for (let k=1;k<kmax;k++){
-      const u1=Math.max(rng(),1e-12), u2=rng();
-      const r=Math.sqrt(-2*Math.log(u1)), a=2*Math.PI*u2;
-      const zR=r*Math.cos(a), zI=r*Math.sin(a);
-      const s = sqrtPSD[k]/Math.SQRT2;
-      re[k]=zR*s; im[k]=zI*s;
-      re[N-k]= re[k]; im[N-k]= -im[k]; // Hermitian
-    }
-    if (N%2===0){ const kN=N/2; re[kN]=(rng()-0.5)*2*sqrtPSD[kN]; im[kN]=0; }
-
-    ifftComplex(re,im);
-    // zero-mean & scale to RMS sigma
-    let mean=0; for(let i=0;i<N;i++) mean+=re[i]; mean/=N;
-    let varr=0; for(let i=0;i<N;i++){ const v=re[i]-mean; varr+=v*v; } varr/=N;
-    const std=Math.sqrt(Math.max(varr,1e-20));
-    const sc=sigma_um/std;
-    for (let i=0;i<N;i++) h_um[i]=(re[i]-mean)*sc;
-  }
-
-  // periodic linear interpolation
-  function h_at(x){
-    let xx = x % L_um; if (xx<0) xx+=L_um;
-    const idx = xx/dx_um;
-    const i0 = Math.floor(idx);
-    const i1 = (i0+1) % N;
-    const t  = idx - i0;
-    return h_um[i0]*(1-t) + h_um[i1]*t;
-  }
-
-  // ===== phasor sum (fixed middle window), at time t_us with surface shift h(x - v t) =====
-  function phasorSumAtTime(t_us){
-    const ti=theta_i_deg*Math.PI/180, to=theta_o_deg*Math.PI/180;
-    const k = 2*Math.PI / lambda_um;                 // 1/µm
-    const q = Math.cos(ti)+Math.cos(to);
-    const dkx = k*(Math.sin(to)-Math.sin(ti));       // 1/µm
-    const v_um_per_us = v_mps;                       // 1 m/s == 1 µm/µs
-
-    const iStart = Math.floor(N/4), iEnd = Math.ceil(3*N/4)-1;
-    const M = iEnd - iStart + 1;
-
-    let Re=0, Im=0;
-    for (let i=iStart;i<=iEnd;i++){
-      const x = x_um[i];
-      const hx = h_at(x - v_um_per_us*t_us);
-      const phase = dkx*x - k*q*hx;
-      Re += Math.cos(phase);
-      Im += Math.sin(phase);
-    }
-    return {Re, Im, M};
-  }
-
-  // ===== compute S(t) and FFT =====
-  function computeFFT(){
-    const dt_us = T_us / M_ts;
-    const Fs_MHz = 1/dt_us;          // samples per µs
-    const fRes = Fs_MHz / M_ts;      // 1/T
-    const St_re=new Float64Array(M_ts), St_im=new Float64Array(M_ts);
-    for (let n=0;n<M_ts;n++){
-      const t_us = n*dt_us;
-      const {Re, Im} = phasorSumAtTime(t_us);
-      St_re[n]=Re; St_im[n]=Im;
-    }
-    const F_re=St_re.slice(0), F_im=St_im.slice(0);
-    fftComplex(F_re, F_im, false);
-    const half=Math.floor(M_ts/2);
-    const magSpec=new Float64Array(half+1);
-    for (let k=0;k<=half;k++) magSpec[k]=Math.hypot(F_re[k],F_im[k]);
-    return {magSpec, fMaxMHz: half*fRes};
-  }
-
-  // ===== drawing =====
-  function setCanvasSize(c){
-    const dpr=Math.min(2, window.devicePixelRatio||1);
-    const cssW=c.clientWidth||c.width, cssH=c.clientHeight||c.height;
-    const W=Math.floor(cssW*dpr), H=Math.floor(cssH*dpr);
-    if (c.width!==W||c.height!==H){ c.width=W; c.height=H; }
-    return {W,H,dpr};
-  }
-
-  function drawSurface(canvas, winShiftUm=0){
-    const {W,H,dpr}=setCanvasSize(canvas);
-    const ctx=canvas.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
-
-    // axis
-    const y0=H/2; ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(0,y0+0.5*dpr); ctx.lineTo(W,y0+0.5*dpr); ctx.stroke();
-
-    const X = x => (x/L_um)*(W-1);
-
-    // shaded window [25,75] µm shifted by winShiftUm (wrap for Section 2 anim)
-    const base0=L_um/4, base1=3*L_um/4;
-    let a=(base0+winShiftUm)%L_um; if (a<0) a+=L_um;
-    let b=(base1+winShiftUm)%L_um; if (b<0) b+=L_um;
-    ctx.fillStyle='rgba(124,195,255,0.18)';
-    if (a<=b){
-      ctx.fillRect(X(a),0,X(b)-X(a),H);
-    } else {
-      ctx.fillRect(X(a),0,X(L_um)-X(a),H);
-      ctx.fillRect(X(0),0,X(b)-X(0),H);
-    }
-
-    // vertical scale ±10 µm
-    const Hspan=10.0;
-    const Y = h => H*(0.5 - h/(2*Hspan));
-
-    // fill under curve
-    ctx.beginPath();
-    for (let i=0;i<N;i++){
-      const xx=X(x_um[i]), yy=Y(h_um[i]);
-      if (i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
-    }
-    ctx.lineTo(X(x_um[N-1]), H); ctx.lineTo(X(x_um[0]), H); ctx.closePath();
-    ctx.fillStyle='#4a4a4a'; ctx.fill();
-
-    // stroke
-    ctx.strokeStyle='#e6eef7'; ctx.lineWidth=1.5*dpr;
-    ctx.beginPath();
-    for (let i=0;i<N;i++){
-      const xx=X(x_um[i]), yy=Y(h_um[i]);
-      if (i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
-    }
-    ctx.stroke();
-
-    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
-    ctx.textAlign='left'; ctx.textBaseline='bottom';
-    ctx.fillText('h (µm): ±10', 6*dpr, H-4*dpr);
-  }
-
-  function drawArgand(canvas, Re, Im, M){
-    const {W,H,dpr}=setCanvasSize(canvas);
-    const ctx=canvas.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
-
-    const cx=W/2, cy=H/2;
-    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(0,cy+0.5*dpr); ctx.lineTo(W,cy+0.5*dpr); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx+0.5*dpr,0); ctx.lineTo(cx+0.5*dpr,H); ctx.stroke();
-
-    const R=0.8*Math.min(W,H)/2;
-    ctx.strokeStyle='#33485e'; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
-
-    const ren=Re/M, imn=Im/M;
-    ctx.strokeStyle='#7cc3ff'; ctx.fillStyle='#7cc3ff'; ctx.lineWidth=2*dpr;
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+ren*R, cy-imn*R); ctx.stroke();
-    ctx.beginPath(); ctx.arc(cx+ren*R, cy-imn*R, 3*dpr, 0, Math.PI*2); ctx.fill();
-  }
-
-  function drawSpectrum(canvas, magSpec, fMaxMHz){
-    const {W,H,dpr}=setCanvasSize(canvas);
-    const ctx=canvas.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0c0f14'; ctx.fillRect(0,0,W,H);
-
-    let maxv=1e-12; for (let i=0;i<magSpec.length;i++) if (magSpec[i]>maxv) maxv=magSpec[i];
-
-    const X = i => (i/(magSpec.length-1))*(W-1);
-    const Y = v => H - (v/maxv)*(H-16*dpr) - 8*dpr;
-
-    ctx.strokeStyle='#223041'; ctx.lineWidth=1*dpr;
-    ctx.beginPath(); ctx.moveTo(0,H-0.5*dpr); ctx.lineTo(W,H-0.5*dpr); ctx.stroke();
-
-    ctx.strokeStyle='#7cc3ff'; ctx.lineWidth=1.5*dpr;
-    ctx.beginPath();
-    for (let i=0;i<magSpec.length;i++){
-      const x=X(i), y=Y(magSpec[i]);
-      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-
-    ctx.fillStyle='#9fb0c3'; ctx.font=`${10*dpr}px system-ui,-apple-system,Segoe UI,Roboto,sans-serif`;
-    ctx.textAlign='left'; ctx.textBaseline='bottom';
-    ctx.fillText('f (MHz): 0', 6*dpr, H-4*dpr);
-    ctx.textAlign='right'; ctx.fillText(fMaxMHz.toFixed(2), W-6*dpr, H-4*dpr);
-  }
-
-  // ===== section logic =====
-  function updateSection1(){
-    sigma_um=parseFloat(s1Sigma.value);
-    ell_um=parseFloat(s1Ell.value);
-    if ([glLam, glTi, glTo].every(input => input.validity.valid && Number.isFinite(input.valueAsNumber))) {
-      lambda_um=parseFloat(glLam.value);
-      theta_i_deg=parseFloat(glTi.value);
-      theta_o_deg=parseFloat(glTo.value);
-    }
-
-    s1TSigma.textContent=sigma_um.toFixed(2);
-    s1TEll.textContent=ell_um.toFixed(1);
-
-    generateSurface();
-    drawSurface(s1Surf, 0);
-
-    // t = 0 phasor in middle window
-    const ti=theta_i_deg*Math.PI/180, to=theta_o_deg*Math.PI/180;
-    const k = 2*Math.PI / lambda_um, q=Math.cos(ti)+Math.cos(to);
-    const dkx = k*(Math.sin(to)-Math.sin(ti));
-    const iStart=Math.floor(N/4), iEnd=Math.ceil(3*N/4)-1; const M=iEnd-iStart+1;
-    let Re=0, Im=0;
-    for (let i=iStart;i<=iEnd;i++){
-      const x=x_um[i], h=h_um[i];
-      const phase=dkx*x - k*q*h;
-      Re+=Math.cos(phase); Im+=Math.sin(phase);
-    }
-    const mag=Math.hypot(Re,Im), magn=mag/M, ang=Math.atan2(Im,Re);
-    s1M.textContent=String(M);
-    s1Mag.textContent=mag.toFixed(6);
-    s1Magn.textContent=magn.toFixed(6);
-    s1Ang.textContent=ang.toFixed(6);
-    s1Re.textContent=Re.toFixed(6);
-    s1Im.textContent=Im.toFixed(6);
-    drawArgand(s1Arg, Re, Im, M);
-  }
-
-  function updateSection2(){
-    v_mps=parseFloat(s2Vel.value);
-    s2TVel.textContent=v_mps.toFixed(2);
-    s2TVelMic.textContent=v_mps.toFixed(2);
-
-    // recompute FFT of S(t) using fixed window & h(x - v t)
-    const {magSpec, fMaxMHz} = computeFFT();
-    drawSpectrum(s2Spec, magSpec, fMaxMHz);
-  }
-
-  // animated moving blue window (visual) + LIVE ARGAND using S(t_now)
-  let animRAF=null, animStartMs=performance.now();
-  function currentShiftUm(){
-    const maxShift = T_us * v_mps; // µm per 1s of real time
-    const phase = ((performance.now()-animStartMs)/1000) % 1.0;
-    return phase * maxShift;
-  }
-  function currentTimeUs(){
-    // phase * T_us (independent of v when v>0; if v=0, keep t=0)
-    if (v_mps<=1e-12) return 0;
-    const phase = ((performance.now()-animStartMs)/1000) % 1.0;
-    return phase * T_us;
-  }
-  function animateS2(){
-    // move window visually
-    drawSurface(s2Surf, currentShiftUm());
-
-    // live phasor sum at current animation time using the validated model
-    const t_us_live = currentTimeUs();
-    const {Re, Im, M} = phasorSumAtTime(t_us_live);
-    s2M.textContent=String(M);
-    s2Mag.textContent=Math.hypot(Re,Im).toFixed(6);
-    s2Magn.textContent=(Math.hypot(Re,Im)/M).toFixed(6);
-    s2Ang.textContent=Math.atan2(Im,Re).toFixed(6);
-    s2Re.textContent=Re.toFixed(6);
-    s2Im.textContent=Im.toFixed(6);
-    drawArgand(s2Arg, Re, Im, M);
-
-    animRAF=requestAnimationFrame(animateS2);
-  }
-  function restartAnim(){
-    animStartMs=performance.now();
-    if (animRAF) cancelAnimationFrame(animRAF);
-    animRAF=requestAnimationFrame(animateS2);
-  }
-
-  // ===== events =====
-  [glLam, glTi, glTo].forEach(el=> el.addEventListener('input', ()=>{
-    if (![glLam, glTi, glTo].every(input => input.validity.valid && Number.isFinite(input.valueAsNumber))) return;
-    updateSection1(); updateSection2(); restartAnim();
-  }));
-  s1Sigma.addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
-  s1Ell  .addEventListener('input', ()=>{ updateSection1(); updateSection2(); restartAnim(); });
-  s1SeedBtn.addEventListener('click', ()=>{ seed=(Math.random()*1e9)>>>0; updateSection1(); updateSection2(); restartAnim(); });
-
-  s2Vel.addEventListener('input', ()=>{ updateSection2(); restartAnim(); });
-  s2Recomp.addEventListener('click', ()=>{ updateSection2(); restartAnim(); });
-
-  window.addEventListener('resize', ()=>{ drawSurface(s1Surf,0); /* s2 anim refreshes itself */ });
-
-  // ===== first render =====
-  updateSection1();
-  updateSection2();
-  restartAnim();
-})();
-</script>
-
-
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, which was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to reuse this website; we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-  </body>
-  </html>
+    <section class="chapter references" id="references">
+      <h2>References and Further Reading</h2>
+      <ol>
+        <li id="ref-ohd">J. Kim, C. Benko, M. Wrenninge, R. Villemin, Z. Barber, W. Jarosz, and A. Pediredla. <a href="../ohd_rendering/static/pdfs/OHD_SIGGRAPH_2025.pdf#page=9"><em>A Monte Carlo Rendering Framework for Simulating Optical Heterodyne Detection.</em></a> ACM Transactions on Graphics, SIGGRAPH 2025. Section 6, especially Eqs. (43)–(55), Figures 8–10, and Table 1. <a href="../ohd_rendering/">Project page</a>.</li>
+        <li><a href="../dopplertof/static/pdfs/Doppler_ToF_SIGGRAPH_Asia_2023.pdf"><em>Doppler Time-of-Flight Rendering.</em></a> SIGGRAPH Asia 2023. <a href="../dopplertof/">Project page</a>.</li>
+        <li>J. Kim. <em>Doppler Rendering in One Weekend.</em> Original tutorial and source of the introductory figures.</li>
+        <li><a href="https://brickisland.net/wos-one-weekend/"><em>Walk on Spheres in One Weekend.</em></a> Reference for the chapter-based tutorial presentation, in-text experiments, and exercises.</li>
+      </ol>
+    </section>
+    <footer><a href="#contents-title">Back to contents</a><span>Figures retained from the original tutorial. Equations rendered locally with <a href="vendor/katex/LICENSE.txt">KaTeX</a>.</span></footer>
+  </main>
+  <noscript><p class="noscript">The text and figures are available without JavaScript. Enable JavaScript to typeset the equations and run the interactive experiments.</p></noscript>
+</body>
+</html>
