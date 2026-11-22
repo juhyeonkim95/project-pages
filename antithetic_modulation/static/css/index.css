@@ -20,13 +20,8 @@ body {
   padding: 3rem 1.5rem 2.5rem;
 }
 
-.publication-title.title {
-  margin: 0 auto 1.5rem;
-  font-family: 'Google Sans', 'Noto Sans', sans-serif;
-  font-size: clamp(1.75rem, 3.4vw, 3rem);
-  line-height: 1.16;
-  overflow-wrap: normal;
-  text-wrap: balance;
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
 }
 
 .publication-authors,
@@ -67,13 +62,6 @@ body {
   margin-top: 1.5rem;
 }
 
-.publication-links .resource-pending {
-  color: #595959;
-  background: #f3f3f3;
-  border-color: #dedede;
-  cursor: default;
-}
-
 a:focus-visible {
   outline: 3px solid #1675b9;
   outline-offset: 4px;
@@ -112,10 +100,6 @@ a:focus-visible {
 .abstract-text {
   text-align: left;
   line-height: 1.8;
-}
-
-.publication-note {
-  color: #595959;
 }
 
 .footer {
