@@ -130,27 +130,6 @@ a:focus-visible {
   color: #4a4a4a;
 }
 
-.ours {
-  color: #ed7d31;
-}
-
-/* Labels above and below the 3D scan video: four 640-px panels with 28-px gaps */
-.scan-labels {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 1.059%;
-  margin-bottom: 0.4rem;
-  font-family: 'Google Sans', 'Noto Sans', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-}
-
-.scan-labels.is-values {
-  margin: 0.4rem 0 0;
-  font-size: 0.95rem;
-}
-
 .footer {
   padding: 2.5rem 1.5rem;
   font-size: 0.875rem;
@@ -195,11 +174,6 @@ a:focus-visible {
 
   .section {
     padding: 2rem 1rem;
-  }
-
-  .scan-labels,
-  .scan-labels.is-values {
-    font-size: 0.625rem;
   }
 
   .figure figcaption {

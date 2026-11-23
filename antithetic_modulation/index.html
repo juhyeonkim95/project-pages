@@ -18,7 +18,7 @@
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20261122-5">
+  <link rel="stylesheet" href="static/css/index.css?v=20261122-6">
   <script defer src="static/js/fontawesome.all.min.js"></script>
 </head>
 <body>
@@ -83,7 +83,7 @@
 
   <section class="section" id="key-idea" aria-labelledby="key-idea-title">
     <div class="text-container content">
-      <h2 class="title is-3 has-text-centered" id="key-idea-title">Key idea</h2>
+      <h2 class="title is-3 has-text-centered" id="key-idea-title">Key idea - Antithetic Sampling in Path Domain</h2>
       <p>
         CW-ToF cameras modulate light in time; structured-light systems modulate it in space. Either way, every light path is weighted by a fast-oscillating modulation, and at high frequencies its large positive and negative contributions dominate the rendering noise. We pair each path with an <strong>antithetic</strong> path: a small geometric deformation of it whose modulation has the opposite sign. The oscillation cancels within the pair, while the underlying light transport stays similar.
       </p>
@@ -122,17 +122,11 @@
     <div class="publication-container">
       <h2 class="title is-3 has-text-centered" id="applications-title">Applications</h2>
       <figure class="figure">
-        <div class="scan-labels" aria-hidden="true">
-          <span>Naive</span><span class="ours">Antithetic (ours)</span><span>Converged</span><span>True surface</span>
-        </div>
-        <video autoplay muted loop playsinline preload="metadata" poster="static/videos/scan_structured_light.jpg" width="1600" height="388" aria-label="Rotating 3D point clouds of a bunny scanned with structured light: naive, antithetic, converged and the true surface">
-          <source src="static/videos/scan_structured_light.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline preload="metadata" poster="static/videos/bunny_structured_light.jpg" width="1280" height="914" aria-label="Structured-light scan of a bunny: rendered code images (top) and decoded 3D points (bottom) for naive sampling, antithetic sampling and a converged reference">
+          <source src="static/videos/bunny_structured_light.mp4" type="video/mp4">
         </video>
-        <div class="scan-labels is-values" aria-hidden="true">
-          <span>3,652 wrong points</span><span class="ours">50 wrong points</span><span></span><span></span>
-        </div>
         <figcaption>
-          <strong>Coded depth reconstruction.</strong> 3D points decoded from high-frequency XOR structured-light codes rendered at equal time per code image (naive 512 spp, ours 307 spp). Red points are more than 5 cm away from the scan decoded from converged renders.
+          <strong>Coded depth reconstruction.</strong> Top: indirect light in the ten high-frequency XOR code images, rendered at equal time per image (naive 512 spp, ours 307 spp; red positive, blue negative). Bottom: the 3D points decoded from them. Red points are more than 5 cm away from the scan decoded from converged renders.
         </figcaption>
       </figure>
       <figure class="figure">
