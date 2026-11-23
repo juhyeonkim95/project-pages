@@ -18,8 +18,10 @@
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20261122-7">
+  <link rel="stylesheet" href="static/css/index.css?v=20261122-8">
   <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/render-data.js?v=20261122-1"></script>
+  <script defer src="static/js/render-viewer.js?v=20261122-1"></script>
 </head>
 <body>
   <section class="hero publication-header" aria-labelledby="publication-title">
@@ -107,10 +109,58 @@
           Equal time, 1 s of GPU time per method: indirect light in the Cornell box under high-frequency modulation (orange: positive, blue: negative). Antithetic sampling traces fewer samples per pixel, yet its relative MSE is about 9× lower for CW-ToF and 14× lower for structured light.
         </figcaption>
       </figure>
-      <figure class="figure">
-        <a href="static/images/fig10_renders.jpg" target="_blank" rel="noopener" aria-label="Open the rendered comparison at full resolution"><img src="static/images/fig10_renders.jpg" width="1817" height="2379" loading="lazy" alt="Equal-time renders of modulated indirect illumination with naive and antithetic sampling in three scenes at three wavelengths"></a>
+      <figure class="figure render-viewer" id="render-viewer">
+        <div class="viewer-controls">
+          <div class="viewer-control" role="radiogroup" aria-labelledby="rv-mod-label">
+            <span class="viewer-label" id="rv-mod-label">Modulation</span>
+            <div class="segmented">
+              <label><input type="radio" name="rv-mod" value="cwtof" autocomplete="off" checked><span>CW-ToF</span></label>
+              <label><input type="radio" name="rv-mod" value="sl" autocomplete="off"><span>Structured light</span></label>
+            </div>
+          </div>
+          <div class="viewer-control" role="radiogroup" aria-labelledby="rv-scene-label">
+            <span class="viewer-label" id="rv-scene-label">Scene</span>
+            <div class="segmented">
+              <label><input type="radio" name="rv-scene" value="cornell-box" autocomplete="off" checked><span>Cornell box</span></label>
+              <label><input type="radio" name="rv-scene" value="bunny" autocomplete="off"><span>Bunny</span></label>
+              <label><input type="radio" name="rv-scene" value="staircase" autocomplete="off"><span>Staircase</span></label>
+              <label><input type="radio" name="rv-scene" value="kitchen" autocomplete="off"><span>Kitchen</span></label>
+            </div>
+          </div>
+          <div class="viewer-control" role="radiogroup" aria-labelledby="rv-wl-label">
+            <span class="viewer-label" id="rv-wl-label">Wavelength <em>λ</em></span>
+            <div class="segmented">
+              <label><input type="radio" name="rv-wl" value="0.01" autocomplete="off" checked><span>0.01</span></label>
+              <label><input type="radio" name="rv-wl" value="0.02" autocomplete="off"><span>0.02</span></label>
+              <label><input type="radio" name="rv-wl" value="0.05" autocomplete="off"><span>0.05</span></label>
+              <label><input type="radio" name="rv-wl" value="0.1" autocomplete="off"><span>0.1</span></label>
+              <label><input type="radio" name="rv-wl" value="0.2" autocomplete="off"><span>0.2</span></label>
+              <label><input type="radio" name="rv-wl" value="0.5" autocomplete="off"><span>0.5</span></label>
+              <label><input type="radio" name="rv-wl" value="1" autocomplete="off"><span>1</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="viewer-grid">
+          <span></span>
+          <div class="viewer-col-head">Naive<span class="viewer-spp" data-spp="naive">280 spp</span></div>
+          <div class="viewer-col-head is-ours">Antithetic (ours)<span class="viewer-spp" data-spp="antithetic">181 spp</span></div>
+          <div class="viewer-col-head">Reference<span class="viewer-spp" data-spp="gt">15,894 spp</span></div>
+          <div class="viewer-row-head">RGB</div>
+          <img data-method="naive" data-kind="rgb" src="static/renders/cwtof/cornell-box/naive_0.01_rgb.webp" width="512" height="512" loading="lazy" decoding="async" alt="Naive, RGB: CW-ToF, Cornell box, λ = 0.01">
+          <img data-method="antithetic" data-kind="rgb" src="static/renders/cwtof/cornell-box/antithetic_0.01_rgb.webp" width="512" height="512" loading="lazy" decoding="async" alt="Antithetic (ours), RGB: CW-ToF, Cornell box, λ = 0.01">
+          <img data-method="gt" data-kind="rgb" src="static/renders/cwtof/cornell-box/gt_0.01_rgb.webp" width="512" height="512" loading="lazy" decoding="async" alt="Reference, RGB: CW-ToF, Cornell box, λ = 0.01">
+          <div class="viewer-row-head">Zero-mean</div>
+          <img data-method="naive" data-kind="zm" src="static/renders/cwtof/cornell-box/naive_0.01_zm.jpg" width="512" height="512" loading="lazy" decoding="async" alt="Naive, zero-mean: CW-ToF, Cornell box, λ = 0.01">
+          <img data-method="antithetic" data-kind="zm" src="static/renders/cwtof/cornell-box/antithetic_0.01_zm.jpg" width="512" height="512" loading="lazy" decoding="async" alt="Antithetic (ours), zero-mean: CW-ToF, Cornell box, λ = 0.01">
+          <img data-method="gt" data-kind="zm" src="static/renders/cwtof/cornell-box/gt_0.01_zm.jpg" width="512" height="512" loading="lazy" decoding="async" alt="Reference, zero-mean: CW-ToF, Cornell box, λ = 0.01">
+          <span></span>
+          <div class="viewer-mse" data-mse="naive">MSE 1.16 × 10<sup>−3</sup></div>
+          <div class="viewer-mse" data-mse="antithetic">MSE 2.41 × 10<sup>−4</sup><span class="viewer-gain is-better">4.8× lower</span></div>
+          <span></span>
+        </div>
+        <p class="is-sr-only" aria-live="polite" data-status></p>
         <figcaption>
-          Equal-time renders in three scenes at three modulation wavelengths <em>λ</em>, with per-image MSE. The gain is largest when the wavelength is below about 1–10% of the scene scale, and fades at longer wavelengths. Click to enlarge.
+          Equal-time renders: choose the modulation, scene and wavelength <em>λ</em>. Top row: RGB render (absolute value, tone-mapped). Bottom row: the zero-mean signal (red positive, blue negative), with one color scale per row. In the same time, antithetic sampling traces fewer samples per pixel, yet it reaches a lower MSE when <em>λ</em> is below about 1–10% of the scene scale. At longer wavelengths the gain fades.
         </figcaption>
       </figure>
     </div>

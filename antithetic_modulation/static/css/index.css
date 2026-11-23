@@ -126,6 +126,146 @@ a:focus-visible {
   color: #4a4a4a;
 }
 
+/* Interactive render viewer */
+.viewer-controls {
+  display: grid;
+  gap: 0.5rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1.25rem;
+}
+
+.viewer-control {
+  display: grid;
+  grid-template-columns: 7.5rem auto;
+  align-items: center;
+  column-gap: 0.75rem;
+}
+
+.viewer-label,
+.segmented span,
+.viewer-col-head,
+.viewer-row-head {
+  font-family: 'Google Sans', 'Noto Sans', sans-serif;
+}
+
+.viewer-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #363636;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  justify-self: start;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 1.25rem;
+  background: #f0f0f0;
+}
+
+.segmented label {
+  position: relative;
+  cursor: pointer;
+}
+
+.segmented input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segmented span {
+  display: block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #4a4a4a;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.segmented label:hover span {
+  background: #e2e2e2;
+}
+
+.segmented input:checked + span {
+  background: #363636;
+  color: #fff;
+}
+
+.segmented input:focus-visible + span {
+  outline: 3px solid #1675b9;
+  outline-offset: 1px;
+}
+
+.viewer-grid {
+  display: grid;
+  grid-template-columns: auto repeat(3, minmax(0, 1fr));
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.viewer-col-head {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: #363636;
+}
+
+.viewer-col-head.is-ours,
+.viewer-gain.is-better {
+  color: #b85410;
+}
+
+.viewer-spp {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #6b6b6b;
+}
+
+.viewer-row-head {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  color: #363636;
+}
+
+.viewer-grid img {
+  aspect-ratio: 1;
+  background: #f0f0f0;
+  transition: opacity 0.15s;
+}
+
+/* Dim only when loading takes long enough to notice */
+.render-viewer.is-loading .viewer-grid img {
+  opacity: 0.55;
+  transition-delay: 0.2s;
+}
+
+.viewer-mse {
+  align-self: start;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: center;
+  color: #4a4a4a;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewer-gain {
+  display: block;
+  font-weight: 700;
+  color: #6b6b6b;
+}
+
 .footer {
   padding: 2.5rem 1.5rem;
   font-size: 0.875rem;
@@ -176,7 +316,43 @@ a:focus-visible {
     font-size: 0.875rem;
   }
 
+  .viewer-control {
+    grid-template-columns: 1fr;
+    row-gap: 0.3rem;
+  }
+
+  .viewer-label {
+    font-size: 0.875rem;
+  }
+
+  .segmented span {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8125rem;
+  }
+
+  .viewer-grid {
+    gap: 0.25rem;
+  }
+
+  .viewer-col-head {
+    font-size: 0.75rem;
+  }
+
+  .viewer-spp,
+  .viewer-row-head,
+  .viewer-mse {
+    font-size: 0.6875rem;
+  }
+
   .footer {
     padding: 2rem 1rem;
+  }
+}
+
+/* Keep each viewer control on one line on the narrowest phones */
+@media screen and (max-width: 380px) {
+  .segmented span {
+    padding: 0.25rem 0.42rem;
+    font-size: 0.75rem;
   }
 }
