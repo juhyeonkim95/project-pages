@@ -126,6 +126,69 @@ a:focus-visible {
   color: #4a4a4a;
 }
 
+/* Key idea: two diagrams at the same scale (columns in the ratio of their widths), drawings bottom-aligned */
+.key-panels {
+  display: grid;
+  grid-template-columns: 855fr 713fr;
+  column-gap: 1.5rem;
+}
+
+.key-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.key-panel-title,
+.key-legend {
+  font-family: 'Google Sans', 'Noto Sans', sans-serif;
+  text-align: center;
+  color: #363636;
+}
+
+.key-panel-title {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.key-panel-title span {
+  display: block;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;
+  color: #4a4a4a;
+}
+
+.key-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.key-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 2rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  border-top: 3px solid #00b0f0;
+}
+
+.key-legend .is-primal {
+  color: #0077b3;
+}
+
+.key-legend .is-antithetic {
+  color: #d10000;
+}
+
+.key-legend .is-antithetic::before {
+  border-top: 3px dashed #ff0000;
+}
+
 /* Interactive render viewer */
 .viewer-controls {
   display: grid;
@@ -314,6 +377,15 @@ a:focus-visible {
 
   .figure figcaption {
     font-size: 0.875rem;
+  }
+
+  .key-panels {
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+  }
+
+  .key-panel-title {
+    font-size: 0.9375rem;
   }
 
   .viewer-control {

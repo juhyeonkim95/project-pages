@@ -18,7 +18,7 @@
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20261122-8">
+  <link rel="stylesheet" href="static/css/index.css?v=20261122-9">
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/render-data.js?v=20261122-1"></script>
   <script defer src="static/js/render-viewer.js?v=20261122-1"></script>
@@ -90,9 +90,19 @@
     </div>
     <div class="publication-container">
       <figure class="figure">
-        <img src="static/images/fig2_construction.png" width="1343" height="570" loading="lazy" alt="Geometric construction of antithetic pairs for CW-ToF and structured light">
+        <div class="key-panels">
+          <div class="key-panel">
+            <p class="key-panel-title">(A) CW-ToF<span><em>ℓ</em>(<em>y</em>′) = <em>ℓ</em>(<em>y</em>) ± <em>λ</em>/2</span></p>
+            <img src="static/images/key_cwtof.png" width="855" height="716" loading="lazy" alt="CW-ToF: a primal path runs from the modulated light to vertex y on a triangle, then to x1 and the camera; the antithetic path moves y on its triangle to y′, where the path is half a wavelength longer">
+          </div>
+          <div class="key-panel">
+            <p class="key-panel-title">(B) Structured light<span><em>P</em>(<em>ξ</em>′) = −<em>P</em>(<em>ξ</em>)</span></p>
+            <img src="static/images/key_structured_light.png" width="713" height="588" loading="lazy" alt="Structured light: the primal path leaves the projector through pattern coordinate ξ and lands at y; the antithetic path goes through ξ′ with the opposite pattern value and lands at y′; both continue to x1 and the camera">
+          </div>
+        </div>
+        <p class="key-legend"><span class="is-primal">primal</span><span class="is-antithetic">antithetic</span></p>
         <figcaption>
-          (A) CW-ToF: the antithetic path is half a wavelength longer or shorter, <em>ℓ</em>(<em>ξ</em>′) = <em>ℓ</em>(<em>ξ</em>) ± <em>λ</em>/2. We move one vertex and find it with Newton's method, along the average gradient of the path length. (B) Structured light: the antithetic sample has the opposite pattern value in projector coordinates, <em>P</em>(<em>ξ</em>′) = −<em>P</em>(<em>ξ</em>).
+          The antithetic path keeps the rest of the primal path and moves only the vertex <em>y</em>. (A) CW-ToF: <em>y</em>′ makes the path half a wavelength longer or shorter, which flips the sign of the modulation. <em>y</em>′ has two coordinates on its triangle but only one condition to meet, so we move it along the average path-length gradient, which keeps the mapping invertible, and solve with Newton's method. (B) Structured light: we take the projector coordinate <em>ξ</em>′ with the opposite pattern value; <em>y</em>′ is where the ray through <em>ξ</em>′ lands.
         </figcaption>
       </figure>
     </div>
