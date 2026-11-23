@@ -18,7 +18,7 @@
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20261122-1">
+  <link rel="stylesheet" href="static/css/index.css?v=20261122-5">
   <script defer src="static/js/fontawesome.all.min.js"></script>
 </head>
 <body>
@@ -44,6 +44,14 @@
           <a href="https://github.com/juhyeonkim95/FalcorComp" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
             <span class="icon" aria-hidden="true"><i class="fab fa-github"></i></span><span>Code (FalcorComp)</span>
           </a>
+          <a href="https://falcorcomp.readthedocs.io/en/latest/src/tutorials/modulated_antithetic_index.html" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-book"></i></span><span>Tutorials</span>
+          </a>
+          <!-- Enable when the ACM Digital Library page is live:
+          <a href="https://doi.org/10.1145/3829340.3842310" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-book-open"></i></span><span>ACM Digital Library</span>
+          </a>
+          -->
         </div>
       </div>
     </div>
@@ -67,9 +75,78 @@
       <h2 class="title is-3 has-text-centered" id="abstract-title">Abstract</h2>
       <div class="content abstract-text">
         <p>
-          We propose a geometric antithetic sampling strategy for efficiently rendering spatiotemporally modulated light, encompassing both continuous-wave time-of-flight (CW-ToF) and structured light systems. This is motivated by the observation that modulated light transport can be decomposed into a slowly varying geometric term and a rapidly oscillating modulation term, where the latter dominates variance. Our key idea is to construct antithetic sample pairs by geometrically deforming an existing light path so that the modulation term changes sign while preserving similarity in the underlying transport. In both CW-ToF and structured light, antithetic samples lie on an antithetic manifold—the set of configurations with opposite modulation phase—and we search along it to find the path most similar to a given reference path, thereby maintaining strong negative correlation between paired samples. For CW-ToF, this corresponds to shifting paths in optical path-length space, while for structured light, it involves deforming emitter samples along the spatial modulation manifold in projector coordinates. By unifying both cases under this geometric deformation framework, our method effectively cancels high-frequency modulation components through paired samples, leading to significant variance reduction and enabling more efficient simulation of coded illumination and sensing systems which are important in the field of computational imaging.
+          We propose a geometric antithetic sampling strategy for efficiently rendering spatiotemporally modulated light, encompassing continuous-wave time-of-flight (CW-ToF) and structured light systems. This is motivated by observing that modulated light transport can be decomposed into a slowly varying geometric term and a rapidly oscillating modulation term, where the latter dominates variance. Our key idea is to construct antithetic sample pairs by geometrically deforming a light path so that the modulation term changes sign while preserving similarity in the underlying transport. In both CW-ToF and structured light, antithetic samples lie on an antithetic manifold—the set of configurations with opposite modulation—and we search along it to find the path most similar to a given reference path, thereby maintaining strong negative correlation between paired samples. For CW-ToF, this corresponds to shifting paths in optical path-length space, while for structured light, it involves deforming emitter samples along the spatial modulation manifold in projector-coordinate space. By unifying both cases under this geometric deformation framework, our method cancels high-frequency modulation components through paired samples, leading to significant variance reduction and enabling more efficient simulation of coded illumination and sensing systems in computational imaging.
         </p>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="key-idea" aria-labelledby="key-idea-title">
+    <div class="text-container content">
+      <h2 class="title is-3 has-text-centered" id="key-idea-title">Key idea</h2>
+      <p>
+        CW-ToF cameras modulate light in time; structured-light systems modulate it in space. Either way, every light path is weighted by a fast-oscillating modulation, and at high frequencies its large positive and negative contributions dominate the rendering noise. We pair each path with an <strong>antithetic</strong> path: a small geometric deformation of it whose modulation has the opposite sign. The oscillation cancels within the pair, while the underlying light transport stays similar.
+      </p>
+    </div>
+    <div class="publication-container">
+      <figure class="figure is-text-width">
+        <img src="static/images/fig2_construction.png" width="1343" height="570" loading="lazy" alt="Geometric construction of antithetic pairs for CW-ToF and structured light">
+        <figcaption>
+          (A) CW-ToF: the antithetic path is half a wavelength longer or shorter, <em>ℓ</em>(<em>ξ</em>′) = <em>ℓ</em>(<em>ξ</em>) ± <em>λ</em>/2. We move one vertex and find it with Newton's method, along the average gradient of the path length. (B) Structured light: the antithetic sample has the opposite pattern value in projector coordinates, <em>P</em>(<em>ξ</em>′) = −<em>P</em>(<em>ξ</em>).
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="results" aria-labelledby="results-title">
+    <div class="publication-container">
+      <h2 class="title is-3 has-text-centered" id="results-title">Rendering results</h2>
+      <figure class="figure">
+        <video autoplay muted loop playsinline preload="metadata" poster="static/videos/race_cornell.jpg" width="1826" height="610" aria-label="Equal-time comparison of naive and antithetic sampling for CW-ToF and structured light in the Cornell box">
+          <source src="static/videos/race_cornell.mp4" type="video/mp4">
+        </video>
+        <figcaption>
+          Equal time, 1 s of GPU time per method: indirect light in the Cornell box under high-frequency modulation (orange: positive, blue: negative). Antithetic sampling traces fewer samples per pixel, yet its relative MSE is about 9× lower for CW-ToF and 14× lower for structured light.
+        </figcaption>
+      </figure>
+      <figure class="figure is-text-width">
+        <a href="static/images/fig10_renders.jpg" target="_blank" rel="noopener" aria-label="Open the rendered comparison at full resolution"><img src="static/images/fig10_renders.jpg" width="1817" height="2379" loading="lazy" alt="Equal-time renders of modulated indirect illumination with naive and antithetic sampling in three scenes at three wavelengths"></a>
+        <figcaption>
+          Equal-time renders in three scenes at three modulation wavelengths <em>λ</em>, with per-image MSE. The gain is largest when the wavelength is below about 1–10% of the scene scale, and fades at longer wavelengths. Click to enlarge.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="applications" aria-labelledby="applications-title">
+    <div class="publication-container">
+      <h2 class="title is-3 has-text-centered" id="applications-title">Applications</h2>
+      <figure class="figure">
+        <div class="scan-labels" aria-hidden="true">
+          <span>Naive</span><span class="ours">Antithetic (ours)</span><span>Converged</span><span>True surface</span>
+        </div>
+        <video autoplay muted loop playsinline preload="metadata" poster="static/videos/scan_structured_light.jpg" width="1600" height="388" aria-label="Rotating 3D point clouds of a bunny scanned with structured light: naive, antithetic, converged and the true surface">
+          <source src="static/videos/scan_structured_light.mp4" type="video/mp4">
+        </video>
+        <div class="scan-labels is-values" aria-hidden="true">
+          <span>3,652 wrong points</span><span class="ours">50 wrong points</span><span></span><span></span>
+        </div>
+        <figcaption>
+          <strong>Coded depth reconstruction.</strong> 3D points decoded from high-frequency XOR structured-light codes rendered at equal time per code image (naive 512 spp, ours 307 spp). Red points are more than 5 cm away from the scan decoded from converged renders.
+        </figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="static/images/fig12_separation.jpg" width="2121" height="471" loading="lazy" alt="Direct-global illumination decomposition with high-frequency checkerboards, and error maps of naive and antithetic sampling">
+        <figcaption>
+          <strong>Illumination decomposition.</strong> (A) Direct and indirect light separated with high-frequency checkerboard patterns (Nayar et al. 2006), compared with the ground truth. (B) Error maps: average 6.73 with naive sampling and 2.13 with antithetic sampling.
+        </figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="static/images/fig11_aoi.jpg" width="2127" height="533" loading="lazy" alt="Fringe projection profilometry of a circuit board: RGB render, depth with naive and antithetic sampling, and ground-truth depth">
+        <figcaption>
+          <strong>Automated optical inspection.</strong> Depth of a circuit board from four phase-shifted sinusoidal patterns (fringe projection), rendered with naive (B) and antithetic (C) sampling, against the ground truth (D).
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -79,9 +156,14 @@
       <pre><code>@inproceedings{kim2026geometric,
   title={Geometric Antithetic Sampling for Rendering Spatiotemporally Modulated Light},
   author={Kim, Juhyeon and Cui, Jack and Jarosz, Wojciech and Pediredla, Adithya},
-  booktitle={Proceedings of the SIGGRAPH Asia 2026 Conference Papers},
-  pages={1--11},
-  year={2026}
+  booktitle={SIGGRAPH Asia 2026 Conference Papers},
+  series={SA Conference Papers '26},
+  location={Kuala Lumpur, Malaysia},
+  publisher={ACM},
+  address={New York, NY, USA},
+  numpages={11},
+  year={2026},
+  doi={10.1145/3829340.3842310}
 }</code></pre>
     </div>
   </section>
