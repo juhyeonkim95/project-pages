@@ -18,7 +18,7 @@
   <link rel="icon" type="image/x-icon" href="static/images/butterfly.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20261122-6">
+  <link rel="stylesheet" href="static/css/index.css?v=20261122-7">
   <script defer src="static/js/fontawesome.all.min.js"></script>
 </head>
 <body>
@@ -35,6 +35,9 @@
         <p class="publication-affiliation"><sup>1</sup>Dartmouth College</p>
         <p class="publication-venue">SIGGRAPH Asia 2026, Conference Track</p>
         <div class="publication-links" aria-label="Publication resources">
+          <a href="https://dl.acm.org/doi/abs/10.1145/3829340.3842310" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon" aria-hidden="true"><i class="fas fa-file-pdf"></i></span><span>Official Website</span>
+          </a>
           <a href="static/pdfs/Geometric_Antithetic_Sampling.pdf" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
             <span class="icon" aria-hidden="true"><i class="fas fa-file-pdf"></i></span><span>Paper (12.9 MB)</span>
           </a>
@@ -47,11 +50,6 @@
           <a href="https://falcorcomp.readthedocs.io/en/latest/src/tutorials/modulated_antithetic_index.html" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
             <span class="icon" aria-hidden="true"><i class="fas fa-book"></i></span><span>Tutorials</span>
           </a>
-          <!-- Enable when the ACM Digital Library page is live:
-          <a href="https://doi.org/10.1145/3829340.3842310" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
-            <span class="icon" aria-hidden="true"><i class="fas fa-book-open"></i></span><span>ACM Digital Library</span>
-          </a>
-          -->
         </div>
       </div>
     </div>
@@ -89,7 +87,7 @@
       </p>
     </div>
     <div class="publication-container">
-      <figure class="figure is-text-width">
+      <figure class="figure">
         <img src="static/images/fig2_construction.png" width="1343" height="570" loading="lazy" alt="Geometric construction of antithetic pairs for CW-ToF and structured light">
         <figcaption>
           (A) CW-ToF: the antithetic path is half a wavelength longer or shorter, <em>ℓ</em>(<em>ξ</em>′) = <em>ℓ</em>(<em>ξ</em>) ± <em>λ</em>/2. We move one vertex and find it with Newton's method, along the average gradient of the path length. (B) Structured light: the antithetic sample has the opposite pattern value in projector coordinates, <em>P</em>(<em>ξ</em>′) = −<em>P</em>(<em>ξ</em>).
@@ -109,7 +107,7 @@
           Equal time, 1 s of GPU time per method: indirect light in the Cornell box under high-frequency modulation (orange: positive, blue: negative). Antithetic sampling traces fewer samples per pixel, yet its relative MSE is about 9× lower for CW-ToF and 14× lower for structured light.
         </figcaption>
       </figure>
-      <figure class="figure is-text-width">
+      <figure class="figure">
         <a href="static/images/fig10_renders.jpg" target="_blank" rel="noopener" aria-label="Open the rendered comparison at full resolution"><img src="static/images/fig10_renders.jpg" width="1817" height="2379" loading="lazy" alt="Equal-time renders of modulated indirect illumination with naive and antithetic sampling in three scenes at three wavelengths"></a>
         <figcaption>
           Equal-time renders in three scenes at three modulation wavelengths <em>λ</em>, with per-image MSE. The gain is largest when the wavelength is below about 1–10% of the scene scale, and fades at longer wavelengths. Click to enlarge.
